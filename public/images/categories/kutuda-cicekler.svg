@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#FFF8E1"/>
+  <g transform="translate(100,95)">
+    <rect x="-22" y="-5" width="44" height="30" rx="4" fill="#F48FB1"/>
+    <rect x="-24" y="-8" width="48" height="8" rx="2" fill="#EC407A"/>
+    <line x1="0" y1="-8" x2="0" y2="25" stroke="#D81B60" stroke-width="3"/>
+    <path d="M-2,-10 Q-8,-22 0,-18 Q8,-22 2,-10" fill="#EC407A"/>
+    <circle cx="-8" cy="-15" r="4" fill="#F8BBD0"/>
+    <circle cx="8" cy="-20" r="5" fill="#F48FB1"/>
+    <circle cx="0" cy="-22" r="4" fill="#F06292"/>
+    <circle cx="-12" cy="-20" r="3" fill="#FCE4EC"/>
+    <circle cx="12" cy="-15" r="3" fill="#FCE4EC"/>
+  </g>
+  <text x="100" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#C2185B" font-weight="600">KUTUDA</text>
+</svg>

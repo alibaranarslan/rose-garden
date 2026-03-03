@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#FAF7F5"/>
+  <rect x="140" y="140" width="120" height="100" rx="8" fill="#E8D5F0"/>
+  <circle cx="170" cy="175" r="12" fill="#8E44AD" opacity="0.6"/>
+  <path d="M145 225l30-35 20 24 15-18 35 29H145z" fill="#8E44AD" opacity="0.4"/>
+  <path d="M180 160l20 0l10 10l-10 10l-20 0l-10-10z" fill="#9B59B6" opacity="0.3"/>
+  <text x="200" y="280" text-anchor="middle" fill="#8E44AD" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="500">Gorsel Yok</text>
+</svg>

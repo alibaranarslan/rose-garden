@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#EFEBE9"/>
+  <g transform="translate(100,90)">
+    <rect x="-25" y="-10" width="50" height="35" rx="4" fill="#5D4037"/>
+    <rect x="-22" y="-7" width="44" height="29" rx="3" fill="#6D4C41"/>
+    <line x1="-22" y1="7" x2="22" y2="7" stroke="#4E342E" stroke-width="1"/>
+    <line x1="0" y1="-7" x2="0" y2="22" stroke="#4E342E" stroke-width="1"/>
+    <circle cx="-11" cy="0" r="4" fill="#8D6E63"/>
+    <circle cx="11" cy="0" r="4" fill="#A1887F"/>
+    <circle cx="-11" cy="14" r="4" fill="#A1887F"/>
+    <circle cx="11" cy="14" r="4" fill="#8D6E63"/>
+    <rect x="-27" y="-13" width="54" height="6" rx="2" fill="#795548"/>
+    <path d="M-4,-16 Q0,-24 4,-16" fill="#D7CCC8"/>
+  </g>
+  <text x="100" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#4E342E" font-weight="600">CIKOLATA</text>
+</svg>

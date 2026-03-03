@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Observers;
+
+use App\Models\OrderItem;
+use App\Services\CardMessageAnalyzer;
+use Illuminate\Support\Facades\Log;
+
+class OrderItemObserver
+{
+    public function __construct(private CardMessageAnalyzer $analyzer) {}
+
+    public function created(OrderItem $orderItem): void
+    {
+        if (empty($orderItem->card_message)) {
+            return;
+        }
+
+        $order = $orderItem->order;
+
+        if (!$order || !$order->user_id) {
+            return;
+        }
+
+        try {
+            $this->analyzer->analyze(
+                $orderItem->card_message,
+                $order->user_id,
+                $order->id,
+                $order->recipient_name
+            );
+        } catch (\Exception $e) {
+            Log::warning('Kart mesajı analizi başarısız', [
+                'order_item_id' => $orderItem->id,
+                'message'       => $e->getMessage(),
+            ]);
+        }
+    }
+}
