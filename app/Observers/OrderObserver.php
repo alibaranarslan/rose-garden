@@ -6,14 +6,18 @@ use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderStatusNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class OrderObserver
 {
     public function created(Order $order): void
     {
-        // Notify customer with order confirmation
+        // Notify customer (registered or guest)
         if ($order->user) {
             $order->user->notify(new OrderStatusNotification($order, 'order_created'));
+        } elseif ($order->sender_email) {
+            Notification::route('mail', $order->sender_email)
+                ->notify(new OrderStatusNotification($order, 'order_created'));
         }
 
         // Notify admin users
@@ -28,6 +32,9 @@ class OrderObserver
 
         if ($order->user) {
             $order->user->notify(new OrderStatusNotification($order, 'order_status'));
+        } elseif ($order->sender_email) {
+            Notification::route('mail', $order->sender_email)
+                ->notify(new OrderStatusNotification($order, 'order_status'));
         }
 
         Log::info('Sipariş durumu değişti', [

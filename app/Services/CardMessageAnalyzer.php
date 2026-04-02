@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class CardMessageAnalyzer
 {
-    public function analyze(string $message, int $userId, int $orderId, ?string $recipientName = null): ?CustomerEvent
+    public function analyze(string $message, ?int $userId, int $orderId, ?string $recipientName = null): ?CustomerEvent
     {
         if (empty(trim($message))) {
             return null;
@@ -22,11 +22,13 @@ class CardMessageAnalyzer
         }
 
         try {
-            // Check for existing event of same type for same user/recipient
-            $existingEvent = CustomerEvent::where('user_id', $userId)
-                ->where('event_type', $eventType)
-                ->when($recipientName, fn($q) => $q->where('recipient_name', $recipientName))
-                ->first();
+            // Only check for existing event when user is known (skip for guests)
+            $existingEvent = $userId
+                ? CustomerEvent::where('user_id', $userId)
+                    ->where('event_type', $eventType)
+                    ->when($recipientName, fn($q) => $q->where('recipient_name', $recipientName))
+                    ->first()
+                : null;
 
             if ($existingEvent) {
                 // Update source_order_id if not set

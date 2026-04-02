@@ -3,8 +3,8 @@
 {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": @json($product->getTranslation('name', 'tr')),
-    "description": @json(\Illuminate\Support\Str::limit(strip_tags($product->getTranslation('description', 'tr')), 200)),
+    "name": @json($product->getTranslation('name', app()->getLocale())),
+    "description": @json(\Illuminate\Support\Str::limit(strip_tags($product->getTranslation('description', app()->getLocale())), 200)),
     "image": @json($product->images->first()?->image_path ? asset($product->images->first()->image_path) : ''),
     "sku": @json($product->sku),
     "offers": {

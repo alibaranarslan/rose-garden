@@ -18,7 +18,7 @@ class LoyaltyService
         }
 
         try {
-            $rate       = (float) (Setting::get('loyalty', 'earn_rate') ?? 0.01);
+            $rate       = (float) (Setting::get('loyalty', 'earn_rate') ?? 0.05);
             $multiplier = $this->getOccasionMultiplier();
 
             // Exclude loyalty-points-paid portion from earning base

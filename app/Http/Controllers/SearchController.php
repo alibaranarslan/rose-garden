@@ -17,13 +17,13 @@ class SearchController extends Controller
                 ->with('images')
                 ->where(function ($builder) use ($query) {
                     $builder->whereRaw(
-                        "JSON_UNQUOTE(JSON_EXTRACT(name, '$.tr')) COLLATE utf8mb4_unicode_ci LIKE ?",
+                        "CONVERT(JSON_UNQUOTE(JSON_EXTRACT(name, '$.tr')) USING utf8mb4) LIKE ?",
                         ["%{$query}%"]
                     )->orWhereRaw(
-                        "JSON_UNQUOTE(JSON_EXTRACT(short_description, '$.tr')) COLLATE utf8mb4_unicode_ci LIKE ?",
+                        "CONVERT(JSON_UNQUOTE(JSON_EXTRACT(short_description, '$.tr')) USING utf8mb4) LIKE ?",
                         ["%{$query}%"]
                     )->orWhereRaw(
-                        "JSON_UNQUOTE(JSON_EXTRACT(name, '$.en')) COLLATE utf8mb4_unicode_ci LIKE ?",
+                        "CONVERT(JSON_UNQUOTE(JSON_EXTRACT(name, '$.en')) USING utf8mb4) LIKE ?",
                         ["%{$query}%"]
                     );
                 })
@@ -33,8 +33,8 @@ class SearchController extends Controller
         }
 
         return view('search.results', compact('query', 'results'))->with([
-            'metaTitle' => $query ? '"' . $query . '" arama sonuclari' : 'Urun arama',
-            'metaDescription' => 'Rose Garden urun arama sonuclari.',
+            'metaTitle' => $query ? '"' . $query . '" arama sonuçları' : 'Ürün Arama',
+            'metaDescription' => 'Rose Garden ürün arama sonuçları.',
         ]);
     }
 }

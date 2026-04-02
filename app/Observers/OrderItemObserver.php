@@ -18,14 +18,15 @@ class OrderItemObserver
 
         $order = $orderItem->order;
 
-        if (!$order || !$order->user_id) {
+        if (!$order) {
             return;
         }
 
+        // Analyze card message even for guest orders (user_id may be null)
         try {
             $this->analyzer->analyze(
                 $orderItem->card_message,
-                $order->user_id,
+                $order->user_id, // nullable for guest orders
                 $order->id,
                 $order->recipient_name
             );

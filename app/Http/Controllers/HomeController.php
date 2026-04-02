@@ -30,10 +30,24 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
+        $bestSellers = Product::active()
+            ->orderByDesc('view_count')
+            ->with('images')
+            ->take(8)
+            ->get();
+
+        $today = now();
+        $futureDate = $today->copy()->addDays(14);
         $activeOccasion = SpecialOccasion::active()
-            ->where('date_month', now()->month)
-            ->where('date_day', '>=', now()->day)
-            ->orderBy('date_day')
+            ->where(function ($q) use ($today, $futureDate) {
+                $q->where(function ($inner) use ($today) {
+                    $inner->where('date_month', $today->month);
+                })->orWhere(function ($inner) use ($futureDate) {
+                    $inner->where('date_month', $futureDate->month)
+                          ->where('date_day', '<=', $futureDate->day);
+                });
+            })
+            ->orderByRaw('date_month ASC, date_day ASC')
             ->first();
 
         $occasionProducts = $activeOccasion
@@ -53,13 +67,14 @@ class HomeController extends Controller
         return view('home.index', compact(
             'featuredProducts',
             'newProducts',
+            'bestSellers',
             'categories',
             'activeOccasion',
             'occasionProducts',
             'blogPosts'
         ))->with([
-            'metaTitle' => 'Rose Garden Cicek ve Cikolata',
-            'metaDescription' => 'Butik cicek ve cikolata tasarimlari ile ayni gun teslimat.',
+            'metaTitle' => null,
+            'metaDescription' => 'Adıyaman\'ın en özel butik çiçek ve çikolata mağazası. El yapımı tasarımlar, aynı gün teslimat.',
             'ogImage' => $featuredProducts->first()?->images->first()?->image_path,
         ]);
     }

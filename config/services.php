@@ -35,6 +35,7 @@ return [
         'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect'      => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
+        'maps_key'      => env('GOOGLE_MAPS_KEY', ''),
     ],
 
     'google_translate' => [
@@ -46,14 +47,22 @@ return [
         'merchant_key' => env('PAYTR_MERCHANT_KEY'),
         'merchant_salt' => env('PAYTR_MERCHANT_SALT'),
         'test_mode'    => env('PAYTR_TEST_MODE', true),
-        'base_url'     => 'https://www.paytr.com/odeme/api/get-token',
+        'debug'        => env('PAYTR_DEBUG', false),
+        'timeout'      => env('PAYTR_TIMEOUT', 30),
+        'api_url'      => env('PAYTR_API_URL', 'https://www.paytr.com/odeme/api/get-token'),
+        'iframe_url'   => env('PAYTR_IFRAME_URL', 'https://www.paytr.com/odeme/guvenli/'),
+        'success_url'  => env('PAYTR_SUCCESS_URL', '/odeme/basarili'),
+        'fail_url'     => env('PAYTR_FAIL_URL', '/odeme/basarisiz'),
         'callback_url' => env('PAYTR_CALLBACK_URL', '/api/paytr/callback'),
+        'allowed_ips'  => array_filter(explode(',', (string) env('PAYTR_ALLOWED_IPS', '193.140.143.0/24'))),
     ],
 
     'sms' => [
         'api_url'    => env('SMS_API_URL'),
         'username'   => env('SMS_USERNAME'),
         'password'   => env('SMS_PASSWORD'),
+        'subscriber_no' => env('SMS_SUBSCRIBER_NO'),
+        'sender_title' => env('SMS_SENDER_TITLE', 'ROSEGARDEN'),
         'enabled'    => env('SMS_ENABLED', false),
     ],
 

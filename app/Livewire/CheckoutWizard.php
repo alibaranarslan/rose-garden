@@ -13,6 +13,7 @@ use App\Models\OrderItem;
 use App\Models\Setting;
 use App\Services\LoyaltyService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -84,13 +85,19 @@ class CheckoutWizard extends Component
         $discountAmount = $coupon && $coupon->isValid($subtotal, auth()->id())
             ? (float) $coupon->calculateDiscount($subtotal)
             : 0.0;
+
+        // free_delivery coupon type resets delivery fee regardless of discount amount
+        if ($coupon && $coupon->type === 'free_delivery') {
+            $deliveryFee = 0.0;
+        }
+
         $loyaltyToUse = $this->resolveLoyaltyUsageAmount($subtotal, $deliveryFee, $discountAmount);
         $total = max(0, $subtotal + $deliveryFee - $discountAmount - $loyaltyToUse);
 
         $order = DB::transaction(function () use ($items, $subtotal, $deliveryFee, $discountAmount, $loyaltyToUse, $total, $coupon) {
             $order = Order::create([
                 'user_id' => auth()->id(),
-                'status' => 'pending',
+                'status' => $this->paymentMethod === 'bank_transfer' ? 'awaiting_payment' : 'pending',
                 'subtotal' => $subtotal,
                 'delivery_fee' => $deliveryFee,
                 'discount_amount' => $discountAmount,
@@ -138,7 +145,11 @@ class CheckoutWizard extends Component
             }
 
             if ($loyaltyToUse > 0 && auth()->check()) {
-                app(LoyaltyService::class)->usePoints($order, $loyaltyToUse);
+                $result = app(LoyaltyService::class)->usePoints($order, $loyaltyToUse);
+                if ($result === false) {
+                    // Points insufficient or invalid; reset to zero (order still valid)
+                    $order->update(['loyalty_points_used' => 0, 'total' => $subtotal + $deliveryFee - $discountAmount]);
+                }
             }
 
             $this->cartQuery()->delete();
@@ -184,7 +195,7 @@ class CheckoutWizard extends Component
 
         if ($step === 3) {
             $this->validate([
-                'paymentMethod' => ['required', 'in:credit_card,bank_transfer,cash'],
+                'paymentMethod' => ['required', 'in:credit_card,bank_transfer'],
                 'useLoyaltyPoints' => ['boolean'],
                 'loyaltyPointsToUse' => ['nullable', 'numeric', 'min:0'],
                 'distanceSalesAgreement' => ['accepted'],
@@ -245,9 +256,27 @@ class CheckoutWizard extends Component
 
     public function render()
     {
+        $now   = now();
+        $slots = DeliveryTimeSlot::active()->get();
+
+        // Filter out slots that have passed their cutoff time for today's delivery
+        if ($this->deliveryDate) {
+            $selectedDate = Carbon::parse($this->deliveryDate);
+
+            if ($selectedDate->isToday() && $this->deliveryZoneId) {
+                $zone   = DeliveryZone::find($this->deliveryZoneId);
+                $cutoff = $zone?->cutoff_time ?? '20:00';
+
+                $slots = $slots->filter(function ($slot) use ($now, $cutoff) {
+                    return $now->format('H:i') < $cutoff
+                        && $now->format('H:i') < $slot->start_time;
+                });
+            }
+        }
+
         return view('livewire.checkout-wizard', [
-            'deliveryZones' => DeliveryZone::active()->get(),
-            'deliveryTimeSlots' => DeliveryTimeSlot::active()->get(),
+            'deliveryZones'     => DeliveryZone::active()->get(),
+            'deliveryTimeSlots' => $slots,
         ]);
     }
 }

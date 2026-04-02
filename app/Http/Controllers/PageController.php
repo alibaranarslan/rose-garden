@@ -22,16 +22,16 @@ class PageController extends Controller
     public function contact()
     {
         return view('pages.contact')->with([
-            'metaTitle' => 'Iletisim',
-            'metaDescription' => 'Rose Garden ile iletisime gecin.',
+            'metaTitle' => 'İletişim',
+            'metaDescription' => 'Rose Garden ile iletişime geçin.',
         ]);
     }
 
     public function faq()
     {
         return view('pages.faq')->with([
-            'metaTitle' => 'Sikca Sorulan Sorular',
-            'metaDescription' => 'Teslimat, odeme ve siparis sureci hakkinda SSS.',
+            'metaTitle' => 'Sıkça Sorulan Sorular',
+            'metaDescription' => 'Teslimat, ödeme ve sipariş süreci hakkında SSS.',
         ]);
     }
 
@@ -39,7 +39,7 @@ class PageController extends Controller
     {
         return view('pages.delivery-info')->with([
             'metaTitle' => 'Teslimat Bilgileri',
-            'metaDescription' => 'Teslimat bolgesi ve saat araligi bilgileri.',
+            'metaDescription' => 'Teslimat bölgesi ve saat aralığı bilgileri.',
         ]);
     }
 

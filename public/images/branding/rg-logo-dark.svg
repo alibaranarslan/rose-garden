@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" role="img" aria-label="Rose Garden �i�ek �ikolata">
-  <title>Rose Garden �i�ek �ikolata</title>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" role="img" aria-label="Rose Garden &#199;i&#231;ek &#199;ikolata">
+  <title>Rose Garden &#199;i&#231;ek &#199;ikolata</title>
   <text x="100" y="40" font-family="Georgia,'Times New Roman',serif" font-size="30" font-weight="700" letter-spacing="-0.5" text-anchor="end" fill="#FAFAFA">Rose</text>
   <g transform="translate(150,26) scale(0.55)">
     <ellipse cx="0" cy="-15" rx="5.5" ry="9" fill="#C39BD3" opacity="0.9" transform="rotate(0)"/>
@@ -14,5 +15,5 @@
   </g>
   <text x="200" y="40" font-family="Georgia,'Times New Roman',serif" font-size="30" font-weight="700" letter-spacing="-0.5" text-anchor="start" fill="#FAFAFA">Garden</text>
   <line x1="50" y1="52" x2="250" y2="52" stroke="#9B59B6" stroke-width="0.75" opacity="0.6"/>
-  <text x="150" y="68" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="400" letter-spacing="3.5" text-anchor="middle" fill="#C39BD3">�?�EK &amp; �?KOLATA</text>
+  <text x="150" y="68" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="400" letter-spacing="3.5" text-anchor="middle" fill="#C39BD3">&#199;&#304;&#199;EK &amp; &#199;&#304;KOLATA</text>
 </svg>

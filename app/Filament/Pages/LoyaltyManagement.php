@@ -5,7 +5,10 @@ namespace App\Filament\Pages;
 use App\Models\LoyaltyPoint;
 use App\Models\LoyaltyTransaction;
 use App\Models\Setting;
+use App\Models\User;
+use App\Services\LoyaltyService;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -26,6 +29,7 @@ class LoyaltyManagement extends Page implements HasForms
 
     public string $activeTab = 'rules';
     public array $data = [];
+    public array $manualData = [];
 
     public function mount(): void
     {
@@ -40,6 +44,36 @@ class LoyaltyManagement extends Page implements HasForms
     public function form(Form $form): Form
     {
         return $form->schema([
+            Section::make('Manuel Puan İşlemi')->schema([
+                Select::make('user_id')
+                    ->label('Müşteri')
+                    ->options(fn () => User::where('is_admin', false)->orWhereNull('is_admin')
+                        ->orderBy('name')
+                        ->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
+
+                TextInput::make('points')
+                    ->label('Puan Miktarı (₺)')
+                    ->numeric()
+                    ->minValue(0.01)
+                    ->required(),
+
+                Select::make('operation')
+                    ->label('İşlem')
+                    ->options([
+                        'add'    => 'Ekle',
+                        'remove' => 'Çıkar',
+                    ])
+                    ->default('add')
+                    ->required(),
+
+                TextInput::make('reason')
+                    ->label('Açıklama')
+                    ->required()
+                    ->placeholder('Örn: Kampanya hediyesi'),
+            ])->columns(2)->statePath('manualData'),
+
             Section::make('Puan Kuralları')->schema([
                 TextInput::make('earn_rate')
                     ->label('Kazanım Oranı (%)')
@@ -61,11 +95,46 @@ class LoyaltyManagement extends Page implements HasForms
 
     public function saveRules(): void
     {
-        $data = $this->form->getState();
-        Setting::set('loyalty', 'earn_rate', $data['earn_rate']);
-        Setting::set('loyalty', 'min_use_amount', $data['min_use_amount']);
-        Setting::set('loyalty', 'expiry_months', $data['expiry_months']);
+        $formState = $this->form->getState();
+        $data = $formState; // statePath('data') fields are nested
+        Setting::set('loyalty', 'earn_rate', $data['earn_rate'] ?? $this->data['earn_rate']);
+        Setting::set('loyalty', 'min_use_amount', $data['min_use_amount'] ?? $this->data['min_use_amount']);
+        Setting::set('loyalty', 'expiry_months', $data['expiry_months'] ?? $this->data['expiry_months']);
         Notification::make()->success()->title('Puan kuralları kaydedildi')->send();
+    }
+
+    public function processManualPoints(): void
+    {
+        $this->validate([
+            'manualData.user_id'   => ['required', 'exists:users,id'],
+            'manualData.points'    => ['required', 'numeric', 'min:0.01'],
+            'manualData.operation' => ['required', 'in:add,remove'],
+            'manualData.reason'    => ['required', 'string'],
+        ]);
+
+        $userId    = $this->manualData['user_id'];
+        $amount    = (float) $this->manualData['points'];
+        $operation = $this->manualData['operation'];
+        $reason    = $this->manualData['reason'];
+
+        $loyaltyPoint = LoyaltyPoint::firstOrCreate(
+            ['user_id' => $userId],
+            ['balance' => 0, 'total_earned' => 0, 'total_spent' => 0]
+        );
+
+        if ($operation === 'add') {
+            $loyaltyPoint->addPoints($amount, "[Admin] {$reason}");
+            Notification::make()->success()->title("{$amount} puan eklendi")->send();
+        } else {
+            if ($loyaltyPoint->balance < $amount) {
+                Notification::make()->danger()->title('Yetersiz puan bakiyesi')->send();
+                return;
+            }
+            $loyaltyPoint->spendPoints($amount, "[Admin] {$reason}");
+            Notification::make()->success()->title("{$amount} puan çıkarıldı")->send();
+        }
+
+        $this->manualData = [];
     }
 
     public function getViewData(): array

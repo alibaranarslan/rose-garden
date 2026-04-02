@@ -33,9 +33,25 @@
                 expires_at: Date.now() + 365 * 24 * 60 * 60 * 1000,
             };
             localStorage.setItem('cookie_consent', JSON.stringify(payload));
+            this.persistServer(payload);
             window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: payload }));
             this.visible = false;
             this.openSettings = false;
+        },
+        persistServer(payload) {
+            const categories = ['necessary'];
+            if (payload.analytics) categories.push('analytics');
+            if (payload.marketing) categories.push('marketing');
+
+            fetch('{{ route('cookie-consent.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']')?.content ?? '',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ categories }),
+            }).catch(() => {});
         },
         acceptAll() {
             this.persist({ analytics: true, marketing: true });

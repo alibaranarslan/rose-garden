@@ -13,7 +13,17 @@ class SeoDefaults
     {
         $noindex = $request->filled('page') || $request->filled('q');
 
-        View::share('canonical', $request->url());
+        $path = $request->path();
+        $defaultLocale = config('app.locale', 'tr');
+
+        if (preg_match('#^' . preg_quote($defaultLocale, '#') . '(/|$)#', $path)) {
+            $stripped = preg_replace('#^' . preg_quote($defaultLocale, '#') . '(/|$)#', '', $path, 1);
+            $canonical = url('/' . ltrim($stripped, '/'));
+        } else {
+            $canonical = $request->url();
+        }
+
+        View::share('canonical', $canonical);
         View::share('noindex', $noindex);
 
         return $next($request);

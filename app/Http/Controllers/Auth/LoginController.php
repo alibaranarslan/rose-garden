@@ -14,16 +14,16 @@ class LoginController extends Controller
     public function showLogin()
     {
         return view('account.login')->with([
-            'metaTitle' => 'Giris Yap',
-            'metaDescription' => 'Rose Garden musteri giris sayfasi.',
+            'metaTitle' => 'Giriş Yap',
+            'metaDescription' => 'Rose Garden müşteri giriş sayfası.',
         ]);
     }
 
     public function showRegister()
     {
         return view('account.register')->with([
-            'metaTitle' => 'Kayit Ol',
-            'metaDescription' => 'Rose Garden yeni musteri kayit sayfasi.',
+            'metaTitle' => 'Kayıt Ol',
+            'metaDescription' => 'Rose Garden yeni müşteri kayıt sayfası.',
         ]);
     }
 

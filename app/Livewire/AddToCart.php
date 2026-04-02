@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\CartItem;
+use App\Models\Product;
 use Livewire\Component;
 
 class AddToCart extends Component
@@ -12,6 +13,35 @@ class AddToCart extends Component
     public int $quantity = 1;
     public string $cardMessage = '';
 
+    public function mount(int $productId): void
+    {
+        $this->productId = $productId;
+
+        $product = Product::with('variants')->find($productId);
+        if ($product && $product->variants->isNotEmpty()) {
+            $this->variantId = $product->variants->first()->id;
+        }
+    }
+
+    public function selectVariant(int $id): void
+    {
+        $this->variantId = $id;
+    }
+
+    public function incrementQty(): void
+    {
+        if ($this->quantity < 99) {
+            $this->quantity++;
+        }
+    }
+
+    public function decrementQty(): void
+    {
+        if ($this->quantity > 1) {
+            $this->quantity--;
+        }
+    }
+
     public function addToCart(): void
     {
         $this->validate([
@@ -19,7 +49,7 @@ class AddToCart extends Component
             'cardMessage' => ['nullable', 'string', 'max:500'],
         ]);
 
-        $product = \App\Models\Product::find($this->productId);
+        $product = Product::find($this->productId);
         if (!$product || $product->stock_status !== 'in_stock') {
             $this->dispatch('notify', type: 'error', message: 'Bu ürün şu anda stokta bulunmamaktadır.');
             return;
@@ -51,10 +81,17 @@ class AddToCart extends Component
         }
 
         $this->dispatch('cart-updated');
+        $this->dispatch('notify', type: 'success', message: __('Ürün sepete eklendi!'));
     }
 
     public function render()
     {
-        return view('livewire.add-to-cart');
+        $product = Product::with('variants')->find($this->productId);
+        $variants = $product ? $product->variants->where('is_active', true) : collect();
+
+        return view('livewire.add-to-cart', [
+            'variants' => $variants,
+            'product' => $product,
+        ]);
     }
 }

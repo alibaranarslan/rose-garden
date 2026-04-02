@@ -2,26 +2,41 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-// Terk edilmiş sepet tespiti — saatlik
-Schedule::command('cart:detect-abandoned')->hourly();
+$onScheduleFailure = function (\Illuminate\Console\Scheduling\ScheduledTaskFailed $event): void {
+    $command = $event->task->command ?? $event->task->description;
+    Log::channel('daily')->error('[SCHEDULER_FAILURE] Scheduled task failed', [
+        'command'   => $command,
+        'exception' => $event->exception->getMessage(),
+    ]);
+    if (app()->bound('sentry')) {
+        \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($command, $event): void {
+            $scope->setTag('scheduler.command', $command);
+            \Sentry\captureException($event->exception);
+        });
+    }
+};
 
-// Sepet hatırlatma — 6 saatte bir
-Schedule::command('cart:send-reminders')->cron('0 */6 * * *');
+Schedule::command('cart:detect-abandoned')->hourly()
+    ->onFailure($onScheduleFailure);
 
-// Olay hatırlatma — günlük 09:00
-Schedule::command('events:send-reminders')->dailyAt('09:00');
+Schedule::command('cart:send-reminders')->cron('0 */6 * * *')
+    ->onFailure($onScheduleFailure);
 
-// Puan sona erdirme — günlük 02:00
-Schedule::command('loyalty:expire')->dailyAt('02:00');
+Schedule::command('events:send-reminders')->dailyAt('09:00')
+    ->onFailure($onScheduleFailure);
 
-// Havale zaman aşımı kontrolü — saatlik
-Schedule::command('transfers:check-timeout')->hourly();
+Schedule::command('loyalty:expire')->dailyAt('02:00')
+    ->onFailure($onScheduleFailure);
 
-// Sitemap oluşturma — günlük 04:00
-Schedule::command('sitemap:generate')->dailyAt('04:00');
+Schedule::command('transfers:check-timeout')->hourly()
+    ->onFailure($onScheduleFailure);
+
+Schedule::command('sitemap:generate')->dailyAt('04:00')
+    ->onFailure($onScheduleFailure);

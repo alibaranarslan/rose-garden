@@ -86,13 +86,14 @@ class OrderStatusNotification extends Notification implements ShouldQueue
     private function buildVariables(): array
     {
         return [
-            'müşteri_adı'  => $this->order->sender_name ?? '',
-            'sipariş_no'   => $this->order->order_number,
-            'durum'        => $this->getStatusLabel($this->order->status),
-            'tarih'        => now()->format('d.m.Y H:i'),
-            'toplam'       => number_format((float) $this->order->total, 2, ',', '.') . ' ₺',
-            'teslimat_tarihi' => $this->order->delivery_date?->format('d.m.Y') ?? '',
-            'alıcı_adı'    => $this->order->recipient_name ?? '',
+            'musteri_adi'    => $this->order->sender_name ?? '',
+            'siparis_no'     => $this->order->order_number,
+            'siparis_tarihi' => $this->order->created_at?->format('d.m.Y H:i') ?? now()->format('d.m.Y H:i'),
+            'siparis_tutari' => number_format((float) $this->order->total, 2, ',', '.') . ' ₺',
+            'odeme_yontemi'  => $this->order->payment_method,
+            'durum'          => $this->getStatusLabel($this->order->status),
+            'takip_linki'    => route('order.track', ['order_number' => $this->order->order_number]),
+            'alici_adi'      => $this->order->recipient_name ?? '',
         ];
     }
 

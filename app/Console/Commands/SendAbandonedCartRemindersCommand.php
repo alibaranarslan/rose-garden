@@ -6,6 +6,7 @@ use App\Models\AbandonedCart;
 use App\Notifications\AbandonedCartNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class SendAbandonedCartRemindersCommand extends Command
 {
@@ -28,23 +29,17 @@ class SendAbandonedCartRemindersCommand extends Command
 
         foreach ($carts as $cart) {
             try {
-                $notifiable = $cart->user;
-
-                // For guest carts with email
-                if (!$notifiable && !empty($cart->email)) {
-                    $notifiable = (object) [
-                        'name'  => 'Müşteri',
-                        'email' => $cart->email,
-                        'phone' => $cart->phone,
-                    ];
-                }
-
-                if (!$notifiable) {
-                    continue;
-                }
-
-                if (is_object($notifiable) && method_exists($notifiable, 'notify')) {
+                if ($cart->user) {
+                    $cart->user->notify(new AbandonedCartNotification($cart));
+                } elseif (!empty($cart->email)) {
+                    // Guest cart: route notification directly to email/phone
+                    $notifiable = Notification::route('mail', $cart->email);
+                    if (!empty($cart->phone)) {
+                        $notifiable = $notifiable->route('vonage', $cart->phone);
+                    }
                     $notifiable->notify(new AbandonedCartNotification($cart));
+                } else {
+                    continue;
                 }
 
                 $cart->update([

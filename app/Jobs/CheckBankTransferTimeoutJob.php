@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Order;
+use App\Models\Setting;
 use App\Notifications\BankTransferReminderNotification;
 use App\Services\LoyaltyService;
 use Illuminate\Bus\Queueable;
@@ -21,7 +22,9 @@ class CheckBankTransferTimeoutJob implements ShouldQueue
 
     public function handle(LoyaltyService $loyaltyService): void
     {
-        $now = now();
+        $now          = now();
+        $timeoutHours = (int) Setting::get('payment', 'transfer_timeout_hours', 72);
+        $reminderAt   = (int) ($timeoutHours * 0.667); // ~2/3 of timeout for reminder
 
         // Fetch all pending bank transfer orders
         $orders = Order::awaitingBankTransfer()
@@ -32,10 +35,10 @@ class CheckBankTransferTimeoutJob implements ShouldQueue
             try {
                 $ageHours = $order->created_at->diffInHours($now);
 
-                if ($ageHours >= 72) {
+                if ($ageHours >= $timeoutHours) {
                     $this->cancelOrder($order, $loyaltyService);
-                } elseif ($ageHours >= 48 && !$this->reminderAlreadySent($order, '48h')) {
-                    $this->sendReminder($order, '48h');
+                } elseif ($ageHours >= $reminderAt && !$this->reminderAlreadySent($order, 'reminder')) {
+                    $this->sendReminder($order, 'reminder');
                 }
             } catch (\Exception $e) {
                 Log::error('Havale timeout kontrolü hatası', [
@@ -49,10 +52,11 @@ class CheckBankTransferTimeoutJob implements ShouldQueue
     private function cancelOrder(Order $order, LoyaltyService $loyaltyService): void
     {
         DB::transaction(function () use ($order, $loyaltyService) {
+            $timeoutHours = (int) Setting::get('payment', 'transfer_timeout_hours', 72);
             $order->update([
                 'status'              => 'cancelled',
                 'cancelled_at'        => now(),
-                'cancellation_reason' => 'Havale süresi doldu (72 saat)',
+                'cancellation_reason' => "Havale süresi doldu ({$timeoutHours} saat)",
             ]);
 
             // With simple stock model (in_stock/out_of_stock), no quantity restore needed.

@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" role="img" aria-label="Rose Garden �i�ek �ikolata">
-  <title>Rose Garden �i�ek �ikolata</title>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" role="img" aria-label="Rose Garden &#199;i&#231;ek &#199;ikolata">
+  <title>Rose Garden &#199;i&#231;ek &#199;ikolata</title>
   <!-- "Rose" left -->
   <text x="100" y="40" font-family="Georgia,'Times New Roman',serif" font-size="30" font-weight="700" letter-spacing="-0.5" text-anchor="end" fill="#6B2D5E">Rose</text>
   <!-- Rose icon center -->
@@ -19,5 +20,5 @@
   <!-- Divider line -->
   <line x1="50" y1="52" x2="250" y2="52" stroke="#C39BD3" stroke-width="0.75" opacity="0.7"/>
   <!-- Subtitle -->
-  <text x="150" y="68" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="400" letter-spacing="3.5" text-anchor="middle" fill="#8E44AD">�?�EK &amp; �?KOLATA</text>
+  <text x="150" y="68" font-family="Georgia,'Times New Roman',serif" font-size="11" font-weight="400" letter-spacing="3.5" text-anchor="middle" fill="#8E44AD">&#199;&#304;&#199;EK &amp; &#199;&#304;KOLATA</text>
 </svg>

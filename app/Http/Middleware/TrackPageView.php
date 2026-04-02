@@ -46,16 +46,14 @@ class TrackPageView
         $deviceType = $this->detectDeviceType($ua);
 
         return [
-            'viewable_type' => null,
-            'viewable_id'   => null,
-            'url'           => $request->path(),
+            'viewable_type' => 'page_view',
+            'viewable_id'   => 0,
             'session_id'    => session()->getId(),
             'ip_address'    => $request->ip(),
             'user_agent'    => substr($ua, 0, 500),
             'referer'       => substr($request->headers->get('referer', '') ?? '', 0, 500),
             'device_type'   => $deviceType,
-            'user_id'       => auth()->id(),
-            'created_at'    => now(),
+            'viewed_at'     => now(),
         ];
     }
 

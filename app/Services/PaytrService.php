@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -20,14 +21,36 @@ class PaytrService
 
     public function __construct()
     {
-        $this->merchantId   = config('services.paytr.merchant_id', '');
-        $this->merchantKey  = config('services.paytr.merchant_key', '');
-        $this->merchantSalt = config('services.paytr.merchant_salt', '');
+        $this->merchantId   = $this->getMerchantId();
+        $this->merchantKey  = $this->getMerchantKey();
+        $this->merchantSalt = $this->getMerchantSalt();
         $this->testMode     = config('services.paytr.test_mode', true);
         $this->debug        = config('services.paytr.debug', false);
         $this->timeout      = config('services.paytr.timeout', 30);
         $this->apiUrl       = config('services.paytr.api_url', 'https://www.paytr.com/odeme/api/get-token');
         $this->iframeUrl    = config('services.paytr.iframe_url', 'https://www.paytr.com/odeme/guvenli/');
+    }
+
+    // Admin panel overrides .env — Setting takes priority over config
+    protected function getMerchantId(): string
+    {
+        return Setting::get('payment', 'paytr_merchant_id')
+            ?: config('services.paytr.merchant_id')
+            ?: throw new \RuntimeException('PayTR merchant_id yapılandırılmamış');
+    }
+
+    protected function getMerchantKey(): string
+    {
+        return Setting::get('payment', 'paytr_merchant_key')
+            ?: config('services.paytr.merchant_key')
+            ?: throw new \RuntimeException('PayTR merchant_key yapılandırılmamış');
+    }
+
+    protected function getMerchantSalt(): string
+    {
+        return Setting::get('payment', 'paytr_merchant_salt')
+            ?: config('services.paytr.merchant_salt')
+            ?: throw new \RuntimeException('PayTR merchant_salt yapılandırılmamış');
     }
 
     public function createToken(Order $order): string

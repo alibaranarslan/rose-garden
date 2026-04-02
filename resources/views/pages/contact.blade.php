@@ -14,28 +14,28 @@
             <form method="POST" action="{{ route('contact.submit') }}" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('Ad Soyad') }} <span class="text-red-400">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" required
+                    <label for="contact-name" class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('Ad Soyad') }} <span class="text-red-400">*</span></label>
+                    <input type="text" id="contact-name" name="name" value="{{ old('name') }}" required
                            placeholder="{{ __('Adınız Soyadınız') }}"
                            class="w-full border border-rg-lightLavender focus:border-rg-purple focus:ring-2 focus:ring-rg-purple/20 rounded-btn px-4 py-2.5 text-sm outline-none transition-all duration-200">
                     @error('name') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('E-posta') }} <span class="text-red-400">*</span></label>
-                    <input type="email" name="email" value="{{ old('email') }}" required
+                    <label for="contact-email" class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('E-posta') }} <span class="text-red-400">*</span></label>
+                    <input type="email" id="contact-email" name="email" value="{{ old('email') }}" required
                            placeholder="ornek@email.com"
                            class="w-full border border-rg-lightLavender focus:border-rg-purple focus:ring-2 focus:ring-rg-purple/20 rounded-btn px-4 py-2.5 text-sm outline-none transition-all duration-200">
                     @error('email') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('Konu') }}</label>
-                    <input type="text" name="subject" value="{{ old('subject') }}"
+                    <label for="contact-subject" class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('Konu') }}</label>
+                    <input type="text" id="contact-subject" name="subject" value="{{ old('subject') }}"
                            placeholder="{{ __('Konunuzu belirtin') }}"
                            class="w-full border border-rg-lightLavender focus:border-rg-purple focus:ring-2 focus:ring-rg-purple/20 rounded-btn px-4 py-2.5 text-sm outline-none transition-all duration-200">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('Mesaj') }} <span class="text-red-400">*</span></label>
-                    <textarea name="message" rows="5" required
+                    <label for="contact-message" class="block text-sm font-medium text-rg-darkText mb-1.5">{{ __('Mesaj') }} <span class="text-red-400">*</span></label>
+                    <textarea id="contact-message" name="message" rows="5" required
                               placeholder="{{ __('Mesajınızı buraya yazın...') }}"
                               class="w-full border border-rg-lightLavender focus:border-rg-purple focus:ring-2 focus:ring-rg-purple/20 rounded-btn px-4 py-2.5 text-sm outline-none transition-all duration-200 resize-none">{{ old('message') }}</textarea>
                     @error('message') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
@@ -58,19 +58,26 @@
         {{-- Store info --}}
         <div class="space-y-4">
             {{-- Quick contact --}}
+            @php
+                $storePhone    = $siteSettings->get('contact', collect())->get('contact_phone', '+90 542 000 00 00');
+                $storeEmail    = $siteSettings->get('contact', collect())->get('contact_email', '');
+                $storeAddress  = $siteSettings->get('contact', collect())->get('address', 'Adıyaman Merkez, Türkiye');
+                $storeWa       = $siteSettings->get('contact', collect())->get('whatsapp_phone', '905420000000');
+                $phoneRawStore = preg_replace('/\D/', '', $storePhone);
+            @endphp
             <div class="bg-white border border-rg-lightLavender rounded-card p-6">
                 <h2 class="font-display text-2xl font-semibold text-rg-darkText mb-4">{{ __('Mağaza Bilgileri') }}</h2>
                 <ul class="space-y-4">
                     <li class="flex items-start gap-3">
                         <div class="w-9 h-9 rounded-full bg-rg-lightLavender flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg class="w-4.5 h-4.5 text-rg-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-rg-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                         </div>
                         <div>
                             <p class="text-xs text-rg-grayText mb-0.5 uppercase tracking-wide">{{ __('Adres') }}</p>
-                            <p class="text-sm text-rg-darkText">Adıyaman Merkez, Türkiye</p>
+                            <p class="text-sm text-rg-darkText">{{ $storeAddress }}</p>
                         </div>
                     </li>
                     <li class="flex items-start gap-3">
@@ -81,7 +88,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-rg-grayText mb-0.5 uppercase tracking-wide">{{ __('Telefon') }}</p>
-                            <a href="tel:+905420000000" class="text-sm text-rg-darkText hover:text-rg-purple transition-colors">+90 542 000 00 00</a>
+                            <a href="tel:+{{ $phoneRawStore }}" class="text-sm text-rg-darkText hover:text-rg-purple transition-colors">{{ $storePhone }}</a>
                         </div>
                     </li>
                     <li class="flex items-start gap-3">
@@ -92,8 +99,8 @@
                         </div>
                         <div>
                             <p class="text-xs text-rg-grayText mb-0.5 uppercase tracking-wide">WhatsApp</p>
-                            <a href="https://api.whatsapp.com/send?phone=905420000000" target="_blank" rel="noopener"
-                               class="text-sm text-rg-darkText hover:text-green-600 transition-colors">+90 542 000 00 00</a>
+                            <a href="https://api.whatsapp.com/send?phone={{ $storeWa }}" target="_blank" rel="noopener"
+                               class="text-sm text-rg-darkText hover:text-green-600 transition-colors">{{ $storePhone }}</a>
                         </div>
                     </li>
                 </ul>
@@ -121,15 +128,27 @@
                 </ul>
             </div>
 
-            {{-- Map placeholder --}}
-            <div class="bg-rg-lightLavender/30 border border-rg-lightLavender rounded-card h-40 flex items-center justify-center">
-                <div class="text-center text-rg-grayText">
-                    <svg class="w-8 h-8 mx-auto mb-2 text-rg-midPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-                    </svg>
-                    <p class="text-sm">{{ __('Google Harita yakında eklenecek') }}</p>
+            {{-- Google Maps --}}
+            @if(config('services.google.maps_key'))
+                <div class="aspect-video rounded-card overflow-hidden border border-rg-lightLavender">
+                    <iframe src="https://www.google.com/maps/embed/v1/place?key={{ config('services.google.maps_key') }}&q=Rose+Garden+&#199;i&#231;ek+Ad%C4%B1yaman"
+                            class="w-full h-full" allowfullscreen loading="lazy"></iframe>
                 </div>
-            </div>
+            @else
+                <div class="aspect-video rounded-card overflow-hidden bg-rg-lightLavender/30 border border-rg-lightLavender flex items-center justify-center">
+                    <div class="text-center text-rg-grayText p-6">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-40 text-rg-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <p class="text-sm font-medium text-rg-darkText">{{ __('Adıyaman Merkez, Türkiye') }}</p>
+                        <a href="https://maps.google.com/?q=Adiyaman+Merkez+Turkiye" target="_blank" rel="noopener"
+                           class="inline-block mt-2 text-xs text-rg-purple hover:underline">
+                            {{ __('Google Haritalar\'da Gör') }} →
+                        </a>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

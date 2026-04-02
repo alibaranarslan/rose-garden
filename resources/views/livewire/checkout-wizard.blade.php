@@ -42,7 +42,7 @@
         <div class="space-y-3">
             <label class="block"><input wire:model.defer="paymentMethod" value="credit_card" type="radio" name="payment"> {{ __('Kart ile Ödeme') }}</label>
             <label class="block"><input wire:model.defer="paymentMethod" value="bank_transfer" type="radio" name="payment"> {{ __('Havale/EFT') }}</label>
-            <label class="block"><input wire:model.defer="paymentMethod" value="cash" type="radio" name="payment"> {{ __('Kapıda Ödeme') }}</label>
+            {{-- Cash payment removed: DB enum only supports credit_card and bank_transfer (K39) --}}
 
             @auth
                 @if ($availableLoyaltyBalance > 0)

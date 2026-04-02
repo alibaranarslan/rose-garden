@@ -1,176 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost</loc>
+    <loc>http://localhost:8001</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/kirmizi-gul-buketi-21-adet</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/kirmizi-gul-buketi-21-adet</loc>
+    <lastmod>2026-03-30T12:31:15+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/beyaz-papatya-buketi</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/beyaz-papatya-buketi</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/karma-mevsim-buketi</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/karma-mevsim-buketi</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/kirmizi-gul-aranjmani</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/kirmizi-gul-aranjmani</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/bahar-ruzgari-aranjmani</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/bahar-ruzgari-aranjmani</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/silindir-kutuda-kirmizi-guller</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/silindir-kutuda-kirmizi-guller</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/kare-kutuda-renkli-guller</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/kare-kutuda-renkli-guller</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/el-yapimi-belcika-cikolata-kutusu</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/el-yapimi-belcika-cikolata-kutusu</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/cikolata-kapli-cilek-buketi</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/cikolata-kapli-cilek-buketi</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/karisik-baklava-kutusu</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/karisik-baklava-kutusu</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/romantik-hediye-seti</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/romantik-hediye-seti</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/dogum-gunu-surpriz-seti</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/dogum-gunu-surpriz-seti</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/yeni-bebek-hediye-seti</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/yeni-bebek-hediye-seti</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/orkide-tek-dalli</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/orkide-tek-dalli</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/urun/bonsai-agaci</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/urun/bonsai-agaci</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost/kategori/cicek-buketleri</loc>
+    <loc>http://localhost:8001/kategori/cicek-buketleri</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost/kategori/aranjmanlar</loc>
+    <loc>http://localhost:8001/kategori/aranjmanlar</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost/kategori/kutuda-cicekler</loc>
+    <loc>http://localhost:8001/kategori/kutuda-cicekler</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost/kategori/cikolata-tatli</loc>
+    <loc>http://localhost:8001/kategori/cikolata-tatli</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost/kategori/hediye-setleri</loc>
+    <loc>http://localhost:8001/kategori/hediye-setleri</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost/kategori/saksi-cicekleri</loc>
+    <loc>http://localhost:8001/kategori/saksi-cicekleri</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost/blog/kesme-ciceklerin-omrunu-uzatmanin-7-yolu</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/blog/kesme-ciceklerin-omrunu-uzatmanin-7-yolu</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/blog/anneler-gunu-icin-en-iyi-cicek-secenekleri</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/blog/anneler-gunu-icin-en-iyi-cicek-secenekleri</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/blog/cicek-diliyle-duygularinizi-anlatin</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/blog/cicek-diliyle-duygularinizi-anlatin</loc>
+    <lastmod>2026-03-02T08:35:18+03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/blog/saksi-cicegi-bakim-rehberi-orkide</loc>
-    <lastmod>2026-03-02T06:03:54+03:00</lastmod>
+    <loc>http://localhost:8001/blog/saksi-cicegi-bakim-rehberi-orkide</loc>
+    <lastmod>2026-03-02T11:06:29+03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/sayfa/hakkimizda</loc>
+    <loc>http://localhost:8001/sayfa/hakkimizda</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/sayfa/teslimat-bilgileri</loc>
+    <loc>http://localhost:8001/sayfa/teslimat-bilgileri</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/sayfa/gizlilik-politikasi</loc>
+    <loc>http://localhost:8001/sayfa/gizlilik-politikasi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/sayfa/sss</loc>
+    <loc>http://localhost:8001/sayfa/cerez-politikasi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost/sayfa/iletisim</loc>
+    <loc>http://localhost:8001/sayfa/kvkk-aydinlatma</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8001/sayfa/mesafeli-satis-sozlesmesi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8001/sayfa/iade-iptal</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8001/sayfa/sss</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8001/sayfa/iletisim</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

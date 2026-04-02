@@ -10,8 +10,8 @@ class OrderTrackingController extends Controller
     public function index()
     {
         return view('order-tracking.index')->with([
-            'metaTitle' => 'Siparis Takip',
-            'metaDescription' => 'Rose Garden siparis takibi.',
+            'metaTitle' => 'Sipariş Takip',
+            'metaDescription' => 'Rose Garden sipariş takibi.',
         ]);
     }
 
@@ -26,8 +26,8 @@ class OrderTrackingController extends Controller
             ->first();
 
         return view('order-tracking.index', compact('order'))->with([
-            'metaTitle' => 'Siparis Takip',
-            'metaDescription' => 'Rose Garden siparis durum sorgulama.',
+            'metaTitle' => 'Sipariş Takip',
+            'metaDescription' => 'Rose Garden sipariş durum sorgulama.',
         ]);
     }
 }

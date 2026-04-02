@@ -62,6 +62,16 @@ class DetectAbandonedCartsCommand extends Command
                 'subtotal'     => $item->subtotal,
             ])->toArray();
 
+            // Resolve contact info for guest carts (for notification routing)
+            $user      = $group->user_id ? \App\Models\User::find($group->user_id) : null;
+            $cartEmail = $user?->email;
+            $cartPhone = $user?->phone;
+
+            if (!$cartEmail) {
+                // Try to get email from the most recent cart item's session-stored data
+                $cartEmail = session('guest_email');
+            }
+
             try {
                 AbandonedCart::create([
                     'user_id'        => $group->user_id,
@@ -71,6 +81,8 @@ class DetectAbandonedCartsCommand extends Command
                     'recovered'      => false,
                     'reminder_count' => 0,
                     'abandoned_at'   => $group->last_active,
+                    'email'          => $cartEmail,
+                    'phone'          => $cartPhone,
                 ]);
                 $detected++;
             } catch (\Exception $e) {

@@ -42,8 +42,8 @@ class ProductController extends Controller
         $allCategories = Category::active()->withCount('products')->orderBy('sort_order')->get();
 
         return view('products.index', compact('products', 'category', 'allCategories', 'sort'))->with([
-            'metaTitle' => $category?->name ? $category->name . ' Urunleri' : 'Rose Garden Urunleri',
-            'metaDescription' => 'Rose Garden urun katalogu ve filtrelenmis urun listesi.',
+            'metaTitle' => $category?->name ? $category->name . ' Ürünleri' : 'Rose Garden Ürünleri',
+            'metaDescription' => 'Rose Garden ürün kataloğu ve filtrelenmiş ürün listesi.',
         ]);
     }
 

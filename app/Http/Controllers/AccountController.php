@@ -20,7 +20,7 @@ class AccountController extends Controller
         $loyaltyPoint = $user->loyaltyPoints;
 
         return view('account.dashboard', compact('user', 'latestOrders', 'loyaltyPoint'))->with([
-            'metaTitle' => 'Hesabim',
+            'metaTitle' => 'Hesabım',
             'metaDescription' => 'Rose Garden hesap paneli.',
         ]);
     }
@@ -33,8 +33,8 @@ class AccountController extends Controller
             ->paginate(12);
 
         return view('account.orders.index', compact('orders'))->with([
-            'metaTitle' => 'Siparislerim',
-            'metaDescription' => 'Rose Garden siparis gecmisi.',
+            'metaTitle' => 'Siparişlerim',
+            'metaDescription' => 'Rose Garden sipariş geçmişi.',
         ]);
     }
 
@@ -47,8 +47,8 @@ class AccountController extends Controller
             ->firstOrFail();
 
         return view('account.orders.show', compact('order'))->with([
-            'metaTitle' => 'Siparis ' . $order->order_number,
-            'metaDescription' => 'Siparis detaylari ve durum bilgisi.',
+            'metaTitle' => 'Sipariş ' . $order->order_number,
+            'metaDescription' => 'Sipariş detayları ve durum bilgisi.',
         ]);
     }
 
@@ -62,7 +62,7 @@ class AccountController extends Controller
 
         return view('account.favorites', compact('favorites'))->with([
             'metaTitle' => 'Favorilerim',
-            'metaDescription' => 'Kaydedilen favori urunleriniz.',
+            'metaDescription' => 'Kaydedilen favori ürünleriniz.',
         ]);
     }
 
@@ -76,7 +76,7 @@ class AccountController extends Controller
             ->get();
 
         return view('account.loyalty', compact('loyaltyPoint', 'transactions'))->with([
-            'metaTitle' => 'Puanlarim',
+            'metaTitle' => 'Puanlarım',
             'metaDescription' => 'Sadakat puan bakiyesi ve hareketleri.',
         ]);
     }
@@ -90,7 +90,7 @@ class AccountController extends Controller
 
         return view('account.addresses', compact('addresses'))->with([
             'metaTitle' => 'Adreslerim',
-            'metaDescription' => 'Kayitli teslimat adresleriniz.',
+            'metaDescription' => 'Kayıtlı teslimat adresleriniz.',
         ]);
     }
 
@@ -143,7 +143,7 @@ class AccountController extends Controller
 
         return view('account.kvkk', compact('user', 'summary', 'requests'))->with([
             'metaTitle' => 'KVKK ve Gizlilik',
-            'metaDescription' => '6698 sayili KVKK kapsamindaki haklarinizi yonetin.',
+            'metaDescription' => '6698 sayılı KVKK kapsamındaki haklarınızı yönetin.',
         ]);
     }
 

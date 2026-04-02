@@ -41,11 +41,13 @@ class PaymentSettings extends Page implements HasForms
     public function form(Form $form): Form
     {
         return $form->schema([
-            Section::make('PayTR Entegrasyonu')->schema([
-                TextInput::make('paytr_merchant_id')->label('Merchant ID'),
-                TextInput::make('paytr_merchant_key')->label('Merchant Key')->password()->revealable(),
-                TextInput::make('paytr_merchant_salt')->label('Merchant Salt')->password()->revealable(),
-            ])->columns(3),
+            Section::make('PayTR Entegrasyonu')
+                ->description('Admin panelden girilen değerler .env değerlerini override eder.')
+                ->schema([
+                    TextInput::make('paytr_merchant_id')->label('Merchant ID'),
+                    TextInput::make('paytr_merchant_key')->label('Merchant Key')->password()->revealable(),
+                    TextInput::make('paytr_merchant_salt')->label('Merchant Salt')->password()->revealable(),
+                ])->columns(3),
 
             Section::make('Havale / EFT Bilgileri')->schema([
                 TextInput::make('bank_name')->label('Banka Adı'),

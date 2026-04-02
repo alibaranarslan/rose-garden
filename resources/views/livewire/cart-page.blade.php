@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 bg-white border border-rg-lightLavender rounded-card p-4">
-        <h2 class="font-semibold mb-4">Urunler</h2>
+        <h2 class="font-semibold mb-4">{{ __('Ürünler') }}</h2>
         <div class="space-y-3">
             @forelse ($items as $item)
                 <div class="flex items-center justify-between border-b pb-2">
@@ -17,24 +17,25 @@
                     </div>
                 </div>
             @empty
-                <p class="text-sm text-rg-grayText">Sepetiniz bos.</p>
+                <p class="text-sm text-rg-grayText">{{ __('Sepetiniz boş.') }}</p>
             @endforelse
         </div>
     </div>
     <aside class="bg-white border border-rg-lightLavender rounded-card p-4">
-        <h3 class="font-semibold mb-3">Siparis Ozeti</h3>
+        <h3 class="font-semibold mb-3">{{ __('Sipariş Özeti') }}</h3>
         <div class="space-y-2 text-sm mb-3">
-            <p>Ara Toplam: <strong>₺ {{ number_format($this->subtotal, 2, ',', '.') }}</strong></p>
-            <p>Indirim: <strong>₺ {{ number_format($this->discount, 2, ',', '.') }}</strong></p>
-            <p>Toplam: <strong>₺ {{ number_format($this->total, 2, ',', '.') }}</strong></p>
+            <p>{{ __('Ara Toplam:') }} <strong>₺ {{ number_format($this->subtotal, 2, ',', '.') }}</strong></p>
+            <p>{{ __('İndirim:') }} <strong>₺ {{ number_format($this->discount, 2, ',', '.') }}</strong></p>
+            <p>{{ __('Toplam:') }} <strong>₺ {{ number_format($this->total, 2, ',', '.') }}</strong></p>
         </div>
         <div class="space-y-2">
             <input wire:model="couponCode" type="text" placeholder="Kupon kodu" class="w-full border rounded-btn px-3 py-2 text-sm">
-            <button wire:click="applyCoupon" type="button" class="w-full border border-rg-purple text-rg-purple px-4 py-2 rounded-btn text-sm">Kupon Uygula</button>
+            <button wire:click="applyCoupon" type="button" class="w-full border border-rg-purple text-rg-purple px-4 py-2 rounded-btn text-sm">{{ __('Kupon Uygula') }}</button>
         </div>
         @if ($couponMessage)
             <p class="text-xs text-rg-grayText mt-2">{{ $couponMessage }}</p>
         @endif
-        <a href="{{ route('checkout') }}" class="mt-4 inline-block bg-rg-purple text-white px-4 py-2 rounded-btn">Odemeye Gec</a>
+        <a href="{{ route('checkout') }}"
+           class="mt-4 inline-block bg-rg-purple text-white px-4 py-2 rounded-btn {{ $items->isEmpty() ? 'pointer-events-none opacity-50' : '' }}">{{ __('Ödemeye Geç') }}</a>
     </aside>
 </div>

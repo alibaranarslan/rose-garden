@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@php $noindex = true; $metaTitle = 'Sunucu Hatası'; @endphp
+
 @section('content')
     <section class="bg-white border border-rg-lightLavender rounded-card p-10 text-center">
         <h1 class="font-display text-5xl mb-3">500</h1>
