@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\LoyaltyPoint;
+use App\Support\AdminPrivileges;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -18,18 +19,26 @@ class ViewUser extends ViewRecord
     {
         return [
             Action::make('add_points')
-                ->label('Manuel Puan Ekle/Çıkar')
+                ->label('Manuel puan ekle / çıkar')
                 ->icon('heroicon-o-plus-circle')
+                ->visible(fn (): bool => AdminPrivileges::canPublishConfiguration(auth()->user()))
                 ->form([
                     TextInput::make('amount')
-                        ->label('Puan Tutarı (₺ — eksi değer çıkarır)')
+                        ->label('Puan tutarı (₺, eksi değer düşer)')
                         ->numeric()
+                        ->minValue(-999999)
+                        ->maxValue(999999)
+                        ->notIn([0])
                         ->required(),
                     TextInput::make('description')
                         ->label('Açıklama')
+                        ->maxLength(255)
+                        ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                         ->required(),
                 ])
                 ->action(function (array $data) {
+                    $amount = (float) $data['amount'];
+                    $description = trim((string) $data['description']);
                     $points = $this->record->loyaltyPoints ?? LoyaltyPoint::create([
                         'user_id' => $this->record->id,
                         'balance' => 0,
@@ -37,10 +46,18 @@ class ViewUser extends ViewRecord
                         'total_spent' => 0,
                     ]);
 
-                    if ($data['amount'] > 0) {
-                        $points->addPoints($data['amount'], $data['description']);
+                    if ($amount > 0) {
+                        $points->addPoints($amount, $description);
                     } else {
-                        $points->spendPoints(abs($data['amount']), $data['description']);
+                        if (! $points->spendPoints(abs($amount), $description)) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Yetersiz puan bakiyesi')
+                                ->body('Müşterinin bakiyesinden fazla puan düşülemez.')
+                                ->send();
+
+                            return;
+                        }
                     }
 
                     Notification::make()->success()->title('Puan güncellendi')->send();

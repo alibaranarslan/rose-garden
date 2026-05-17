@@ -1,3 +1,7 @@
+@php
+    $mailAddress = config('mail.from.address', 'info@adiyamancicekcisi.com.tr');
+    $appHost = parse_url(config('app.url'), PHP_URL_HOST) ?: 'adiyamancicekcisi.com.tr';
+@endphp
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -81,9 +85,9 @@
               Rose Garden Çiçek Çikolata &nbsp;|&nbsp; Adıyaman, Türkiye
             </p>
             <p style="margin:0 0 8px;font-size:12px;color:#888888;">
-              <a href="mailto:info@rosegarden.com.tr" style="color:#8E44AD;text-decoration:none;">info@rosegarden.com.tr</a>
+              <a href="mailto:{{ $mailAddress }}" style="color:#8E44AD;text-decoration:none;">{{ $mailAddress }}</a>
               &nbsp;|&nbsp;
-              <a href="{{ config('app.url') }}" style="color:#8E44AD;text-decoration:none;">www.rosegarden.com.tr</a>
+              <a href="{{ config('app.url') }}" style="color:#8E44AD;text-decoration:none;">{{ $appHost }}</a>
             </p>
             <p style="margin:8px 0 0;font-size:11px;color:#aaaaaa;">
               Bu e-postayı almak istemiyorsanız

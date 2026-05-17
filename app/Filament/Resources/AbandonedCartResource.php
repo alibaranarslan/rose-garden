@@ -4,10 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AbandonedCartResource\Pages;
 use App\Models\AbandonedCart;
+use App\Services\AbandonedCartReminderService;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -16,11 +18,17 @@ use Filament\Tables\Table;
 class AbandonedCartResource extends Resource
 {
     protected static ?string $model = AbandonedCart::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-    protected static ?string $navigationGroup = 'Pazarlama';
+
+    protected static ?string $navigationGroup = 'Otomasyon';
+
     protected static ?string $navigationLabel = 'Terk Edilmiş Sepetler';
+
     protected static ?string $modelLabel = 'Terk Edilmiş Sepet';
+
     protected static ?string $pluralModelLabel = 'Terk Edilmiş Sepetler';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -56,6 +64,27 @@ class AbandonedCartResource extends Resource
                     ->since()
                     ->sortable(),
 
+                BadgeColumn::make('reminder_eligibility')
+                    ->label('Durum')
+                    ->colors([
+                        'success' => 'eligible',
+                        'warning' => 'cooldown',
+                        'danger' => 'limit_reached',
+                        'gray' => 'recovered',
+                    ])
+                    ->formatStateUsing(fn ($state) => match ($state) {
+                        'eligible' => 'Gönderilebilir',
+                        'cooldown' => 'Bekleme',
+                        'limit_reached' => 'Limit dolu',
+                        'recovered' => 'Kurtarıldı',
+                        default => $state,
+                    }),
+
+                TextColumn::make('last_reminder_status')
+                    ->label('Son Sonuç')
+                    ->default('-')
+                    ->toggleable(),
+
                 IconColumn::make('recovered')
                     ->label('Kurtarıldı')
                     ->boolean(),
@@ -68,12 +97,25 @@ class AbandonedCartResource extends Resource
                     ->label('Hatırlatma Gönder')
                     ->icon('heroicon-o-paper-airplane')
                     ->color('warning')
-                    ->visible(fn (AbandonedCart $record) => !$record->recovered)
-                    ->action(function (AbandonedCart $record) {
-                        // Send reminder notification via SMS/Email
-                        $record->increment('reminder_count');
-                        $record->update(['last_reminded_at' => now()]);
-                        Notification::make()->success()->title('Hatırlatma gönderildi')->send();
+                    ->visible(fn (AbandonedCart $record) => app(AbandonedCartReminderService::class)->canSend($record))
+                    ->action(function (AbandonedCart $record): void {
+                        $result = app(AbandonedCartReminderService::class)->dispatch($record->fresh(['user']));
+
+                        if (! ($result['sent'] ?? false)) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Hatırlatma gönderilemedi')
+                                ->body($record->fresh()->last_reminder_error ?: 'Kayıt reminder gönderimi için uygun değil.')
+                                ->send();
+
+                            return;
+                        }
+
+                        Notification::make()
+                            ->success()
+                            ->title('Hatırlatma kuyruğa alındı')
+                            ->body('Kanal: '.($result['channel'] ?? 'notification'))
+                            ->send();
                     }),
             ])
             ->defaultSort('abandoned_at', 'desc');

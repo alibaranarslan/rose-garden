@@ -17,6 +17,7 @@ class PaymentResource extends Resource
 {
     protected static ?string $model = Payment::class;
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static ?string $navigationGroup = 'Siparişler';
     protected static ?string $navigationLabel = 'Ödemeler';
     protected static ?string $modelLabel = 'Ödeme';
     protected static ?string $pluralModelLabel = 'Ödemeler';
@@ -30,6 +31,7 @@ class PaymentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->with('order'))
             ->columns([
                 TextColumn::make('order.order_number')
                     ->label('Sipariş No')

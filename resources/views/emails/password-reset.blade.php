@@ -1,3 +1,6 @@
+@php
+    $mailAddress = config('mail.from.address', 'info@adiyamancicekcisi.com.tr');
+@endphp
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -88,7 +91,7 @@
           <td style="padding:24px 40px;text-align:center;">
             <p style="margin:0 0 8px;font-size:12px;color:#888888;">
               Rose Garden Çiçek Çikolata &nbsp;|&nbsp;
-              <a href="mailto:info@rosegarden.com.tr" style="color:#8E44AD;text-decoration:none;">info@rosegarden.com.tr</a>
+              <a href="mailto:{{ $mailAddress }}" style="color:#8E44AD;text-decoration:none;">{{ $mailAddress }}</a>
             </p>
             <p style="margin:0;font-size:11px;color:#aaaaaa;">&copy; {{ date('Y') }} Rose Garden. Tüm hakları saklıdır.</p>
           </td>

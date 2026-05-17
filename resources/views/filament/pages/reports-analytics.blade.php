@@ -2,7 +2,7 @@
     @php $data = $this->getViewData(); @endphp
 
     {{-- Period Filter --}}
-    <div class="flex gap-2 mb-6">
+    <div class="flex flex-wrap gap-2 mb-6">
         @foreach(['today' => 'Bugün', '7days' => 'Son 7 Gün', '30days' => 'Son 30 Gün'] as $key => $label)
             <x-filament::button
                 wire:click="setPeriod('{{ $key }}')"
@@ -12,6 +12,15 @@
                 {{ $label }}
             </x-filament::button>
         @endforeach
+        <x-filament::button
+            tag="a"
+            href="#"
+            wire:click.prevent="exportCsv"
+            color="success"
+            size="sm"
+        >
+            CSV Disa Aktar
+        </x-filament::button>
     </div>
 
     {{-- KPI Cards --}}

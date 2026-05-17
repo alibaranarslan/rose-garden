@@ -2,16 +2,16 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Http\Middleware\Authenticate;
+use App\Http\Middleware\SanitizeAdminHtmlEncoding;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -28,19 +28,38 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Rose Garden Yönetim')
+            ->brandLogo(asset('images/branding/rg-logo-dark.png'))
+            ->darkModeBrandLogo(asset('images/branding/rg-logo-light.png'))
+            ->brandLogoHeight('2.85rem')
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_START,
+                fn () => view('filament.partials.admin-site-marker', ['context' => 'topbar']),
+            )
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_END,
+                fn () => view('filament.partials.admin-guide-trigger'),
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => view('filament.partials.admin-shell-assets'),
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => view('filament.partials.admin-guide-shell'),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+                fn () => view('filament.partials.admin-site-marker-login-wrap'),
+            )
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -51,6 +70,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SanitizeAdminHtmlEncoding::class,
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),

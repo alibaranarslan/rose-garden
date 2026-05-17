@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
+/**
+ * Canonical cart runtime owner after the `/sepet` route shell renders resources/views/cart/index.blade.php.
+ */
 class CartPage extends Component
 {
     public $items;
+
     public string $couponCode = '';
+
     public ?string $couponMessage = null;
+
+    public array $cardMessages = [];
 
     public function mount(): void
     {
@@ -25,6 +32,9 @@ class CartPage extends Component
         $this->items = $this->cartQuery()
             ->with(['product.images', 'variant'])
             ->get();
+        $this->cardMessages = $this->items
+            ->mapWithKeys(fn ($item) => [$item->id => (string) ($item->card_message ?? '')])
+            ->all();
     }
 
     public function updateQuantity(int $itemId, int $qty): void
@@ -42,19 +52,36 @@ class CartPage extends Component
         $this->dispatch('cart-updated');
     }
 
+    public function saveCardMessage(int $itemId): void
+    {
+        $this->validate([
+            'cardMessages.'.$itemId => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $item = $this->cartQuery()->whereKey($itemId)->firstOrFail();
+        $item->update([
+            'card_message' => trim((string) ($this->cardMessages[$itemId] ?? '')),
+        ]);
+
+        $this->refreshItems();
+        $this->dispatch('cart-updated');
+        $this->dispatch('notify', type: 'success', message: __('Kart mesajı güncellendi.'));
+    }
+
     public function applyCoupon(?string $code = null): void
     {
         $couponCode = strtoupper(trim((string) ($code ?? $this->couponCode)));
         $coupon = Coupon::active()->where('code', $couponCode)->first();
 
-        if (!$coupon || !$coupon->isValid($this->subtotal, auth()->id())) {
+        if (! $coupon || ! $coupon->isValid($this->subtotal, auth()->id())) {
             session()->forget('cart_coupon_id');
-            $this->couponMessage = 'Kupon gecersiz veya kullanilamaz.';
+            $this->couponMessage = __('Kupon geçersiz veya kullanılamaz.');
+
             return;
         }
 
         session(['cart_coupon_id' => $coupon->id]);
-        $this->couponMessage = 'Kupon uygulandi.';
+        $this->couponMessage = __('Kupon uygulandı.');
     }
 
     public function getSubtotalProperty(): float
@@ -65,12 +92,12 @@ class CartPage extends Component
     public function getDiscountProperty(): float
     {
         $couponId = session('cart_coupon_id');
-        if (!$couponId) {
+        if (! $couponId) {
             return 0;
         }
 
         $coupon = Coupon::find($couponId);
-        if (!$coupon || !$coupon->isValid($this->subtotal, auth()->id())) {
+        if (! $coupon || ! $coupon->isValid($this->subtotal, auth()->id())) {
             return 0;
         }
 
@@ -89,7 +116,7 @@ class CartPage extends Component
         }
 
         $sessionId = session('cart_session_id');
-        if (!$sessionId) {
+        if (! $sessionId) {
             $sessionId = session()->getId();
             session(['cart_session_id' => $sessionId]);
         }

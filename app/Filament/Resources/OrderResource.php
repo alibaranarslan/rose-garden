@@ -6,7 +6,6 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\StatusHistoryRelationManager;
 use App\Models\Order;
-use App\Models\OrderStatusHistory;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -22,6 +21,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class OrderResource extends Resource
 {
@@ -78,7 +78,7 @@ class OrderResource extends Resource
                     ->disabled(),
             ])->columns(3),
 
-            Section::make('Alıcı & Teslimat')->schema([
+            Section::make('Alıcı ve Teslimat')->schema([
                 \Filament\Forms\Components\TextInput::make('recipient_name')
                     ->label('Alıcı Adı')
                     ->disabled(),
@@ -224,7 +224,7 @@ class OrderResource extends Resource
                         \Filament\Forms\Components\DatePicker::make('date')->label('Teslimat Tarihi'),
                     ])
                     ->query(fn (Builder $q, array $data) =>
-                        $q->when($data['date'], fn ($q) => $q->whereDate('delivery_date', $data['date']))),
+                        $q->when($data['date'], fn ($query) => $query->whereDate('delivery_date', $data['date']))),
             ])
             ->actions([
                 ViewAction::make()->label('Görüntüle'),
@@ -237,15 +237,23 @@ class OrderResource extends Resource
                     ->visible(fn (Order $record) => $record->status === 'awaiting_payment' && $record->payment_method === 'bank_transfer')
                     ->requiresConfirmation()
                     ->action(function (Order $record) {
-                        $record->update(['status' => 'paid']);
-                        $record->payment?->update(['status' => 'completed', 'confirmed_by' => auth()->id(), 'confirmed_at' => now()]);
-                        OrderStatusHistory::create([
-                            'order_id' => $record->id,
-                            'status' => 'paid',
-                            'note' => 'Havale ödeme onaylandı',
-                            'changed_by' => auth()->id(),
-                            'created_at' => now(),
-                        ]);
+                        $payment = $record->payment;
+
+                        if (! $payment || $payment->status !== 'pending') {
+                            Notification::make()
+                                ->danger()
+                                ->title('Havale onaylanamadı')
+                                ->body('Bu sipariş için bekleyen ödeme kaydı bulunamadı.')
+                                ->send();
+
+                            return;
+                        }
+
+                        DB::transaction(function () use ($record) {
+                            $record->payment->update(['status' => 'completed', 'confirmed_by' => auth()->id(), 'confirmed_at' => now()]);
+                            $record->update(['status' => 'paid']);
+                        });
+
                         Notification::make()->success()->title('Havale onaylandı')->send();
                     }),
 

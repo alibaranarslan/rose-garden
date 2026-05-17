@@ -30,18 +30,25 @@ class BlogCategoryResource extends Resource
             TextInput::make('name')
                 ->label('Ad')
                 ->required()
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) =>
-                    $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                    $operation === 'create' ? $set('slug', Str::slug((string) $state, '-', 'tr')) : null),
 
             TextInput::make('slug')
                 ->label('Slug')
                 ->required()
+                ->maxLength(255)
+                ->regex('/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/')
+                ->dehydrateStateUsing(fn ($state): string => Str::slug((string) $state, '-', 'tr'))
                 ->unique(BlogCategory::class, 'slug', ignoreRecord: true),
 
             TextInput::make('sort_order')
                 ->label('Sıra')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(9999)
                 ->default(0),
         ])->columns(2);
     }

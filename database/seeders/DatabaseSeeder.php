@@ -9,14 +9,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            RoleSeeder::class,
             AdminUserSeeder::class,
             DeliveryZoneSeeder::class,
             DeliveryTimeSlotSeeder::class,
-            SpecialOccasionSeeder::class,
+            HeaderThemeSeeder::class,
             KeywordDictionarySeeder::class,
             NotificationTemplateSeeder::class,
             SettingsSeeder::class,
             DemoContentSeeder::class,
+            SpecialOccasionSeeder::class,
+            CustomerContentSeeder::class,
         ]);
     }
 }

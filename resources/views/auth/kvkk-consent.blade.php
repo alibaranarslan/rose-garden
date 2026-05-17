@@ -1,73 +1,76 @@
+@php
+    $kvkkEmail = config('mail.from.address', 'info@adiyamancicekcisi.com.tr');
+@endphp
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KVKK Aydınlatma Onayı — Rose Garden</title>
+    <title>{{ __('auth.kvkk_consent_title') }} - Rose Garden</title>
     @vite(['resources/css/app.css'])
 </head>
-<body class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+<body class="flex min-h-screen items-center justify-center bg-gray-50 px-4">
 
-    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-lg p-8 my-8">
+    <div class="my-8 w-full max-w-2xl rounded-2xl bg-white p-8 shadow-lg">
 
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">KVKK Aydınlatma Onayı</h1>
-            <p class="text-gray-500 mt-1 text-sm">Rose Garden Çiçek & Çikolata — Kişisel Verilerin Korunması</p>
+        <div class="mb-6 text-center">
+            <h1 class="text-2xl font-bold text-gray-900">{{ __('auth.kvkk_consent_title') }}</h1>
+            <p class="mt-1 text-sm text-gray-500">{{ __('auth.kvkk_consent_subtitle') }}</p>
         </div>
 
-        <div class="prose prose-sm max-w-none mb-6 text-gray-700 bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto text-sm leading-relaxed">
-            <h3 class="font-semibold text-gray-900 mb-2">Kişisel Verilerin İşlenmesine İlişkin Aydınlatma Metni</h3>
+        <div class="prose prose-sm mb-6 max-w-none max-h-64 overflow-y-auto rounded-lg bg-gray-50 p-4 text-sm leading-relaxed text-gray-700">
+            <h3 class="mb-2 font-semibold text-gray-900">{{ __('auth.kvkk_notice_heading') }}</h3>
 
-            <p>Rose Garden Çiçek ve Çikolata olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında veri sorumlusu sıfatıyla, kişisel verilerinizi aşağıda açıklanan amaçlar ve kapsamda işlemekteyiz.</p>
+            <p>{{ __('auth.kvkk_notice_intro') }}</p>
 
-            <p><strong>İşlenen Kişisel Veriler:</strong> Ad, soyad, e-posta adresi, telefon numarası, teslimat adresi ve sipariş geçmişi bilgileriniz.</p>
+            <p><strong>{{ __('auth.kvkk_processed_data_label') }}</strong> {{ __('auth.kvkk_processed_data_text') }}</p>
 
-            <p><strong>İşleme Amaçları:</strong></p>
+            <p><strong>{{ __('auth.kvkk_purposes_label') }}</strong></p>
             <ul>
-                <li>Sipariş oluşturma, teslimat ve müşteri hizmetleri süreçleri</li>
-                <li>Yasal yükümlülüklerin yerine getirilmesi</li>
-                <li>Müşteri memnuniyeti analizleri</li>
-                <li>İzin vermeniz halinde: kişiselleştirilmiş pazarlama iletişimi</li>
+                <li>{{ __('auth.kvkk_purpose_orders') }}</li>
+                <li>{{ __('auth.kvkk_purpose_legal') }}</li>
+                <li>{{ __('auth.kvkk_purpose_satisfaction') }}</li>
+                <li>{{ __('auth.kvkk_purpose_marketing') }}</li>
             </ul>
 
-            <p><strong>Veri Güvenliği:</strong> Verileriniz SSL şifreleme ile korunmakta, yetkisiz erişime karşı teknik ve idari tedbirler uygulanmaktadır.</p>
+            <p><strong>{{ __('auth.kvkk_security_label') }}</strong> {{ __('auth.kvkk_security_text') }}</p>
 
-            <p><strong>Haklarınız:</strong> KVKK'nın 11. maddesi kapsamında verilerinize erişme, düzeltme, silme, aktarım ve itiraz haklarına sahipsiniz. Taleplerinizi <a href="mailto:kvkk@rosegardencicek.com">kvkk@rosegardencicek.com</a> adresine iletebilirsiniz.</p>
+            <p><strong>{{ __('auth.kvkk_rights_label') }}</strong> {!! __('auth.kvkk_rights_text', ['email' => e($kvkkEmail)]) !!}</p>
         </div>
 
-        <form method="POST" action="{{ route('kvkk.consent.store') }}">
+        <form method="POST" action="{{ \App\Support\StorefrontLocale::route('kvkk.consent.store') }}">
             @csrf
 
             @if(session('error'))
-                <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                <div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                     {{ session('error') }}
                 </div>
             @endif
 
             @error('kvkk_accepted')
-                <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                <div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                     {{ $message }}
                 </div>
             @enderror
 
-            <label class="flex items-start gap-3 mb-6 cursor-pointer">
+            <label class="mb-6 flex cursor-pointer items-start gap-3">
                 <input type="checkbox" name="kvkk_accepted" value="1"
                        class="mt-1 rounded border-gray-300 text-rose-600 focus:ring-rose-500"
                        id="kvkk_accepted">
                 <span class="text-sm text-gray-700">
-                    <strong>KVKK Aydınlatma Metnini</strong> okudum ve kişisel verilerimin yukarıda belirtilen amaçlarla işlenmesini onaylıyorum.
+                    <strong>{{ __('auth.kvkk_consent_checkbox_label') }}</strong> {{ __('auth.kvkk_consent_checkbox_text') }}
                 </span>
             </label>
 
-            <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex flex-col gap-3 sm:flex-row">
                 <button type="submit"
-                        class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
-                    Kabul Ediyorum ve Devam Et
+                        class="flex-1 rounded-lg bg-rose-600 px-6 py-3 font-medium text-white transition-colors hover:bg-rose-700">
+                    {{ __('auth.kvkk_accept_continue') }}
                 </button>
 
-                <a href="{{ route('kvkk.consent.reject') }}"
-                   class="flex-1 text-center border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-6 rounded-lg transition-colors">
-                    Reddediyorum (Çıkış Yap)
+                <a href="{{ \App\Support\StorefrontLocale::route('kvkk.consent.reject') }}"
+                   class="flex-1 rounded-lg border border-gray-300 px-6 py-3 text-center font-medium text-gray-700 transition-colors hover:bg-gray-50">
+                    {{ __('auth.kvkk_reject_action') }}
                 </a>
             </div>
         </form>

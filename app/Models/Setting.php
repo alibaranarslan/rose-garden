@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
@@ -25,6 +26,23 @@ class Setting extends Model
             ['group' => $group, 'key' => $key],
             ['value' => $value]
         );
+    }
+
+    public static function bumpStorefrontContentVersion(): void
+    {
+        static::set('system', 'storefront_content_version', (string) now()->format('U.u'));
+    }
+
+    public static function forgetStorefrontCaches(): void
+    {
+        foreach (\App\Support\StorefrontLocale::codes() as $locale) {
+            Cache::forget('rg_site_settings_'.$locale);
+            Cache::forget('rg_site_branding_'.$locale);
+        }
+
+        Cache::forget('rg_nav_categories');
+        Cache::forget('rg_nav_special_occasions');
+        Cache::forget('rg_footer_promo_visuals');
     }
 
     public static function getGroup(string $group): array

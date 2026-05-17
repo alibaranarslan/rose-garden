@@ -5,7 +5,7 @@
     "@type": "Product",
     "name": @json($product->getTranslation('name', app()->getLocale())),
     "description": @json(\Illuminate\Support\Str::limit(strip_tags($product->getTranslation('description', app()->getLocale())), 200)),
-    "image": @json($product->images->first()?->image_path ? asset($product->images->first()->image_path) : ''),
+    "image": @json($product->images->isNotEmpty() ? \App\Support\StorefrontImage::resolveProduct($product->images->first()->image_path, $product->slug, $product->name) : ''),
     "sku": @json($product->sku),
     "offers": {
         "@type": "Offer",

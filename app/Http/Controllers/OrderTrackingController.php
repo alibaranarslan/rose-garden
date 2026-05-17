@@ -17,9 +17,15 @@ class OrderTrackingController extends Controller
 
     public function track(Request $request)
     {
-        $validated = $request->validate([
-            'order_number' => ['required', 'string', 'max:50'],
-        ]);
+        $validated = $request->validate(
+            [
+                'order_number' => ['required', 'string', 'max:50'],
+            ],
+            [],
+            [
+                'order_number' => __('sipariş numarası'),
+            ]
+        );
 
         $order = Order::where('order_number', $validated['order_number'])
             ->with('statusHistory')

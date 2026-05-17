@@ -12,6 +12,21 @@ class Category extends Model
 {
     use HasTranslations;
 
+    /**
+     * Ana navigasyonda gösterilecek kök kategoriler (sıra: soldan sağa).
+     * "Tüm Ürünler" nav şablonunda ayrı; burada yalnızca kategori slug'ları.
+     *
+     * @var list<string>
+     */
+    public const NAV_ROOT_SLUGS = [
+        'cicek-buketleri',
+        'aranjmanlar',
+        'kutuda-cicekler',
+        'cikolata-tatli',
+        'hediye-setleri',
+        'saksi-cicekleri',
+    ];
+
     public array $translatable = ['name', 'description'];
 
     protected $fillable = [

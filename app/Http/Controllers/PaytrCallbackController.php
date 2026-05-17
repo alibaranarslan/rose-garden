@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\LoyaltyTransaction;
 use App\Notifications\OrderStatusNotification;
 use App\Services\LoyaltyService;
 use App\Services\PaytrService;
@@ -54,12 +55,18 @@ class PaytrCallbackController extends Controller
     private function handleSuccess(Order $order, Request $request, LoyaltyService $loyalty): void
     {
         DB::transaction(function () use ($order, $request, $loyalty) {
+            $existingPayment = Payment::where('order_id', $order->id)->first();
+
+            if ($order->status === 'paid' && $existingPayment?->status === 'completed') {
+                return;
+            }
+
             $order->update(['status' => 'paid']);
 
             Payment::updateOrCreate(
                 ['order_id' => $order->id],
                 [
-                    'payment_method'    => 'paytr',
+                    'payment_method'    => $order->payment_method ?: 'credit_card',
                     'amount'            => $order->total,
                     'status'            => 'completed',
                     'transaction_id'    => $request->input('payment_type') . '_' . time(),
@@ -68,8 +75,9 @@ class PaytrCallbackController extends Controller
                 ]
             );
 
-            // Earn loyalty points
-            $loyalty->earnPoints($order);
+            if (! LoyaltyTransaction::where('order_id', $order->id)->where('type', 'earned')->exists()) {
+                $loyalty->earnPoints($order);
+            }
         });
 
         // Send notification outside transaction
@@ -87,7 +95,7 @@ class PaytrCallbackController extends Controller
         Payment::updateOrCreate(
             ['order_id' => $order->id],
             [
-                'payment_method' => 'paytr',
+                'payment_method' => $order->payment_method ?: 'credit_card',
                 'amount'         => $order->total,
                 'status'         => 'failed',
                 'error_message'  => $request->input('failed_reason_msg'),

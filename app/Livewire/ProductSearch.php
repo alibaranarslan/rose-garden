@@ -23,8 +23,8 @@ class ProductSearch extends Component
         }
 
         $keyword = trim($value);
-        $this->results = Product::active()
-            ->with('images')
+        $this->results = Product::storefrontReady()
+            ->with(['images' => fn ($query) => $query->orderBy('sort_order')])
             ->where(function ($builder) use ($keyword) {
                 $builder->whereRaw("JSON_EXTRACT(name, '$.tr') LIKE ?", ["%{$keyword}%"])
                     ->orWhereRaw("JSON_EXTRACT(short_description, '$.tr') LIKE ?", ["%{$keyword}%"]);

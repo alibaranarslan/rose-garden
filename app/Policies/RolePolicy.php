@@ -10,6 +10,11 @@ class RolePolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user): ?bool
+    {
+        return $user->hasRole('super_admin') ? true : null;
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -63,7 +68,7 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_role');
     }
 
     /**
@@ -71,7 +76,7 @@ class RolePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_role');
     }
 
     /**
@@ -79,7 +84,7 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_role');
     }
 
     /**
@@ -87,7 +92,7 @@ class RolePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_role');
     }
 
     /**
@@ -95,7 +100,7 @@ class RolePolicy
      */
     public function replicate(User $user, Role $role): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $user->can('replicate_role');
     }
 
     /**
@@ -103,6 +108,6 @@ class RolePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_role');
     }
 }

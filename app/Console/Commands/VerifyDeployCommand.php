@@ -5,10 +5,11 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 
 class VerifyDeployCommand extends Command
 {
-    protected $signature = 'deploy:verify {--sentry : Send a test event to Sentry}';
+    protected $signature = 'deploy:verify {--base-url= : Override the base URL used for HTTP checks} {--sentry : Send a test event to Sentry}';
     protected $description = 'Post-deploy smoke test: checks app boot, DB, logs, health endpoint';
 
     public function handle(): int
@@ -18,6 +19,18 @@ class VerifyDeployCommand extends Command
         $this->info('=== Rose Garden Deploy Verification ===');
 
         $this->check('App boots', fn () => true, $failed);
+
+        $this->check('App URL configured', function () {
+            return filled(config('app.url'));
+        }, $failed);
+
+        $this->check('Production debug guard', function () {
+            if (! app()->environment('production')) {
+                return true;
+            }
+
+            return ! config('app.debug');
+        }, $failed);
 
         $this->check('Database connection', function () {
             DB::connection()->getPdo();
@@ -33,10 +46,36 @@ class VerifyDeployCommand extends Command
             return cache()->get('deploy_verify_test') === 'ok';
         }, $failed);
 
-        $appUrl = config('app.url');
+        $this->check('Queue configuration', function () {
+            $driver = config('queue.default');
+            if (! filled($driver)) {
+                return false;
+            }
+
+            if ($driver === 'database') {
+                return Schema::hasTable(config('queue.connections.database.table', 'jobs'));
+            }
+
+            return true;
+        }, $failed);
+
+        $this->check('Session cookie security', function () {
+            $appUrl = (string) config('app.url', '');
+
+            if (! str_starts_with($appUrl, 'https://')) {
+                return true;
+            }
+
+            return (bool) config('session.secure') && in_array(config('session.same_site'), ['lax', 'strict', 'none'], true);
+        }, $failed);
+
+        $appUrl = rtrim((string) ($this->option('base-url') ?: config('app.url')), '/');
         $this->check("Health endpoint ({$appUrl}/health)", function () use ($appUrl) {
             $response = Http::timeout(5)->get("{$appUrl}/health");
-            return $response->ok() && $response->json('status') === 'ok';
+            return $response->ok()
+                && $response->json('status') === 'ok'
+                && $response->json('database') === 'ok'
+                && $response->json('cache') === 'ok';
         }, $failed);
 
         $this->check("Homepage responds ({$appUrl}/)", function () use ($appUrl) {

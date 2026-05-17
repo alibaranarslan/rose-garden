@@ -10,16 +10,17 @@ class DeliveryZoneSeeder extends Seeder
     public function run(): void
     {
         $zones = [
-            ['name' => 'Merkez', 'fee' => 0.00, 'sort_order' => 1],
+            ['name' => 'Adıyaman Merkez', 'fee' => 0.00, 'sort_order' => 1],
             ['name' => 'Besni', 'fee' => 25.00, 'sort_order' => 2],
             ['name' => 'Kahta', 'fee' => 30.00, 'sort_order' => 3],
-            ['name' => 'Golbasi', 'fee' => 35.00, 'sort_order' => 4],
+            ['name' => 'Gölbaşı', 'fee' => 35.00, 'sort_order' => 4],
         ];
 
         foreach ($zones as $zone) {
             DB::table('delivery_zones')->updateOrInsert(
-                ['name' => $zone['name']],
+                ['sort_order' => $zone['sort_order']],
                 [
+                    'name' => $zone['name'],
                     'fee' => $zone['fee'],
                     'min_free_amount' => null,
                     'cutoff_time' => null,

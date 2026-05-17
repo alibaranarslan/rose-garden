@@ -6,6 +6,7 @@ use App\Models\BlogPost;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Console\Command;
 
 class GenerateSitemapCommand extends Command
@@ -15,14 +16,14 @@ class GenerateSitemapCommand extends Command
 
     public function handle(): int
     {
-        $baseUrl = config('app.url');
+        $baseUrl = $this->resolveBaseUrl();
         $urls    = [];
 
         // Homepage
         $urls[] = ['loc' => $baseUrl, 'priority' => '1.0', 'changefreq' => 'daily'];
 
         // Active products
-        Product::active()
+        Product::storefrontReady()
             ->select(['slug', 'updated_at'])
             ->chunk(500, function ($products) use ($baseUrl, &$urls) {
                 foreach ($products as $product) {
@@ -37,6 +38,7 @@ class GenerateSitemapCommand extends Command
 
         // Categories
         Category::active()
+            ->whereHas('products', fn ($query) => $query->storefrontReady())
             ->select(['slug'])
             ->get()
             ->each(function ($cat) use ($baseUrl, &$urls) {
@@ -95,5 +97,29 @@ class GenerateSitemapCommand extends Command
         $lines[] = '</urlset>';
 
         return implode("\n", $lines);
+    }
+
+    private function resolveBaseUrl(): string
+    {
+        $configured = trim((string) Setting::get('seo', 'canonical_domain', config('app.url')));
+
+        if ($configured === '') {
+            return rtrim((string) config('app.url'), '/');
+        }
+
+        if (! str_starts_with($configured, 'http://') && ! str_starts_with($configured, 'https://')) {
+            $configured = 'https://'.$configured;
+        }
+
+        $parts = parse_url($configured);
+
+        if (! is_array($parts) || empty($parts['host'])) {
+            return rtrim((string) config('app.url'), '/');
+        }
+
+        $scheme = $parts['scheme'] ?? 'https';
+        $port = isset($parts['port']) ? ':'.$parts['port'] : '';
+
+        return rtrim("{$scheme}://{$parts['host']}{$port}", '/');
     }
 }

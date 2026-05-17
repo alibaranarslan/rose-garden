@@ -10,6 +10,11 @@ class EditNotificationTemplate extends EditRecord
 {
     protected static string $resource = NotificationTemplateResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return NotificationTemplateResource::prepareDataForSave($data);
+    }
+
     protected function getHeaderActions(): array
     {
         return [Actions\DeleteAction::make()];

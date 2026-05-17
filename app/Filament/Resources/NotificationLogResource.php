@@ -10,15 +10,17 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class NotificationLogResource extends Resource
 {
     protected static ?string $model = NotificationLog::class;
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
-    protected static ?string $navigationLabel = 'Bildirim Logları';
-    protected static ?string $modelLabel = 'Bildirim Logu';
-    protected static ?string $pluralModelLabel = 'Bildirim Logları';
-    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationGroup = 'İletişim';
+    protected static ?string $navigationLabel = 'Bildirim Geçmişi';
+    protected static ?string $modelLabel = 'Bildirim Kaydı';
+    protected static ?string $pluralModelLabel = 'Bildirim Geçmişi';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
@@ -28,7 +30,13 @@ class NotificationLogResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->with(['template', 'order']))
             ->columns([
+                TextColumn::make('template.name')
+                    ->label('Template')
+                    ->default('-')
+                    ->toggleable(),
+
                 BadgeColumn::make('channel')
                     ->label('Kanal')
                     ->colors(['primary' => 'sms', 'info' => 'email'])
@@ -45,8 +53,24 @@ class NotificationLogResource extends Resource
                         'sent' => 'Gönderildi', 'failed' => 'Hata', 'queued' => 'Kuyrukta', default => $state,
                     }),
 
+                TextColumn::make('order.order_number')
+                    ->label('Sipariş')
+                    ->default('-')
+                    ->toggleable(),
+
+                TextColumn::make('error_message')
+                    ->label('Hata')
+                    ->limit(48)
+                    ->tooltip(fn ($record) => $record->error_message)
+                    ->toggleable(),
+
                 TextColumn::make('sent_at')
                     ->label('Gönderim')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->label('Kayıt')
                     ->dateTime('d.m.Y H:i')
                     ->sortable(),
             ])

@@ -22,9 +22,11 @@ class PageResource extends Resource
 
     protected static ?string $model = Page::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationGroup = 'İçerik';
     protected static ?string $navigationLabel = 'Sayfalar';
     protected static ?string $modelLabel = 'Sayfa';
     protected static ?string $pluralModelLabel = 'Sayfalar';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -32,24 +34,38 @@ class PageResource extends Resource
             TextInput::make('title')
                 ->label('Başlık')
                 ->required()
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                 ->live(onBlur: true)
-                ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) =>
-                    $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) => $operation === 'create' && filled($state)
+                    ? $set('slug', Str::slug((string) $state, '-', 'tr'))
+                    : null),
 
             TextInput::make('slug')
                 ->label('Slug')
                 ->required()
+                ->maxLength(255)
+                ->regex('/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/')
+                ->dehydrateStateUsing(fn ($state): string => Str::slug((string) $state, '-', 'tr'))
                 ->unique(Page::class, 'slug', ignoreRecord: true),
 
             RichEditor::make('content')
                 ->label('İçerik')
+                ->live(debounce: 500)
+                ->required(fn (callable $get): bool => (bool) $get('is_published'))
                 ->columnSpanFull(),
 
-            TextInput::make('meta_title')->label('Meta Başlık'),
-            Textarea::make('meta_description')->label('Meta Açıklama')->maxLength(160),
+            TextInput::make('meta_title')
+                ->label('Meta Başlık')
+                ->maxLength(70)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
+            Textarea::make('meta_description')
+                ->label('Meta Açıklama')
+                ->maxLength(160)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
 
             Toggle::make('is_published')->label('Yayında')->default(true),
-            TextInput::make('sort_order')->label('Sıra')->numeric()->default(0),
+            TextInput::make('sort_order')->label('Sıra')->numeric()->minValue(0)->maxValue(9999)->default(0),
         ])->columns(2);
     }
 

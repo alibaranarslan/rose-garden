@@ -12,10 +12,9 @@
     <td align="center" style="padding:30px 16px;">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
-        <!-- HEADER -->
         <tr>
           <td style="background-color:#2D0A3E;padding:28px 40px;text-align:center;">
-            <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d4a8e8;">ÇIÇEK &amp; ÇİKOLATA</p>
+            <p style="margin:0;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d4a8e8;">ÇİÇEK &amp; ÇİKOLATA</p>
             <h1 style="margin:6px 0 0;font-size:24px;font-weight:700;color:#ffffff;">Rose Garden</h1>
           </td>
         </tr>
@@ -25,7 +24,6 @@
           </td>
         </tr>
 
-        <!-- BODY -->
         <tr>
           <td style="padding:32px 40px 0;">
             <p style="margin:0;font-size:15px;color:#333333;">Sayın <strong>{{ $order->sender_name }}</strong>,</p>
@@ -35,7 +33,6 @@
           </td>
         </tr>
 
-        <!-- STATUS BADGE -->
         <tr>
           <td style="padding:24px 40px;text-align:center;">
             @php
@@ -60,7 +57,6 @@
           </td>
         </tr>
 
-        <!-- STATUS DESCRIPTION -->
         <tr>
           <td style="padding:0 40px 24px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9f5fb;border-radius:6px;border:1px solid #ede8f0;">
@@ -91,7 +87,6 @@
           </td>
         </tr>
 
-        <!-- ORDER INFO -->
         <tr>
           <td style="padding:0 40px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9f5fb;border-radius:6px;border:1px solid #ede8f0;">
@@ -117,7 +112,6 @@
           </td>
         </tr>
 
-        <!-- CTA -->
         <tr>
           <td style="padding:28px 40px;text-align:center;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">

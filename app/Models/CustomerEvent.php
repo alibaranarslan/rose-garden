@@ -50,6 +50,10 @@ class CustomerEvent extends Model
 
     public function isDueForReminder(): bool
     {
+        if (! checkdate((int) $this->event_month, (int) $this->event_day, (int) now()->year)) {
+            return false;
+        }
+
         $targetDate = now()->setMonth($this->event_month)->setDay($this->event_day);
         if ($targetDate->isPast()) {
             $targetDate->addYear();

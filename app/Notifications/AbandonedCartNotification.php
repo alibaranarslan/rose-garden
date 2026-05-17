@@ -4,6 +4,8 @@ namespace App\Notifications;
 
 use App\Models\AbandonedCart;
 use App\Models\NotificationTemplate;
+use App\Notifications\Channels\SmsChannel;
+use App\Notifications\Concerns\ResolvesNotificationRoutes;
 use App\Services\SmsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,9 +15,9 @@ use Illuminate\Notifications\Notification;
 class AbandonedCartNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use ResolvesNotificationRoutes;
 
-    private const TEMPLATE_KEY   = 'abandoned_cart';
-    private const MAX_REMINDERS  = 2;
+    private const TEMPLATE_KEY = 'abandoned_cart';
 
     public function __construct(private AbandonedCart $cart) {}
 
@@ -23,12 +25,12 @@ class AbandonedCartNotification extends Notification implements ShouldQueue
     {
         $channels = [];
 
-        if (!empty($notifiable->email ?? $this->cart->email)) {
+        if ($this->resolveMailRoute($notifiable) || ! empty($this->cart->email)) {
             $channels[] = 'mail';
         }
 
-        if (!empty($notifiable->phone ?? $this->cart->phone) && config('services.sms.enabled')) {
-            $channels[] = 'sms';
+        if (($this->resolveSmsRoute($notifiable) || ! empty($this->cart->phone)) && app(SmsService::class)->isEnabled()) {
+            $channels[] = SmsChannel::class;
         }
 
         return $channels ?: ['mail'];
@@ -36,16 +38,17 @@ class AbandonedCartNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        $template  = NotificationTemplate::findByKey(self::TEMPLATE_KEY);
+        $template = NotificationTemplate::findByKey(self::TEMPLATE_KEY);
         $variables = $this->buildVariables($notifiable);
+        $locale = $this->resolveLocale($notifiable);
 
         $subject = $template
-            ? $this->replaceVars($template->email_subject ?? 'Sepetinizde ürünler var!', $variables)
-            : 'Sepetinizde ürünler var!';
+            ? $template->renderEmailSubject($variables, $locale, 'Sepetinizde urunler var!')
+            : 'Sepetinizde urunler var!';
 
         $body = $template
-            ? $template->renderEmailBody($variables)
-            : "Sepetinizde bıraktığınız ürünler sizi bekliyor!";
+            ? $template->renderEmailBody($variables, $locale)
+            : 'Sepetinizde biraktiginiz urunler sizi bekliyor!';
 
         return (new MailMessage)
             ->subject($subject)
@@ -55,23 +58,28 @@ class AbandonedCartNotification extends Notification implements ShouldQueue
     public function toSms(object $notifiable): void
     {
         $template = NotificationTemplate::findByKey(self::TEMPLATE_KEY);
-        $phone    = $notifiable->phone ?? $this->cart->phone;
+        $phone = $this->resolveSmsRoute($notifiable) ?? $this->cart->phone;
 
-        if (!$template || empty($phone)) {
+        if (! $template || empty($phone)) {
             return;
         }
 
-        $message = $template->renderSms($this->buildVariables($notifiable));
+        $message = $template->renderSms($this->buildVariables($notifiable), $this->resolveLocale($notifiable));
         app(SmsService::class)->send($phone, $message);
     }
 
     public function toArray(object $notifiable): array
     {
         return [
-            'cart_id'       => $this->cart->id,
-            'total_value'   => $this->cart->total_value,
+            'cart_id' => $this->cart->id,
+            'total_value' => $this->cart->total_value,
             'reminder_count' => $this->cart->reminder_count,
         ];
+    }
+
+    public function cartId(): int
+    {
+        return (int) $this->cart->id;
     }
 
     private function buildVariables(object $notifiable): array
@@ -79,19 +87,16 @@ class AbandonedCartNotification extends Notification implements ShouldQueue
         $cartUrl = url('/sepet');
 
         return [
-            'müşteri_adı'  => $notifiable->name ?? '',
-            'sepet_tutarı' => number_format((float) $this->cart->total_value, 2, ',', '.') . ' ₺',
-            'ürün_sayısı'  => (string) $this->cart->item_count,
-            'sepet_linki'  => $cartUrl,
-            'site_url'     => config('app.url'),
+            'musteri_adi' => $notifiable->name ?? '',
+            'sepet_tutari' => number_format((float) $this->cart->total_value, 2, ',', '.').' TL',
+            'urun_sayisi' => (string) $this->cart->item_count,
+            'sepet_linki' => $cartUrl,
+            'site_url' => config('app.url'),
         ];
     }
 
-    private function replaceVars(string $text, array $vars): string
+    private function resolveLocale(object $notifiable): string
     {
-        foreach ($vars as $key => $value) {
-            $text = str_replace('{' . $key . '}', $value, $text);
-        }
-        return $text;
+        return $notifiable->preferred_language ?? 'tr';
     }
 }

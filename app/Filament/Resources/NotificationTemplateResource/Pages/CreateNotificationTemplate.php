@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateNotificationTemplate extends CreateRecord
 {
     protected static string $resource = NotificationTemplateResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        return NotificationTemplateResource::prepareDataForSave($data);
+    }
 }

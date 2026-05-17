@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\CartItem;
-use App\Models\DataRequest;
+use App\Support\StorefrontLocale;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -20,8 +20,8 @@ class AccountController extends Controller
         $loyaltyPoint = $user->loyaltyPoints;
 
         return view('account.dashboard', compact('user', 'latestOrders', 'loyaltyPoint'))->with([
-            'metaTitle' => 'Hesabım',
-            'metaDescription' => 'Rose Garden hesap paneli.',
+            'metaTitle' => __('Hesabım'),
+            'metaDescription' => __('Rose Garden hesap paneli.'),
         ]);
     }
 
@@ -33,8 +33,8 @@ class AccountController extends Controller
             ->paginate(12);
 
         return view('account.orders.index', compact('orders'))->with([
-            'metaTitle' => 'Siparişlerim',
-            'metaDescription' => 'Rose Garden sipariş geçmişi.',
+            'metaTitle' => __('Siparişlerim'),
+            'metaDescription' => __('Rose Garden sipariş geçmişi.'),
         ]);
     }
 
@@ -47,8 +47,8 @@ class AccountController extends Controller
             ->firstOrFail();
 
         return view('account.orders.show', compact('order'))->with([
-            'metaTitle' => 'Sipariş ' . $order->order_number,
-            'metaDescription' => 'Sipariş detayları ve durum bilgisi.',
+            'metaTitle' => __('Sipariş :number', ['number' => $order->order_number]),
+            'metaDescription' => __('Sipariş detayları ve durum bilgisi.'),
         ]);
     }
 
@@ -61,8 +61,8 @@ class AccountController extends Controller
             ->paginate(12);
 
         return view('account.favorites', compact('favorites'))->with([
-            'metaTitle' => 'Favorilerim',
-            'metaDescription' => 'Kaydedilen favori ürünleriniz.',
+            'metaTitle' => __('Favorilerim'),
+            'metaDescription' => __('Kaydedilen favori ürünleriniz.'),
         ]);
     }
 
@@ -76,8 +76,8 @@ class AccountController extends Controller
             ->get();
 
         return view('account.loyalty', compact('loyaltyPoint', 'transactions'))->with([
-            'metaTitle' => 'Puanlarım',
-            'metaDescription' => 'Sadakat puan bakiyesi ve hareketleri.',
+            'metaTitle' => __('Puanlarım'),
+            'metaDescription' => __('Sadakat puan bakiyesi ve hareketleri.'),
         ]);
     }
 
@@ -89,32 +89,38 @@ class AccountController extends Controller
             ->get();
 
         return view('account.addresses', compact('addresses'))->with([
-            'metaTitle' => 'Adreslerim',
-            'metaDescription' => 'Kayıtlı teslimat adresleriniz.',
+            'metaTitle' => __('Adreslerim'),
+            'metaDescription' => __('Kayıtlı teslimat adresleriniz.'),
         ]);
     }
 
     public function profile()
     {
         $user = auth()->user();
+        $nameParts = preg_split('/\s+/u', trim((string) $user->name), 2, PREG_SPLIT_NO_EMPTY);
+        $firstName = $nameParts[0] ?? '';
+        $lastName = $nameParts[1] ?? '';
 
-        return view('account.profile', compact('user'))->with([
-            'metaTitle' => 'Profilim',
-            'metaDescription' => 'Hesap profil bilgileriniz.',
+        return view('account.profile', compact('user', 'firstName', 'lastName'))->with([
+            'metaTitle' => __('Profilim'),
+            'metaDescription' => __('Hesap profil bilgileriniz.'),
         ]);
     }
 
     public function updateProfile(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
+            'first_name' => ['required', 'string', 'max:120'],
+            'last_name' => ['required', 'string', 'max:120'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.auth()->id()],
             'phone' => ['nullable', 'string', 'max:30'],
             'marketing_consent' => ['nullable', 'boolean'],
         ]);
 
+        $fullName = trim($data['first_name'].' '.$data['last_name']);
+
         auth()->user()->update([
-            'name' => $data['name'],
+            'name' => $fullName,
             'email' => $data['email'],
             'phone' => $data['phone'] ?? null,
             'marketing_consent' => (bool) ($data['marketing_consent'] ?? false),
@@ -142,8 +148,8 @@ class AccountController extends Controller
         $requests = $user->dataRequests()->latest()->get();
 
         return view('account.kvkk', compact('user', 'summary', 'requests'))->with([
-            'metaTitle' => 'KVKK ve Gizlilik',
-            'metaDescription' => '6698 sayılı KVKK kapsamındaki haklarınızı yönetin.',
+            'metaTitle' => __('KVKK ve Gizlilik'),
+            'metaDescription' => __('6698 sayılı KVKK kapsamındaki haklarınızı yönetin.'),
         ]);
     }
 
@@ -222,7 +228,7 @@ class AccountController extends Controller
             'exported_at' => now()->toIso8601String(),
         ];
 
-        $filename = 'kvkk-veri-raporu-' . $user->id . '-' . now()->format('YmdHis') . '.json';
+        $filename = 'kvkk-veri-raporu-'.$user->id.'-'.now()->format('YmdHis').'.json';
 
         return response()->streamDownload(function () use ($payload) {
             echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -283,7 +289,7 @@ class AccountController extends Controller
             ->firstOrFail();
 
         foreach ($order->items as $item) {
-            if (!$item->product || $item->product->stock_status !== 'in_stock') {
+            if (! $item->product || $item->product->stock_status !== 'in_stock') {
                 continue;
             }
 
@@ -306,12 +312,12 @@ class AccountController extends Controller
             }
         }
 
-        return redirect()->route('cart')->with('status', __('Ürünler sepetinize eklendi.'));
+        return redirect()->to(StorefrontLocale::route('cart'))->with('status', __('Ürünler sepetinize eklendi.'));
     }
 
     private function validateAddress(Request $request): array
     {
-        if (!$request->filled('city')) {
+        if (! $request->filled('city')) {
             $request->merge(['city' => 'Adiyaman']);
         }
 

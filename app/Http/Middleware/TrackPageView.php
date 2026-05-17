@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Jobs\RecordPageViewJob;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpFoundation\Response;
 
 class TrackPageView
@@ -20,7 +22,14 @@ class TrackPageView
         $response = $next($request);
 
         if ($this->shouldTrack($request)) {
-            RecordPageViewJob::dispatch($this->buildPayload($request))->onQueue('analytics');
+            try {
+                RecordPageViewJob::dispatch($this->buildPayload($request))->onQueue('analytics');
+            } catch (\Throwable $e) {
+                Log::warning('Page view tracking skipped', [
+                    'message' => $e->getMessage(),
+                    'path' => $request->path(),
+                ]);
+            }
         }
 
         return $response;
@@ -28,13 +37,31 @@ class TrackPageView
 
     private function shouldTrack(Request $request): bool
     {
-        if (!$request->isMethod('GET')) return false;
-        if ($request->is('admin*')) return false;
-        if ($request->is('api/*')) return false;
+        if (app()->runningUnitTests()) {
+            return false;
+        }
+        try {
+            if (! Schema::hasTable('analytics_page_views')) {
+                return false;
+            }
+        } catch (\Throwable) {
+            return false;
+        }
+        if (! $request->isMethod('GET')) {
+            return false;
+        }
+        if ($request->is('admin*')) {
+            return false;
+        }
+        if ($request->is('api/*')) {
+            return false;
+        }
 
         $ua = strtolower($request->userAgent() ?? '');
         foreach (self::BOT_PATTERNS as $pattern) {
-            if (str_contains($ua, $pattern)) return false;
+            if (str_contains($ua, $pattern)) {
+                return false;
+            }
         }
 
         return true;
@@ -42,26 +69,31 @@ class TrackPageView
 
     private function buildPayload(Request $request): array
     {
-        $ua         = $request->userAgent() ?? '';
+        $ua = $request->userAgent() ?? '';
         $deviceType = $this->detectDeviceType($ua);
 
         return [
             'viewable_type' => 'page_view',
-            'viewable_id'   => 0,
-            'session_id'    => session()->getId(),
-            'ip_address'    => $request->ip(),
-            'user_agent'    => substr($ua, 0, 500),
-            'referer'       => substr($request->headers->get('referer', '') ?? '', 0, 500),
-            'device_type'   => $deviceType,
-            'viewed_at'     => now(),
+            'viewable_id' => 0,
+            'session_id' => session()->getId(),
+            'ip_address' => $request->ip(),
+            'user_agent' => substr($ua, 0, 500),
+            'referer' => substr($request->headers->get('referer', '') ?? '', 0, 500),
+            'device_type' => $deviceType,
+            'viewed_at' => now(),
         ];
     }
 
     private function detectDeviceType(string $ua): string
     {
         $ua = strtolower($ua);
-        if (str_contains($ua, 'tablet') || str_contains($ua, 'ipad')) return 'tablet';
-        if (str_contains($ua, 'mobile') || str_contains($ua, 'android') || str_contains($ua, 'iphone')) return 'mobile';
+        if (str_contains($ua, 'tablet') || str_contains($ua, 'ipad')) {
+            return 'tablet';
+        }
+        if (str_contains($ua, 'mobile') || str_contains($ua, 'android') || str_contains($ua, 'iphone')) {
+            return 'mobile';
+        }
+
         return 'desktop';
     }
 }

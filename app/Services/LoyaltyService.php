@@ -11,14 +11,26 @@ use Illuminate\Support\Facades\Log;
 
 class LoyaltyService
 {
+    public function estimateEarnedPoints(float $amount): float
+    {
+        $baseAmount = max(0, $amount);
+        $rate = (float) (Setting::get('loyalty', 'earn_rate') ?? 0.05);
+
+        if ($baseAmount <= 0 || $rate <= 0) {
+            return 0.0;
+        }
+
+        return round($baseAmount * $rate * $this->getOccasionMultiplier());
+    }
+
     public function earnPoints(Order $order): void
     {
-        if (!$order->user_id) {
+        if (! $order->user_id) {
             return;
         }
 
         try {
-            $rate       = (float) (Setting::get('loyalty', 'earn_rate') ?? 0.05);
+            $rate = (float) (Setting::get('loyalty', 'earn_rate') ?? 0.05);
             $multiplier = $this->getOccasionMultiplier();
 
             // Exclude loyalty-points-paid portion from earning base
@@ -34,7 +46,7 @@ class LoyaltyService
             );
 
             $expiryMonths = (int) (Setting::get('loyalty', 'expiry_months') ?? 12);
-            $expiresAt    = $expiryMonths > 0 ? now()->addMonths($expiryMonths) : null;
+            $expiresAt = $expiryMonths > 0 ? now()->addMonths($expiryMonths) : null;
 
             $loyaltyPoint->addPoints(
                 $baseAmount * $rate,
@@ -46,18 +58,18 @@ class LoyaltyService
         } catch (\Exception $e) {
             Log::error('Puan kazanımı hatası', [
                 'order_id' => $order->id,
-                'message'  => $e->getMessage(),
+                'message' => $e->getMessage(),
             ]);
         }
     }
 
     public function usePoints(Order $order, float $amount): bool
     {
-        if (!$order->user_id) {
+        if (! $order->user_id) {
             return false;
         }
 
-        $minAmount = (float) (Setting::get('loyalty', 'min_redeem_amount') ?? 10);
+        $minAmount = (float) (Setting::get('loyalty', 'min_use_amount') ?? 10);
 
         if ($amount < $minAmount) {
             return false;
@@ -65,7 +77,7 @@ class LoyaltyService
 
         $loyaltyPoint = LoyaltyPoint::where('user_id', $order->user_id)->first();
 
-        if (!$loyaltyPoint) {
+        if (! $loyaltyPoint) {
             return false;
         }
 
@@ -78,14 +90,14 @@ class LoyaltyService
 
     public function refundPoints(Order $order): void
     {
-        if (!$order->user_id) {
+        if (! $order->user_id) {
             return;
         }
 
         try {
             $loyaltyPoint = LoyaltyPoint::where('user_id', $order->user_id)->first();
 
-            if (!$loyaltyPoint) {
+            if (! $loyaltyPoint) {
                 return;
             }
 
@@ -96,10 +108,10 @@ class LoyaltyService
 
             foreach ($earnedTransactions as $transaction) {
                 LoyaltyTransaction::create([
-                    'user_id'     => $order->user_id,
-                    'order_id'    => $order->id,
-                    'type'        => 'refunded',
-                    'amount'      => $transaction->amount,
+                    'user_id' => $order->user_id,
+                    'order_id' => $order->id,
+                    'type' => 'refunded',
+                    'amount' => $transaction->amount,
                     'description' => "Sipariş #{$order->order_number} iade - puan geri alındı",
                 ]);
 
@@ -119,7 +131,7 @@ class LoyaltyService
         } catch (\Exception $e) {
             Log::error('Puan iade hatası', [
                 'order_id' => $order->id,
-                'message'  => $e->getMessage(),
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -143,14 +155,14 @@ class LoyaltyService
                 $balance = (float) $loyaltyPoint->balance;
 
                 LoyaltyTransaction::create([
-                    'user_id'     => $loyaltyPoint->user_id,
-                    'type'        => 'expired',
-                    'amount'      => $balance,
+                    'user_id' => $loyaltyPoint->user_id,
+                    'type' => 'expired',
+                    'amount' => $balance,
                     'description' => "{$expiryMonths} ay kullanılmadığı için puan süresi doldu",
                 ]);
 
                 $loyaltyPoint->update([
-                    'balance'    => 0,
+                    'balance' => 0,
                     'updated_at' => now(),
                 ]);
 

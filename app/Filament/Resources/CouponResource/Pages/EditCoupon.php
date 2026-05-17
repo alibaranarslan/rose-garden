@@ -10,6 +10,11 @@ class EditCoupon extends EditRecord
 {
     protected static string $resource = CouponResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return CouponResource::prepareDataForSave($data);
+    }
+
     protected function getHeaderActions(): array
     {
         return [

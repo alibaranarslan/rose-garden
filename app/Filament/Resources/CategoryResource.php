@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
@@ -24,6 +25,7 @@ class CategoryResource extends Resource
 
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationGroup = 'Katalog';
     protected static ?string $navigationLabel = 'Kategoriler';
     protected static ?string $modelLabel = 'Kategori';
     protected static ?string $pluralModelLabel = 'Kategoriler';
@@ -35,18 +37,25 @@ class CategoryResource extends Resource
             TextInput::make('name')
                 ->label('Ad')
                 ->required()
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) =>
-                    $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                    $operation === 'create' ? $set('slug', Str::slug((string) $state, '-', 'tr')) : null),
 
             TextInput::make('slug')
                 ->label('Slug')
                 ->required()
+                ->maxLength(255)
+                ->regex('/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/')
+                ->dehydrateStateUsing(fn ($state): string => Str::slug((string) $state, '-', 'tr'))
                 ->unique(Category::class, 'slug', ignoreRecord: true),
 
             Textarea::make('description')
                 ->label('Açıklama')
                 ->rows(3)
+                ->maxLength(500)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                 ->columnSpanFull(),
 
             FileUpload::make('image')
@@ -54,7 +63,7 @@ class CategoryResource extends Resource
                 ->image()
                 ->directory('categories')
                 ->maxSize(5120)
-                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'])
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                 ->getUploadedFileNameForStorageUsing(fn (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file): string => \Illuminate\Support\Str::random(40) . '.' . $file->getClientOriginalExtension()),
 
             Select::make('parent_id')
@@ -63,11 +72,18 @@ class CategoryResource extends Resource
                 ->nullable()
                 ->searchable()
                 ->preload()
+                ->rule(fn (?Category $record): Closure => function (string $attribute, mixed $value, Closure $fail) use ($record): void {
+                    if ($record && filled($value) && (int) $value === (int) $record->getKey()) {
+                        $fail('Kategori kendi üst kategorisi olamaz.');
+                    }
+                })
                 ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale())),
 
             TextInput::make('sort_order')
                 ->label('Sıra')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(9999)
                 ->default(0),
 
             Toggle::make('is_active')

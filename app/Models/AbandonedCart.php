@@ -16,6 +16,10 @@ class AbandonedCart extends Model
         'total_value',
         'reminder_count',
         'last_reminded_at',
+        'last_reminder_status',
+        'last_reminder_error',
+        'last_reminder_channel',
+        'last_reminder_attempted_at',
         'recovered',
         'recovered_order_id',
         'abandoned_at',
@@ -29,6 +33,7 @@ class AbandonedCart extends Model
             'reminder_count' => 'integer',
             'recovered' => 'boolean',
             'last_reminded_at' => 'datetime',
+            'last_reminder_attempted_at' => 'datetime',
             'abandoned_at' => 'datetime',
         ];
     }
@@ -51,12 +56,20 @@ class AbandonedCart extends Model
     public function scopeEligibleForReminder($query)
     {
         return $query->notRecovered()
-            ->where(fn ($q) => $q->whereNull('last_reminded_at')
-                ->orWhere('last_reminded_at', '<=', now()->subHours(24)));
+            ->where('reminder_count', '<', \App\Services\AbandonedCartReminderService::MAX_REMINDERS)
+            ->where(function ($inner) {
+                $inner->whereNull('last_reminded_at')
+                    ->orWhere('last_reminded_at', '<=', now()->subHours(\App\Services\AbandonedCartReminderService::COOLDOWN_HOURS));
+            });
     }
 
     public function getItemCountAttribute(): int
     {
         return count($this->cart_data ?? []);
+    }
+
+    public function getReminderEligibilityAttribute(): string
+    {
+        return app(\App\Services\AbandonedCartReminderService::class)->eligibilityStatus($this);
     }
 }

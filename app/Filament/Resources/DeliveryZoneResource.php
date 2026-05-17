@@ -28,17 +28,23 @@ class DeliveryZoneResource extends Resource
         return $form->schema([
             TextInput::make('name')
                 ->label('Bölge Adı')
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn (mixed $state): string => trim((string) $state))
                 ->required(),
 
             TextInput::make('fee')
                 ->label('Teslimat Ücreti')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(99999)
                 ->prefix('₺')
                 ->required(),
 
             TextInput::make('min_free_amount')
                 ->label('Ücretsiz Teslimat Üstü')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(999999)
                 ->prefix('₺')
                 ->helperText('Bu tutarın üzeri ücretsiz teslimat'),
 
@@ -53,6 +59,8 @@ class DeliveryZoneResource extends Resource
             TextInput::make('sort_order')
                 ->label('Sıra')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(9999)
                 ->default(0),
         ])->columns(2);
     }

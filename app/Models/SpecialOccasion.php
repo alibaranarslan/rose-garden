@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class SpecialOccasion extends Model
@@ -37,17 +39,45 @@ class SpecialOccasion extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_occasion');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
     }
 
-    public function isUpcoming(int $daysAhead = 30): bool
+    public function nextOccurrence(?CarbonInterface $from = null)
     {
-        $targetDate = now()->setMonth($this->date_month)->setDay($this->date_day);
-        if ($targetDate->isPast()) {
+        $from = $from ? $from->copy()->startOfDay() : now()->startOfDay();
+
+        $targetDate = $from->copy()
+            ->setMonth($this->date_month)
+            ->setDay($this->date_day);
+
+        if ($targetDate->lt($from)) {
             $targetDate->addYear();
         }
-        return $targetDate->diffInDays(now()) <= $daysAhead;
+
+        return $targetDate;
+    }
+
+    public function daysUntil(?CarbonInterface $from = null): int
+    {
+        $from = $from ? $from->copy()->startOfDay() : now()->startOfDay();
+
+        return $from->diffInDays($this->nextOccurrence($from), false);
+    }
+
+    public function isToday(?CarbonInterface $from = null): bool
+    {
+        return $this->daysUntil($from) === 0;
+    }
+
+    public function isUpcoming(int $daysAhead = 30): bool
+    {
+        return $this->daysUntil() <= $daysAhead;
     }
 }

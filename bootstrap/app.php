@@ -13,8 +13,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Defaulting to * on local lets any client spoof X-Forwarded-Proto (secure=true on plain HTTP),
+        // which breaks session cookies when SESSION_SECURE_COOKIE=true → Filament 419.
+        $trustedProxies = env('TRUSTED_PROXIES');
+        $isLocalLike = in_array(env('APP_ENV', 'production'), ['local', 'development'], true);
+
+        if ($trustedProxies === null || $trustedProxies === '') {
+            $trustedProxies = $isLocalLike ? null : '*';
+        } elseif ($isLocalLike && ($trustedProxies === '*' || $trustedProxies === '**')) {
+            // Copied .env.example; trusting all proxies on plain HTTP allows forged X-Forwarded-Proto → 419.
+            $trustedProxies = null;
+        }
+
         $middleware->trustProxies(
-            at: env('TRUSTED_PROXIES', '*'),
+            at: $trustedProxies,
             headers: \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR
                 | \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST
                 | \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT
@@ -22,13 +34,34 @@ return Application::configure(basePath: dirname(__DIR__))
                 | \Illuminate\Http\Request::HEADER_X_FORWARDED_AWS_ELB
         );
 
+        $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
+            $locale = \App\Support\StorefrontLocale::resolveRequestLocale($request);
+
+            return \App\Support\StorefrontLocale::route(
+                'login',
+                locale: $locale,
+                prefixDefault: $request->route('locale') !== null
+            );
+        });
+
+        $middleware->redirectUsersTo(function (\Illuminate\Http\Request $request) {
+            $locale = \App\Support\StorefrontLocale::resolveRequestLocale($request);
+
+            return \App\Support\StorefrontLocale::route(
+                'account.dashboard',
+                locale: $locale,
+                prefixDefault: $request->route('locale') !== null
+            );
+        });
+
+        $middleware->append(\App\Http\Middleware\ConfigureSessionCookieForRequest::class);
         $middleware->append(\App\Http\Middleware\ForceHttps::class);
 
         $middleware->alias([
-            'set.locale'       => \App\Http\Middleware\SetLocale::class,
-            'seo.defaults'     => \App\Http\Middleware\SeoDefaults::class,
+            'set.locale' => \App\Http\Middleware\SetLocale::class,
+            'seo.defaults' => \App\Http\Middleware\SeoDefaults::class,
             'security.headers' => \App\Http\Middleware\SecurityHeaders::class,
-            'cache.page'       => \App\Http\Middleware\CachePage::class,
+            'cache.page' => \App\Http\Middleware\CachePage::class,
         ]);
         $middleware->web(append: [
             \App\Http\Middleware\SeoDefaults::class,

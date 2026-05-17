@@ -19,6 +19,8 @@ class NotificationLog extends Model
         'body',
         'status',
         'error_message',
+        'provider_response',
+        'meta',
         'sent_at',
         'created_at',
     ];
@@ -28,6 +30,7 @@ class NotificationLog extends Model
         return [
             'sent_at' => 'datetime',
             'created_at' => 'datetime',
+            'meta' => 'array',
         ];
     }
 

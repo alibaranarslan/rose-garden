@@ -22,32 +22,32 @@ class PageController extends Controller
     public function contact()
     {
         return view('pages.contact')->with([
-            'metaTitle' => 'İletişim',
-            'metaDescription' => 'Rose Garden ile iletişime geçin.',
+            'metaTitle' => __('İletişim'),
+            'metaDescription' => __('Rose Garden ile iletişime geçin.'),
         ]);
     }
 
     public function faq()
     {
         return view('pages.faq')->with([
-            'metaTitle' => 'Sıkça Sorulan Sorular',
-            'metaDescription' => 'Teslimat, ödeme ve sipariş süreci hakkında SSS.',
+            'metaTitle' => __('Sıkça Sorulan Sorular'),
+            'metaDescription' => __('Teslimat, ödeme ve sipariş süreci hakkında SSS.'),
         ]);
     }
 
     public function deliveryInfo()
     {
         return view('pages.delivery-info')->with([
-            'metaTitle' => 'Teslimat Bilgileri',
-            'metaDescription' => 'Teslimat bölgesi ve saat aralığı bilgileri.',
+            'metaTitle' => __('Teslimat Bilgileri'),
+            'metaDescription' => __('Teslimat bölgesi ve saat aralığı bilgileri.'),
         ]);
     }
 
     public function submitContact(Request $request)
     {
         $validated = $request->validate([
-            'name'    => 'required|string|max:100',
-            'email'   => 'required|email|max:150',
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:150',
             'subject' => 'nullable|string|max:200',
             'message' => 'required|string|max:2000',
         ]);

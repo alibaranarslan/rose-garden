@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DeliveryTimeSlotResource\Pages;
 use App\Models\DeliveryTimeSlot;
+use Closure;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
@@ -29,14 +30,25 @@ class DeliveryTimeSlotResource extends Resource
             TextInput::make('label')
                 ->label('Etiket')
                 ->placeholder('09:00 - 12:00')
+                ->maxLength(100)
+                ->dehydrateStateUsing(fn (mixed $state): string => trim((string) $state))
                 ->required(),
 
             TimePicker::make('start_time')
                 ->label('Başlangıç')
+                ->seconds(false)
+                ->rule(fn (callable $get): Closure => function (string $attribute, mixed $value, Closure $fail) use ($get): void {
+                    $endTime = $get('end_time');
+
+                    if (filled($value) && filled($endTime) && $value >= $endTime) {
+                        $fail('Başlangıç saati bitiş saatinden önce olmalıdır.');
+                    }
+                })
                 ->required(),
 
             TimePicker::make('end_time')
                 ->label('Bitiş')
+                ->seconds(false)
                 ->required(),
 
             Toggle::make('is_active')
@@ -46,6 +58,8 @@ class DeliveryTimeSlotResource extends Resource
             TextInput::make('sort_order')
                 ->label('Sıra')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(9999)
                 ->default(0),
         ])->columns(2);
     }

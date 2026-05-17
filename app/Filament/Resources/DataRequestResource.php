@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use App\Filament\Resources\DataRequestResource\Pages;
 use App\Models\DataRequest;
 use Filament\Forms\Components\Select;
@@ -19,7 +20,7 @@ class DataRequestResource extends Resource
 {
     protected static ?string $model = DataRequest::class;
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-    protected static ?string $navigationGroup = 'Musteriler';
+    protected static ?string $navigationGroup = 'Müşteriler';
     protected static ?string $navigationLabel = 'KVKK Talepleri';
     protected static ?string $modelLabel = 'Veri Talebi';
     protected static ?string $pluralModelLabel = 'Veri Talepleri';
@@ -32,15 +33,21 @@ class DataRequestResource extends Resource
                 ->label('Durum')
                 ->options([
                     'pending' => 'Bekliyor',
-                    'processing' => 'Isleniyor',
-                    'completed' => 'Tamamlandi',
+                    'processing' => 'İşleniyor',
+                    'completed' => 'Tamamlandı',
                     'rejected' => 'Reddedildi',
                 ])
+                ->rule(fn (?DataRequest $record): Closure => function (string $attribute, mixed $value, Closure $fail) use ($record): void {
+                    if ($record && in_array($record->getOriginal('status'), ['completed', 'rejected'], true) && $value !== $record->getOriginal('status')) {
+                        $fail('Tamamlanmış veya reddedilmiş veri taleplerinin durumu tekrar değiştirilemez.');
+                    }
+                })
                 ->required(),
             Textarea::make('admin_notes')
                 ->label('Admin Notu')
                 ->rows(4)
-                ->maxLength(1000),
+                ->maxLength(1000)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
         ]);
     }
 
@@ -49,15 +56,15 @@ class DataRequestResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
-                TextColumn::make('user.name')->label('Kullanici')->searchable()->sortable(),
+                TextColumn::make('user.name')->label('Kullanıcı')->searchable()->sortable(),
                 BadgeColumn::make('type')
-                    ->label('Tur')
+                    ->label('Tür')
                     ->colors(['primary'])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'view' => 'Goruntuleme',
-                        'export' => 'Disa Aktarma',
+                        'view' => 'Görüntüleme',
+                        'export' => 'Dışa Aktarma',
                         'delete' => 'Silme',
-                        'consent_withdraw' => 'Izin Geri Cekme',
+                        'consent_withdraw' => 'İzin Geri Çekme',
                         default => $state,
                     }),
                 BadgeColumn::make('status')
@@ -70,8 +77,8 @@ class DataRequestResource extends Resource
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'pending' => 'Bekliyor',
-                        'processing' => 'Isleniyor',
-                        'completed' => 'Tamamlandi',
+                        'processing' => 'İşleniyor',
+                        'completed' => 'Tamamlandı',
                         'rejected' => 'Reddedildi',
                         default => $state,
                     }),
@@ -83,22 +90,22 @@ class DataRequestResource extends Resource
                     ->label('Durum')
                     ->options([
                         'pending' => 'Bekliyor',
-                        'processing' => 'Isleniyor',
-                        'completed' => 'Tamamlandi',
+                        'processing' => 'İşleniyor',
+                        'completed' => 'Tamamlandı',
                         'rejected' => 'Reddedildi',
                     ]),
                 SelectFilter::make('type')
-                    ->label('Tur')
+                    ->label('Tür')
                     ->options([
-                        'view' => 'Goruntuleme',
-                        'export' => 'Disa Aktarma',
+                        'view' => 'Görüntüleme',
+                        'export' => 'Dışa Aktarma',
                         'delete' => 'Silme',
-                        'consent_withdraw' => 'Izin Geri Cekme',
+                        'consent_withdraw' => 'İzin Geri Çekme',
                     ]),
             ])
             ->actions([
                 Action::make('mark_processing')
-                    ->label('Isleniyor')
+                    ->label('İşleniyor')
                     ->color('info')
                     ->visible(fn (DataRequest $record): bool => $record->status === 'pending')
                     ->action(fn (DataRequest $record) => $record->update(['status' => 'processing'])),

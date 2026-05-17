@@ -13,13 +13,14 @@ class DeliveryTimeSlotSeeder extends Seeder
             ['label' => '09:00 - 12:00', 'start_time' => '09:00:00', 'end_time' => '12:00:00', 'sort_order' => 1],
             ['label' => '12:00 - 15:00', 'start_time' => '12:00:00', 'end_time' => '15:00:00', 'sort_order' => 2],
             ['label' => '15:00 - 18:00', 'start_time' => '15:00:00', 'end_time' => '18:00:00', 'sort_order' => 3],
-            ['label' => '18:00 - 21:00', 'start_time' => '18:00:00', 'end_time' => '21:00:00', 'sort_order' => 4],
+            ['label' => '18:00 - 20:00', 'start_time' => '18:00:00', 'end_time' => '20:00:00', 'sort_order' => 4],
         ];
 
         foreach ($slots as $slot) {
             DB::table('delivery_time_slots')->updateOrInsert(
-                ['label' => $slot['label']],
+                ['sort_order' => $slot['sort_order']],
                 [
+                    'label' => $slot['label'],
                     'start_time' => $slot['start_time'],
                     'end_time' => $slot['end_time'],
                     'is_active' => true,
@@ -27,5 +28,9 @@ class DeliveryTimeSlotSeeder extends Seeder
                 ]
             );
         }
+
+        DB::table('delivery_time_slots')
+            ->where('label', '18:00 - 21:00')
+            ->delete();
     }
 }

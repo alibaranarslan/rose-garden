@@ -20,6 +20,12 @@ class AdminUserSeeder extends Seeder
                 'preferred_language' => 'tr',
                 'email_verified_at' => now(),
             ]
-        );
+        )->syncRoles(['super_admin']);
+
+        User::query()
+            ->where('is_admin', true)
+            ->get()
+            ->each
+            ->syncRoles(['super_admin']);
     }
 }

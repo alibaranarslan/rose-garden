@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\StorefrontLocale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,16 +15,16 @@ class LoginController extends Controller
     public function showLogin()
     {
         return view('account.login')->with([
-            'metaTitle' => 'Giriş Yap',
-            'metaDescription' => 'Rose Garden müşteri giriş sayfası.',
+            'metaTitle' => __('Giriş Yap'),
+            'metaDescription' => __('Rose Garden müşteri giriş sayfası.'),
         ]);
     }
 
     public function showRegister()
     {
         return view('account.register')->with([
-            'metaTitle' => 'Kayıt Ol',
-            'metaDescription' => 'Rose Garden yeni müşteri kayıt sayfası.',
+            'metaTitle' => __('Kayıt Ol'),
+            'metaDescription' => __('Rose Garden yeni müşteri kayıt sayfası.'),
         ]);
     }
 
@@ -36,9 +37,9 @@ class LoginController extends Controller
 
         $guestSessionId = session('cart_session_id');
 
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()->withErrors([
-                'email' => 'Email veya şifre hatalı.',
+                'email' => __('auth.failed'),
             ])->onlyInput('email');
         }
 
@@ -48,7 +49,7 @@ class LoginController extends Controller
             $this->mergeGuestCart($guestSessionId, Auth::id());
         }
 
-        return redirect()->intended(route('account.dashboard'));
+        return redirect()->intended(StorefrontLocale::route('account.dashboard'));
     }
 
     public function register(Request $request)
@@ -58,8 +59,11 @@ class LoginController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:30'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'kvkk_acknowledged' => ['accepted'],
+            'kvkk_acknowledged' => ['required', 'accepted'],
             'marketing_consent' => ['nullable', 'boolean'],
+        ], [
+            'kvkk_acknowledged.required' => __('auth.kvkk_required'),
+            'kvkk_acknowledged.accepted' => __('auth.kvkk_required'),
         ]);
 
         $user = User::create([
@@ -69,7 +73,7 @@ class LoginController extends Controller
             'password' => Hash::make($data['password']),
             'kvkk_accepted_at' => now(),
             'marketing_consent' => (bool) ($data['marketing_consent'] ?? false),
-            'marketing_consent_at' => !empty($data['marketing_consent']) ? now() : null,
+            'marketing_consent_at' => ! empty($data['marketing_consent']) ? now() : null,
             'preferred_language' => app()->getLocale(),
             'is_active' => true,
         ]);
@@ -84,7 +88,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('account.dashboard');
+        return redirect()->to(StorefrontLocale::route('account.dashboard'));
     }
 
     private function mergeGuestCart(string $sessionId, int $userId): void
@@ -98,7 +102,7 @@ class LoginController extends Controller
 
                 if ($existing) {
                     $existing->increment('quantity', $guestItem->quantity);
-                    if ($guestItem->card_message && !$existing->card_message) {
+                    if ($guestItem->card_message && ! $existing->card_message) {
                         $existing->update(['card_message' => $guestItem->card_message]);
                     }
                     $guestItem->delete();
@@ -114,6 +118,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->to(StorefrontLocale::route('home'));
     }
 }

@@ -42,22 +42,31 @@ class BlogPostResource extends Resource
                     TextInput::make('title')
                         ->label('Başlık')
                         ->required()
+                        ->maxLength(255)
+                        ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                         ->live(onBlur: true)
-                        ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) =>
-                            $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                        ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) => $operation === 'create' && filled($state)
+                            ? $set('slug', Str::slug((string) $state, '-', 'tr'))
+                            : null),
 
                     TextInput::make('slug')
                         ->label('Slug')
                         ->required()
+                        ->maxLength(255)
+                        ->regex('/^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/')
+                        ->dehydrateStateUsing(fn ($state): string => Str::slug((string) $state, '-', 'tr'))
                         ->unique(BlogPost::class, 'slug', ignoreRecord: true),
 
                     Textarea::make('excerpt')
                         ->label('Özet')
                         ->rows(3)
+                        ->maxLength(260)
+                        ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                         ->columnSpanFull(),
 
                     RichEditor::make('content')
                         ->label('İçerik')
+                        ->live(debounce: 500)
                         ->required()
                         ->columnSpanFull(),
 
@@ -66,7 +75,7 @@ class BlogPostResource extends Resource
                         ->image()
                         ->directory('blog')
                         ->maxSize(5120)
-                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'])
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                         ->getUploadedFileNameForStorageUsing(fn (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file): string => \Illuminate\Support\Str::random(40) . '.' . $file->getClientOriginalExtension())
                         ->columnSpanFull(),
 
@@ -98,8 +107,14 @@ class BlogPostResource extends Resource
                 ]),
 
                 Tabs\Tab::make('SEO')->schema([
-                    TextInput::make('meta_title')->label('Meta Başlık'),
-                    Textarea::make('meta_description')->label('Meta Açıklama')->maxLength(160),
+                    TextInput::make('meta_title')
+                        ->label('Meta Başlık')
+                        ->maxLength(70)
+                        ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
+                    Textarea::make('meta_description')
+                        ->label('Meta Açıklama')
+                        ->maxLength(160)
+                        ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
                 ])->columns(2),
 
                 Tabs\Tab::make('Yayın')->schema([

@@ -4,6 +4,8 @@ namespace App\Notifications;
 
 use App\Models\CustomerEvent;
 use App\Models\NotificationTemplate;
+use App\Notifications\Channels\SmsChannel;
+use App\Notifications\Concerns\ResolvesNotificationRoutes;
 use App\Services\SmsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,6 +15,7 @@ use Illuminate\Notifications\Notification;
 class EventReminderNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use ResolvesNotificationRoutes;
 
     private const TEMPLATE_KEY = 'event_reminder';
 
@@ -22,12 +25,12 @@ class EventReminderNotification extends Notification implements ShouldQueue
     {
         $channels = [];
 
-        if (!empty($notifiable->email)) {
+        if ($this->resolveMailRoute($notifiable)) {
             $channels[] = 'mail';
         }
 
-        if (!empty($notifiable->phone) && config('services.sms.enabled')) {
-            $channels[] = 'sms';
+        if ($this->resolveSmsRoute($notifiable) && app(SmsService::class)->isEnabled()) {
+            $channels[] = SmsChannel::class;
         }
 
         return $channels ?: ['mail'];
@@ -35,16 +38,17 @@ class EventReminderNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        $template  = NotificationTemplate::findByKey(self::TEMPLATE_KEY);
+        $template = NotificationTemplate::findByKey(self::TEMPLATE_KEY);
         $variables = $this->buildVariables($notifiable);
+        $locale = $this->resolveLocale($notifiable);
 
         $subject = $template
-            ? $this->replaceVars($template->email_subject ?? __('Yaklaşan Özel Gün Hatırlatması'), $variables)
-            : __(':event_label yaklaşıyor!', ['event_label' => $this->event->event_label]);
+            ? $template->renderEmailSubject($variables, $locale, 'Yaklaşan Özel Gün Hatırlatması')
+            : "{$this->event->event_label} yaklaşıyor!";
 
         $body = $template
-            ? $template->renderEmailBody($variables)
-            : __('Sayın :name, :event_label günü yaklaşıyor. Sevdiklerinize özel bir hediye hazırlayın!', ['name' => $notifiable->name, 'event_label' => $this->event->event_label]);
+            ? $template->renderEmailBody($variables, $locale)
+            : "Sayın {$notifiable->name}, {$this->event->event_label} günü yaklaşıyor. Sevdiklerinize özel bir hediye hazırlayın!";
 
         return (new MailMessage)
             ->subject($subject)
@@ -55,18 +59,20 @@ class EventReminderNotification extends Notification implements ShouldQueue
     {
         $template = NotificationTemplate::findByKey(self::TEMPLATE_KEY);
 
-        if (!$template || empty($notifiable->phone)) {
+        $phone = $this->resolveSmsRoute($notifiable);
+
+        if (! $template || empty($phone)) {
             return;
         }
 
-        $message = $template->renderSms($this->buildVariables($notifiable));
-        app(SmsService::class)->send($notifiable->phone, $message);
+        $message = $template->renderSms($this->buildVariables($notifiable), $this->resolveLocale($notifiable));
+        app(SmsService::class)->send($phone, $message);
     }
 
     public function toArray(object $notifiable): array
     {
         return [
-            'event_id'   => $this->event->id,
+            'event_id' => $this->event->id,
             'event_type' => $this->event->event_type,
             'event_label' => $this->event->event_label,
         ];
@@ -74,24 +80,23 @@ class EventReminderNotification extends Notification implements ShouldQueue
 
     private function buildVariables(object $notifiable): array
     {
-        $eventDate  = now()->setDate(now()->year, $this->event->event_month, $this->event->event_day);
-        if ($eventDate->isPast()) $eventDate->addYear();
+        $eventDate = now()->setDate(now()->year, $this->event->event_month, $this->event->event_day);
+        if ($eventDate->isPast()) {
+            $eventDate->addYear();
+        }
 
         return [
-            'müşteri_adı'   => $notifiable->name ?? '',
-            'olay_adı'      => $this->event->event_label ?? '',
-            'alıcı_adı'     => $this->event->recipient_name ?? '',
-            'gün_kaldı'     => (string) $eventDate->diffInDays(now()),
-            'tarih'         => $eventDate->format('d.m.Y'),
-            'site_url'      => config('app.url'),
+            'musteri_adi' => $notifiable->name ?? '',
+            'olay_adi' => $this->event->event_label ?? '',
+            'alici_adi' => $this->event->recipient_name ?? '',
+            'gun_kaldi' => (string) $eventDate->diffInDays(now()),
+            'tarih' => $eventDate->format('d.m.Y'),
+            'site_url' => config('app.url'),
         ];
     }
 
-    private function replaceVars(string $text, array $vars): string
+    private function resolveLocale(object $notifiable): string
     {
-        foreach ($vars as $key => $value) {
-            $text = str_replace('{' . $key . '}', $value, $text);
-        }
-        return $text;
+        return $notifiable->preferred_language ?? 'tr';
     }
 }

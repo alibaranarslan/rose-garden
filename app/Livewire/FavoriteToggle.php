@@ -3,17 +3,20 @@
 namespace App\Livewire;
 
 use App\Models\Favorite;
+use App\Support\StorefrontLocale;
 use Livewire\Component;
 
 class FavoriteToggle extends Component
 {
     public int $productId;
+
     public bool $isFavorited = false;
 
     public function mount(): void
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             $this->isFavorited = false;
+
             return;
         }
 
@@ -25,8 +28,9 @@ class FavoriteToggle extends Component
 
     public function toggle(): void
     {
-        if (!auth()->check()) {
-            $this->redirectRoute('login', navigate: true);
+        if (! auth()->check()) {
+            $this->redirect(StorefrontLocale::route('login'), navigate: true);
+
             return;
         }
 
@@ -38,6 +42,7 @@ class FavoriteToggle extends Component
         if ($favorite) {
             $favorite->delete();
             $this->isFavorited = false;
+
             return;
         }
 

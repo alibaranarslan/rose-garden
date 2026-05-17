@@ -97,6 +97,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(DataRequest::class);
     }
 
+    public function adminGuideProgress(): HasMany
+    {
+        return $this->hasMany(AdminGuideProgress::class);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_admin && $this->is_active;

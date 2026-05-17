@@ -9,10 +9,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
+Schedule::useCache(env('SCHEDULE_CACHE_STORE', 'file'));
+
 $onScheduleFailure = function (\Illuminate\Console\Scheduling\ScheduledTaskFailed $event): void {
     $command = $event->task->command ?? $event->task->description;
     Log::channel('daily')->error('[SCHEDULER_FAILURE] Scheduled task failed', [
-        'command'   => $command,
+        'command' => $command,
         'exception' => $event->exception->getMessage(),
     ]);
     if (app()->bound('sentry')) {

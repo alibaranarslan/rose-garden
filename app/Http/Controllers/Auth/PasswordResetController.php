@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\StorefrontLocale;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class PasswordResetController extends Controller
@@ -13,7 +14,7 @@ class PasswordResetController extends Controller
     public function showForgotForm()
     {
         return view('account.forgot-password', [
-            'metaTitle' => 'Şifremi Unuttum',
+            'metaTitle' => __('Şifremi Unuttum'),
         ]);
     }
 
@@ -24,8 +25,8 @@ class PasswordResetController extends Controller
         $status = Password::sendResetLink($request->only('email'));
 
         return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.')
-            : back()->withErrors(['email' => 'Bu e-posta adresiyle kayıtlı bir hesap bulunamadı.']);
+            ? back()->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
     }
 
     public function showResetForm(Request $request, string $token)
@@ -33,7 +34,7 @@ class PasswordResetController extends Controller
         return view('account.reset-password', [
             'token' => $token,
             'email' => $request->email,
-            'metaTitle' => 'Şifre Sıfırla',
+            'metaTitle' => __('Şifre Sıfırla'),
         ]);
     }
 
@@ -56,7 +57,7 @@ class PasswordResetController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', 'Şifreniz başarıyla sıfırlandı.')
-            : back()->withErrors(['email' => 'Geçersiz veya süresi dolmuş sıfırlama bağlantısı.']);
+            ? redirect()->to(StorefrontLocale::route('login'))->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
     }
 }

@@ -1,12 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="#f8f4f0"/>
-  <circle cx="400" cy="260" r="100" fill="#e8d5c4" opacity="0.6"/>
-  <circle cx="400" cy="220" r="40" fill="#d4a0a0" opacity="0.8"/>
-  <circle cx="350" cy="270" r="35" fill="#c4a0b0" opacity="0.8"/>
-  <circle cx="450" cy="270" r="35" fill="#c4b0a0" opacity="0.8"/>
-  <circle cx="380" cy="310" r="30" fill="#d0a0c0" opacity="0.7"/>
-  <circle cx="420" cy="310" r="30" fill="#d0b0a0" opacity="0.7"/>
-  <rect x="380" y="340" width="40" height="60" rx="5" fill="#8B6914" opacity="0.6"/>
-  <text x="400" y="460" font-family="Georgia, serif" font-size="24" fill="#a0856a" text-anchor="middle" opacity="0.7">Ürün Görseli</text>
-  <text x="400" y="490" font-family="Georgia, serif" font-size="16" fill="#b0956a" text-anchor="middle" opacity="0.5">Rose Garden</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="ÃœrÃ¼n gÃ¶rseli">
+  <defs>
+    <linearGradient id="ph-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8eef3"/>
+      <stop offset="52%" stop-color="#ead6e2"/>
+      <stop offset="100%" stop-color="#ddc2d4"/>
+    </linearGradient>
+    <linearGradient id="ph-petal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c86b8a"/>
+      <stop offset="100%" stop-color="#8f4a68"/>
+    </linearGradient>
+    <pattern id="ph-grain" width="120" height="120" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="22" r="1.1" fill="#7a3d52" opacity="0.07"/>
+      <circle cx="68" cy="41" r="0.9" fill="#7a3d52" opacity="0.06"/>
+      <circle cx="92" cy="88" r="1.2" fill="#7a3d52" opacity="0.05"/>
+      <circle cx="38" cy="96" r="0.8" fill="#7a3d52" opacity="0.07"/>
+      <circle cx="104" cy="16" r="0.85" fill="#7a3d52" opacity="0.055"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#ph-bg)"/>
+  <rect width="800" height="600" fill="url(#ph-grain)" opacity="0.85"/>
+  <g transform="translate(400 268)" opacity="0.92">
+    <circle r="124" fill="url(#ph-petal)" opacity="0.14"/>
+    <circle cy="-14" r="54" fill="url(#ph-petal)" opacity="0.42"/>
+    <circle cx="-50" cy="30" r="45" fill="url(#ph-petal)" opacity="0.36"/>
+    <circle cx="52" cy="30" r="45" fill="url(#ph-petal)" opacity="0.36"/>
+    <circle cx="-32" cy="76" r="37" fill="url(#ph-petal)" opacity="0.32"/>
+    <circle cx="34" cy="76" r="37" fill="url(#ph-petal)" opacity="0.32"/>
+    <ellipse cy="114" rx="24" ry="50" fill="#5c3d2e" opacity="0.22"/>
+  </g>
 </svg>

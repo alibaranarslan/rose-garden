@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\QueryException;
 
 class Order extends Model
 {
@@ -119,10 +121,62 @@ class Order extends Model
     protected static function booted(): void
     {
         static::creating(function (Order $order) {
-            if (!$order->order_number) {
-                $order->order_number = 'RG-' . now()->format('Ymd') . '-' .
-                    str_pad(static::whereDate('created_at', today())->count() + 1, 4, '0', STR_PAD_LEFT);
+            if (! $order->order_number) {
+                $order->order_number = static::nextGeneratedOrderNumber();
             }
         });
+    }
+
+    public static function createWithGeneratedNumber(array $attributes, int $maxAttempts = 5): self
+    {
+        if (filled($attributes['order_number'] ?? null)) {
+            /** @var self $order */
+            $order = static::query()->create($attributes);
+
+            return $order;
+        }
+
+        $attempt = 0;
+
+        while (true) {
+            try {
+                /** @var self $order */
+                $order = static::query()->create($attributes);
+
+                return $order;
+            } catch (QueryException $exception) {
+                $attempt++;
+
+                if ($attempt >= $maxAttempts || ! static::isDuplicateOrderNumberException($exception)) {
+                    throw $exception;
+                }
+            }
+        }
+    }
+
+    public static function nextGeneratedOrderNumber(?DateTimeInterface $date = null): string
+    {
+        $resolvedDate = $date ? now()->setTimestamp($date->getTimestamp()) : now();
+        $prefix = 'RG-'.$resolvedDate->format('Ymd').'-';
+
+        $latestOrderNumber = static::query()
+            ->where('order_number', 'like', $prefix.'%')
+            ->orderByDesc('order_number')
+            ->value('order_number');
+
+        $nextSequence = $latestOrderNumber
+            ? ((int) substr((string) $latestOrderNumber, strrpos((string) $latestOrderNumber, '-') + 1)) + 1
+            : 1;
+
+        return $prefix.str_pad((string) $nextSequence, 4, '0', STR_PAD_LEFT);
+    }
+
+    private static function isDuplicateOrderNumberException(QueryException $exception): bool
+    {
+        $sqlState = $exception->errorInfo[0] ?? null;
+        $message = strtolower($exception->getMessage());
+
+        return in_array($sqlState, ['23000', '23505'], true)
+            && str_contains($message, 'order_number');
     }
 }

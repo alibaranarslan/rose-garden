@@ -8,19 +8,42 @@
 ])
 
 @php
-    $siteName = \App\Models\Setting::get('general', 'site_name', config('app.name'));
+    $branding = \App\Support\SiteBranding::current();
+    $siteName = $branding['site_name'] ?? config('app.name');
     $titleSuffix = \App\Models\Setting::get('seo', 'meta_title_suffix', '| Rose Garden');
-    $defaultDescription = \App\Models\Setting::get('seo', 'meta_description_default', '');
+    $defaultDescription = \App\Models\Setting::get('seo', 'meta_description_default', '')
+        ?: 'Rose Garden; Adıyaman için taze çiçek, butik çikolata, özel gün hediyeleri ve güvenli online sipariş deneyimi sunar.';
     $defaultImage = \App\Models\Setting::get('seo', 'og_default_image', '');
-    $canonicalDomain = rtrim((string) \App\Models\Setting::get('seo', 'canonical_domain', ''), '/');
+    $canonicalDomain = trim((string) \App\Models\Setting::get('seo', 'canonical_domain', ''));
+
+    if ($canonicalDomain !== '') {
+        if (! str_starts_with($canonicalDomain, 'http://') && ! str_starts_with($canonicalDomain, 'https://')) {
+            $canonicalDomain = 'https://'.$canonicalDomain;
+        }
+
+        $canonicalParts = parse_url($canonicalDomain);
+
+        if (is_array($canonicalParts) && ! empty($canonicalParts['host'])) {
+            $scheme = $canonicalParts['scheme'] ?? 'https';
+            $port = isset($canonicalParts['port']) ? ':'.$canonicalParts['port'] : '';
+            $canonicalDomain = "{$scheme}://{$canonicalParts['host']}{$port}";
+        } else {
+            $canonicalDomain = '';
+        }
+    }
+
+    $rootUrl = $canonicalDomain !== '' ? $canonicalDomain : url('/');
 
     $rawTitle = $title ?: $siteName;
     $metaTitle = trim($rawTitle . ' ' . $titleSuffix);
     $metaDescription = $description ?: $defaultDescription;
     $metaImage = $image ?: $defaultImage;
     $metaImageUrl = $metaImage ? (str_starts_with($metaImage, 'http') ? $metaImage : asset($metaImage)) : null;
-    $canonicalUrl = $canonical ?? ($canonicalDomain ? $canonicalDomain . request()->getPathInfo() : request()->url());
-    $locale = app()->getLocale() === 'tr' ? 'tr_TR' : (app()->getLocale() === 'en' ? 'en_US' : 'ku_TR');
+    $canonicalUrl = $canonical ?? \App\Support\StorefrontLocale::currentRequestUrl(
+        \App\Support\StorefrontLocale::current(),
+        false,
+        $rootUrl
+    );
 @endphp
 
 <title>{{ $metaTitle }}</title>
@@ -39,7 +62,7 @@
 <meta property="og:url" content="{{ $canonicalUrl }}">
 <meta property="og:type" content="{{ $type }}">
 <meta property="og:site_name" content="{{ $siteName }}">
-<meta property="og:locale" content="{{ $locale }}">
+<meta property="og:locale" content="{{ \App\Support\StorefrontLocale::ogLocale() }}">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $metaTitle }}">
@@ -49,15 +72,9 @@
 @endif
 
 @php
-    $rawPath = request()->path();
-    $pathWithoutLocale = preg_replace('#^(tr|en|ku)(/|$)#', '', $rawPath);
-    $defaultLocale = config('app.locale', 'tr');
+    $defaultLocale = \App\Support\StorefrontLocale::default();
 @endphp
-@foreach (['tr', 'en', 'ku'] as $lang)
-@if ($lang === $defaultLocale)
-<link rel="alternate" hreflang="{{ $lang }}" href="{{ url('/' . ltrim($pathWithoutLocale, '/')) }}">
-@else
-<link rel="alternate" hreflang="{{ $lang }}" href="{{ url('/' . $lang . '/' . ltrim($pathWithoutLocale, '/')) }}">
-@endif
+@foreach (\App\Support\StorefrontLocale::codes() as $lang)
+<link rel="alternate" hreflang="{{ $lang }}" href="{{ \App\Support\StorefrontLocale::currentRequestUrl($lang, $lang !== $defaultLocale, $rootUrl) }}">
 @endforeach
-<link rel="alternate" hreflang="x-default" href="{{ url('/' . ltrim($pathWithoutLocale, '/')) }}">
+<link rel="alternate" hreflang="x-default" href="{{ \App\Support\StorefrontLocale::currentRequestUrl($defaultLocale, false, $rootUrl) }}">

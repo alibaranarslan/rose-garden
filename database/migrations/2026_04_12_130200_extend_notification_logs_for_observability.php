@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('notification_logs', function (Blueprint $table) {
+            if (! Schema::hasColumn('notification_logs', 'provider_response')) {
+                $table->text('provider_response')->nullable()->after('error_message');
+            }
+
+            if (! Schema::hasColumn('notification_logs', 'meta')) {
+                $table->json('meta')->nullable()->after('provider_response');
+            }
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('notification_logs', function (Blueprint $table) {
+            if (Schema::hasColumn('notification_logs', 'meta')) {
+                $table->dropColumn('meta');
+            }
+
+            if (Schema::hasColumn('notification_logs', 'provider_response')) {
+                $table->dropColumn('provider_response');
+            }
+        });
+    }
+};

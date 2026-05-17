@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use App\Filament\Resources\CustomerEventResource\Pages;
 use App\Models\CustomerEvent;
 use Filament\Forms\Components\Select;
@@ -14,6 +15,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CustomerEventResource extends Resource
 {
@@ -30,7 +32,11 @@ class CustomerEventResource extends Resource
         return $form->schema([
             Select::make('user_id')
                 ->label('Müşteri')
-                ->relationship('user', 'name')
+                ->relationship(
+                    name: 'user',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_admin', false)->where('is_active', true),
+                )
                 ->searchable()
                 ->required(),
 
@@ -47,24 +53,39 @@ class CustomerEventResource extends Resource
 
             TextInput::make('event_label')
                 ->label('Etiket')
-                ->placeholder('Ayşe\'nin doğum günü'),
+                ->placeholder('Ayşe\'nin doğum günü')
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
 
             TextInput::make('recipient_name')
-                ->label('Alıcı Adı'),
+                ->label('Alıcı Adı')
+                ->maxLength(255)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state)),
 
             Textarea::make('recipient_address')
                 ->label('Teslimat Adresi')
                 ->rows(2)
+                ->maxLength(1000)
+                ->dehydrateStateUsing(fn ($state): string => trim((string) $state))
                 ->columnSpanFull(),
 
             Select::make('event_month')
                 ->label('Ay')
-                ->options(array_combine(range(1, 12), ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık']))
+                ->options(array_combine(range(1, 12), ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']))
                 ->required(),
 
             Select::make('event_day')
                 ->label('Gün')
                 ->options(array_combine(range(1, 31), range(1, 31)))
+                ->rule(fn (callable $get): Closure => function (string $attribute, mixed $value, Closure $fail) use ($get): void {
+                    if (blank($value) || blank($get('event_month'))) {
+                        return;
+                    }
+
+                    if (! checkdate((int) $get('event_month'), (int) $value, 2024)) {
+                        $fail('Seçilen ay ve gün birlikte geçerli olmalıdır.');
+                    }
+                })
                 ->required(),
 
             Select::make('detected_from')
@@ -79,6 +100,8 @@ class CustomerEventResource extends Resource
             TextInput::make('reminder_days_before')
                 ->label('Kaç Gün Önce Hatırlat')
                 ->numeric()
+                ->minValue(0)
+                ->maxValue(60)
                 ->default(5),
 
             Toggle::make('is_active')
