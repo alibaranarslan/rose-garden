@@ -50,7 +50,7 @@
                 </button>
             </div>
 
-            <div class="relative mt-3 flex flex-wrap items-center justify-center gap-3 md:flex-nowrap md:items-stretch md:justify-between md:gap-4 md:px-1">
+            <div class="relative mt-3 flex flex-wrap items-center justify-center gap-3 md:flex-nowrap md:items-center md:justify-between md:gap-4 md:px-1">
                 <form action="{{ \App\Support\StorefrontLocale::route('search') }}" method="GET" class="rg-header-search-shell order-2 flex h-11 w-full overflow-hidden rounded-full border border-black/10 bg-white/94 shadow-[0_10px_24px_rgba(58,36,56,0.09)] transition-all duration-200 focus-within:border-rg-purple focus-within:bg-white focus-within:shadow-[0_14px_34px_rgba(78,55,95,0.16)] dark:border-white/12 dark:bg-[#1e1528]/92 dark:focus-within:border-rg-lavender dark:focus-within:bg-[#261935]/92 md:order-1 md:min-w-0 md:flex-1">
                     <span class="inline-flex shrink-0 items-center pl-3.5 text-rg-midPurple/72 dark:text-rg-lavender/78">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

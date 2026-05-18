@@ -958,7 +958,12 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
   }
 
   .rg-header-nav-pill {
-    @apply px-4 py-2 text-[11px] uppercase tracking-[0.16em];
+    @apply px-4 text-[11px] uppercase tracking-[0.16em];
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     box-shadow: 0 10px 24px rgba(34, 24, 40, 0.04);
   }
 
@@ -968,8 +973,8 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 
   #rg-site-header .rg-header-control-cluster {
     display: flex;
-    align-items: stretch;
-    align-self: stretch;
+    align-items: center;
+    align-self: center;
     gap: 0.5rem;
     min-height: 2.75rem;
     flex-wrap: nowrap;
@@ -988,11 +993,11 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 
   #rg-site-header .rg-header-pill-row,
   #rg-site-header .rg-header-control-cluster > * {
-    align-self: stretch;
+    align-self: center;
   }
 
   #rg-site-header .rg-header-pill-row {
-    align-items: stretch;
+    align-items: center;
   }
 
   #rg-site-header .rg-header-search-submit {
@@ -1018,7 +1023,7 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     gap: 0.5rem;
     height: 2.75rem;
     flex-shrink: 0;
-    transform: translateY(-3px);
+    transform: none;
   }
 
   @media (max-width: 767px) {
