@@ -28,6 +28,10 @@
                     <livewire:cart-icon />
                 </div>
 
+                <div class="rg-mobile-header-theme absolute right-12 top-1/2 -translate-y-1/2 md:hidden">
+                    <x-theme-toggle />
+                </div>
+
                 <a href="{{ \App\Support\StorefrontLocale::route('home') }}" class="block shrink-0" aria-label="{{ $siteName }}">
                     <x-site-logo
                         variant="adaptive"

@@ -2170,13 +2170,20 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     z-index: 8;
   }
 
+  #rg-site-header .rg-mobile-header-theme {
+    display: flex;
+    z-index: 8;
+  }
+
   #rg-site-header .rg-mobile-header-cart .rg-header-cart-root,
-  #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a {
+  #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a,
+  #rg-site-header .rg-mobile-header-theme [data-theme-toggle] {
     height: 2.5rem;
     width: 2.5rem;
   }
 
   #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a,
+  #rg-site-header .rg-mobile-header-theme [data-theme-toggle],
   #rg-site-header .rg-mobile-menu-button {
     border: 1px solid rgba(55, 35, 60, 0.1);
     background: rgba(255, 255, 255, 0.88);
@@ -2186,6 +2193,7 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
   }
 
   html.dark #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a,
+  html.dark #rg-site-header .rg-mobile-header-theme [data-theme-toggle],
   html.dark #rg-site-header .rg-mobile-menu-button {
     border-color: rgba(255, 255, 255, 0.14);
     background: rgba(255, 255, 255, 0.12);
