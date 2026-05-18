@@ -2331,13 +2331,15 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 
   .rg-store-hero-intro-card {
     isolation: isolate;
+    width: calc(100% - 0.25rem);
+    margin-inline: auto;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: 1.55rem;
     background:
       linear-gradient(90deg, rgba(255, 250, 247, 0.98) 0%, rgba(255, 250, 247, 0.93) 40%, rgba(255, 250, 247, 0.54) 63%, rgba(255, 250, 247, 0.18) 100%),
       var(--rg-store-hero-mobile-image);
-    background-position: center, right -2.25rem center;
+    background-position: center, right -2rem center;
     background-size: auto, auto 134%;
     box-shadow: 0 22px 50px rgba(56, 35, 54, 0.13);
     padding: 1rem;
