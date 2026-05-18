@@ -23,8 +23,20 @@ Several visible storefront texts used implementation or internal review language
 - `npm run build`
 - `php artisan test tests\Feature\Storefront\PublicSurfaceSmokeTest.php`
 - Source scan over public Blade files for the targeted internal terms.
+- Playwright live mobile smoke on `https://rosegardencicekcilik.com.tr/tr` and `https://rosegardencicekcilik.com.tr/tr/urun/mor-ruya-karisik-buket`.
 
 ## Evidence
 
 - Public Blade scan no longer finds customer-visible `PDP`, `proof`, `otomatik`, `manuel`, `fallback`, `ara katman`, `karar alan`, `rotanı`, `vitrine geç`, or `ezberletmek` in the targeted public surfaces.
 - Remaining matches are either code variable names such as `fallback`, harmless customer wording such as "tek bakışta", or component props, not visible self-referential marketing copy.
+- Live mobile body text scan found none of these terms on home/PDP: `PDP`, `proof`, `fallback`, `ara katman`, `otomatik derlenir`, `manuel olarak`, `karar alanı`, `Vitrinden`.
+- Live console errors: none.
+- Live horizontal overflow: false.
+- Screenshots:
+  - `%LOCALAPPDATA%\Temp\rg-public-copy-naturalization\home-featured-copy-mobile.png`
+  - `%LOCALAPPDATA%\Temp\rg-public-copy-naturalization\pdp-copy-mobile.png`
+
+## Deployment
+
+- Deployed subtree branch: `deploy/rose-garden-main-79f5cae`
+- Browser path note: in-app Browser setup timed out, so rendered validation used Playwright fallback.
