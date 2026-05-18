@@ -4,11 +4,12 @@
     @php
         $field = 'w-full rounded-xl border border-rg-lightLavender bg-white px-4 py-3 text-sm text-rg-darkText shadow-sm outline-none transition focus:border-rg-purple focus:ring-2 focus:ring-rg-purple/45 dark:border-white/15 dark:bg-rg-deepPurple/40 dark:text-white dark:placeholder:text-white/40 dark:focus:border-rg-lavender dark:focus:ring-rg-lavender/35';
         $label = 'mb-1.5 block text-xs font-semibold uppercase tracking-wide text-rg-midPurple dark:text-rg-lavender';
-        $storePhone = $siteSettings->get('contact', collect())->get('contact_phone', '+90 416 214 00 00');
+        $storePhone = $siteSettings->get('contact', collect())->get('contact_phone', '0552 271 70 67');
         $storeEmail = $siteSettings->get('contact', collect())->get('contact_email', '');
         $storeAddress = $siteSettings->get('contact', collect())->get('address', 'Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez');
-        $storeWa = $siteSettings->get('contact', collect())->get('whatsapp_phone', '904162140000');
+        $storeWa = $siteSettings->get('contact', collect())->get('whatsapp_phone', '905522717067');
         $phoneRawStore = preg_replace('/\D/', '', $storePhone);
+        $phoneRawStore = str_starts_with($phoneRawStore, '0') ? '90'.substr($phoneRawStore, 1) : $phoneRawStore;
         $rgMapQuery = rawurlencode('Yeni Sanayi Mah. 2819 Sk. No 70/2B K.A.06 Adıyaman Merkez');
     @endphp
 

@@ -7,12 +7,13 @@
     $siteTagline = $branding['site_tagline'] ?? null;
     $footerDescription = $branding['footer_description'] ?? $siteTagline;
     $socialProfiles = collect($branding['social_profiles'] ?? []);
-    $waPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '904162140000'));
-    $contactPhone = $contact->get('contact_phone', '+90 416 214 00 00');
+    $waPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '905522717067'));
+    $contactPhone = $contact->get('contact_phone', '0552 271 70 67');
     $contactEmail = $contact->get('contact_email') ?: 'info@adiyamancicekcisi.com.tr';
     $contactAddress = $contact->get('address', 'Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez');
     $phoneRaw = preg_replace('/\D/', '', (string) $contactPhone);
-    $phoneRaw = $phoneRaw !== '' ? $phoneRaw : '904162140000';
+    $phoneRaw = $phoneRaw !== '' ? $phoneRaw : '905522717067';
+    $phoneRaw = str_starts_with($phoneRaw, '0') ? '90'.substr($phoneRaw, 1) : $phoneRaw;
     $footerPromoCards = collect($footerPromoVisuals ?? []);
 
     if ($footerPromoCards->isEmpty()) {
@@ -58,9 +59,9 @@
     };
 @endphp
 
-<footer class="mt-16 border-t border-black/5 bg-[#faf6f1] text-rg-deepPurple dark:border-white/8 dark:bg-[#140f18] dark:text-white">
-    <div class="mx-auto max-w-7xl px-4 py-7 sm:px-6">
-        <div class="overflow-hidden rounded-[1.9rem] border border-black/6 bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(246,236,231,0.98))] px-5 py-5 shadow-[0_18px_48px_rgba(32,22,36,0.07)] dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(38,24,42,0.94),rgba(28,18,33,0.98))] dark:shadow-[0_24px_58px_rgba(6,4,8,0.3)] sm:px-6 md:px-7 md:py-6">
+<footer class="rg-footer mt-12 border-t border-black/5 bg-[#faf6f1] text-rg-deepPurple dark:border-white/8 dark:bg-[#140f18] dark:text-white">
+    <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6">
+        <div class="rg-footer-feature overflow-hidden rounded-[1.65rem] border border-black/6 bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(246,236,231,0.98))] px-5 py-4 shadow-[0_14px_38px_rgba(32,22,36,0.06)] dark:border-white/10 dark:bg-[linear-gradient(135deg,rgba(38,24,42,0.94),rgba(28,18,33,0.98))] dark:shadow-[0_20px_46px_rgba(6,4,8,0.28)] sm:px-6 md:px-7 md:py-5">
             <div class="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-10">
                 <div class="min-w-0 space-y-4">
                     <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-rg-midPurple/80 dark:text-white/86">{{ $siteName }}</p>
@@ -72,7 +73,7 @@
                             {{ $footerDescription ?: __('Rose Garden; Adıyaman içinde özenli hazırlık, kontrollü katalog ve profesyonel teslimat akışı sunar. Sipariş, destek ve mağaza bilgileri aynı bütünlük içinde çalışır.') }}
                         </p>
                     </div>
-                    <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <div class="rg-footer-cta-row flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                         <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}" class="rg-btn-primary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold dark:bg-white dark:text-rg-deepPurple dark:hover:bg-white/90">
                             {{ __('Koleksiyonu Keşfet') }}
                         </a>
@@ -83,7 +84,7 @@
                 </div>
 
                 @if ($footerPromoCards->isNotEmpty())
-                    <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rg-footer-promo-grid grid gap-4 sm:grid-cols-2">
                         @foreach ($footerPromoCards as $card)
                             @php
                                 $visualSrc = \App\Support\StorefrontImage::publicImgSrc($card['src'] ?? '');
@@ -107,8 +108,8 @@
         </div>
     </div>
 
-    <div class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 pb-12 pt-5 sm:px-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.8fr)_minmax(0,1fr)] lg:gap-8">
-        <div class="space-y-5 lg:pr-6">
+    <div class="rg-footer-main mx-auto grid max-w-7xl grid-cols-1 gap-7 px-4 pb-9 pt-3 sm:px-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.8fr)_minmax(0,1fr)] lg:gap-7">
+        <div class="rg-footer-brand space-y-4 lg:pr-6">
             <x-site-logo variant="adaptive" type="lockup" placement="footer" loading="lazy" decoding="async" />
             @if ($siteTagline)
                 <p class="text-xs font-semibold uppercase tracking-[0.24em] text-rg-midPurple/75 dark:text-white/78">{{ $siteTagline }}</p>
@@ -147,7 +148,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <div class="rg-footer-links grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div class="min-w-0">
                 <p class="mb-4 text-[11px] font-semibold uppercase tracking-[0.26em] text-rg-midPurple/75 dark:text-white/86">{{ __('Keşfet') }}</p>
                 <ul class="space-y-3 text-sm text-rg-grayText dark:text-white/86">
@@ -174,7 +175,7 @@
 
         <div class="min-w-0">
             <p class="mb-4 text-[11px] font-semibold uppercase tracking-[0.26em] text-rg-midPurple/75 dark:text-white/86">{{ __('İletişim ve Ödeme') }}</p>
-            <div class="min-w-0 rounded-[1.75rem] border border-black/6 bg-white/72 p-5 shadow-sm dark:border-white/10 dark:bg-white/10">
+            <div class="rg-footer-contact-card min-w-0 rounded-[1.45rem] border border-black/6 bg-white/72 p-4 shadow-sm dark:border-white/10 dark:bg-white/10">
                 <ul class="space-y-3 text-sm text-rg-grayText dark:text-white/86">
                     <li class="flex min-w-0 items-start gap-3">
                         <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center text-rg-purple dark:text-rg-lavender" aria-hidden="true">
@@ -219,7 +220,7 @@
     </div>
 
     <div class="border-t border-black/6 dark:border-white/10">
-        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-sm text-rg-grayText/80 sm:px-6 md:flex-row dark:text-white/86">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 text-sm text-rg-grayText/80 sm:px-6 md:flex-row dark:text-white/86">
             <p>&copy; {{ date('Y') }} {{ $siteName }}. {{ __('Tüm hakları saklıdır.') }}</p>
             <p>{{ __('Adıyaman’da tasarlandı ve geliştirildi.') }}</p>
         </div>

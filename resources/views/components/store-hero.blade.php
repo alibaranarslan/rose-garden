@@ -13,7 +13,7 @@
 
 @php
     $contact = $siteSettings?->get('contact', collect()) ?? collect();
-    $whatsAppPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '904162140000'));
+    $whatsAppPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '905522717067'));
     $heroImage = \App\Support\StorefrontImage::publicImgSrc(\App\Support\StorefrontImage::resolveProduct(
         data_get($featuredProduct, 'images.0.image_path'),
         data_get($featuredProduct, 'slug'),
@@ -53,6 +53,12 @@
 
     <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 md:pb-14 md:pt-14">
         <div class="rg-store-hero-grid grid gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:items-center">
+            @unless ($heroImageIsPlaceholder)
+                <div class="rg-store-hero-ambient-image" aria-hidden="true">
+                    <img src="{{ $heroImage }}" alt="" loading="eager" decoding="async">
+                </div>
+            @endunless
+
             <div class="rg-store-hero-copy max-w-2xl">
                 <div class="rg-store-hero-lockup inline-flex items-center gap-4 rounded-full border border-black/8 bg-white/80 px-4 py-2.5 shadow-[0_12px_32px_rgba(72,45,70,0.08)] backdrop-blur dark:border-white/14 dark:bg-white/10 dark:shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
                     <x-site-logo variant="adaptive" type="lockup" class="h-8 w-auto sm:h-9" />

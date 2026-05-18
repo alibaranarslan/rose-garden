@@ -190,7 +190,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '904162140000') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
+                    <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '905522717067') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
                        target="_blank" rel="noopener"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-emerald-600">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -217,7 +217,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '904162140000') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
+                    <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '905522717067') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
                        target="_blank" rel="noopener"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-emerald-600">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

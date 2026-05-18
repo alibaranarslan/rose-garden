@@ -21,11 +21,11 @@ class SettingsSeeder extends Seeder
             ['group' => 'delivery', 'key' => 'free_above_amount', 'value' => '500'],
             ['group' => 'social', 'key' => 'instagram', 'value' => 'https://www.instagram.com/rosegardencicek'],
             ['group' => 'social', 'key' => 'facebook', 'value' => 'https://www.facebook.com/rosegardencicek'],
-            ['group' => 'contact', 'key' => 'contact_phone', 'value' => '+90 416 214 00 00'],
+            ['group' => 'contact', 'key' => 'contact_phone', 'value' => '0552 271 70 67'],
             ['group' => 'contact', 'key' => 'contact_email', 'value' => 'info@adiyamancicekcisi.com.tr'],
             ['group' => 'contact', 'key' => 'address', 'value' => 'Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez'],
             ['group' => 'contact', 'key' => 'tax_id', 'value' => '18343232668'],
-            ['group' => 'contact', 'key' => 'whatsapp_phone', 'value' => '904162140000'],
+            ['group' => 'contact', 'key' => 'whatsapp_phone', 'value' => '905522717067'],
             ['group' => 'storefront', 'key' => 'hero_heading', 'value' => ''],
             ['group' => 'storefront', 'key' => 'hero_subheading', 'value' => ''],
             ['group' => 'storefront', 'key' => 'hero_highlights', 'value' => json_encode([
