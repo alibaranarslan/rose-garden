@@ -12,7 +12,7 @@
             <x-slot:stats>
                 <div class="rg-page-stat">
                     <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Öne çıkan konu') }}</p>
-                    <p class="mt-2 text-sm font-semibold text-rg-deepPurple dark:text-white">{{ __('Teslimat ve hazırlık akışı') }}</p>
+                    <p class="mt-2 text-sm font-semibold text-rg-deepPurple dark:text-white">{{ __('Teslimat ve hazırlık bilgileri') }}</p>
                 </div>
                 <div class="rg-page-stat">
                     <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Destek yaklaşımı') }}</p>
@@ -64,7 +64,7 @@
                     <div class="mt-6 space-y-3">
                         <div class="rounded-[1.25rem] border border-black/6 bg-rg-cream/72 px-4 py-4 dark:border-white/10 dark:bg-[#241f2c]">
                             <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Sipariş öncesi') }}</p>
-                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ __('Ödeme, teslimat ve iptal koşulları tek akışta okunur; böylece güven soruları erken çözülür.') }}</p>
+                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ __('Ödeme, teslimat ve iptal koşullarını sipariş vermeden önce net biçimde inceleyebilirsiniz.') }}</p>
                         </div>
                         <div class="rounded-[1.25rem] border border-black/6 bg-rg-cream/72 px-4 py-4 dark:border-white/10 dark:bg-[#241f2c]">
                             <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Gerektiğinde destek') }}</p>

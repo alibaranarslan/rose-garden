@@ -135,7 +135,7 @@
                     <span class="rg-kicker">{{ __('Ürün Hikâyesi') }}</span>
                     <h2 class="mt-3 font-display text-[2rem] leading-tight text-rg-deepPurple dark:text-white md:text-[2.15rem]">{{ __('Hazırlık ve sunum dili') }}</h2>
                     <p class="mt-4 text-sm leading-[1.85] text-rg-grayText dark:text-white/84 md:text-[15px]">
-                        {{ __('Her ürün yerel atölyede siparişe özel hazırlanır; fotoğraf, teslimat notu ve seçenekler gerçek sipariş akışına bağlı kalır.') }}
+                        {{ __('Her ürün yerel atölyede siparişe özel hazırlanır; fotoğraftaki tona yakın, taze ve özenli bir sunum hedeflenir.') }}
                     </p>
                 </div>
 
@@ -213,7 +213,7 @@
 
                 <div class="mt-4 flex flex-wrap gap-2">
                     <span class="rounded-full border border-black/6 bg-white/76 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-rg-deepPurple dark:border-white/10 dark:bg-white/10 dark:text-white/84">{{ __('Gerçek ürün fotoğrafı') }}</span>
-                    <span class="rounded-full border border-black/6 bg-white/76 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-rg-deepPurple dark:border-white/10 dark:bg-white/10 dark:text-white/84">{{ __('Butik sunum akışı') }}</span>
+                    <span class="rounded-full border border-black/6 bg-white/76 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-rg-deepPurple dark:border-white/10 dark:bg-white/10 dark:text-white/84">{{ __('Butik sunum') }}</span>
                 </div>
 
                 <div class="mt-4">
@@ -289,7 +289,7 @@
                 <div class="rounded-[1.25rem] border border-black/6 bg-white/86 px-5 py-4 shadow-[0_12px_30px_rgba(34,24,40,0.05)] dark:border-white/10 dark:bg-[#201824]">
                     <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Alternatif Yönler') }}</p>
                     <p class="mt-3 text-sm leading-relaxed text-rg-grayText dark:text-white/82">
-                        {{ __('İlgili ürün azsa büyük fallback blokları yerine doğrudan seçki ve destek kapıları görünür kalır.') }}
+                        {{ __('Bu ürüne yakın alternatifleri özel gün koleksiyonlarında, tüm ürünlerde veya WhatsApp desteğiyle inceleyebilirsiniz.') }}
                     </p>
                 </div>
 

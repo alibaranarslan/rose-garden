@@ -52,7 +52,7 @@
             <div class="flex items-start justify-between gap-4">
                 <div>
                     <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Alışverişe Başla') }}</p>
-                    <h3 class="mt-3 font-display text-[2rem] leading-tight text-rg-deepPurple dark:text-white">{{ __('Önce rotanı seç, sonra hazır vitrine geç.') }}</h3>
+                    <h3 class="mt-3 font-display text-[2rem] leading-tight text-rg-deepPurple dark:text-white">{{ __('Kategorini seç, önerilere göz at.') }}</h3>
                 </div>
                 @if ($primaryCategory)
                     <a href="{{ \App\Support\StorefrontLocale::route('products.category', ['slug' => $primaryCategory->slug]) }}" class="hidden shrink-0 rounded-full border border-black/6 bg-rg-cream/75 px-3 py-2 text-xs font-semibold text-rg-deepPurple transition-colors hover:border-rg-purple/35 hover:bg-rg-cream dark:border-white/10 dark:bg-white/8 dark:text-white md:inline-flex">
@@ -62,12 +62,12 @@
             </div>
 
             <p class="mt-3 text-sm leading-relaxed text-rg-grayText dark:text-white/82">
-                {{ __('Soldaki koleksiyonlar ana alışveriş rotasıdır. Sağdaki kısa vitrin ise çok satan, yeni gelen ve özel gün akışından otomatik derlenir; manuel olarak aynı üç ürüne kilitlenmez.') }}
+                {{ __('Çiçek, saksı bitkisi ve özel gün seçeneklerini kategorilerle daraltın; yanındaki öneriler popüler ve yeni ürünleri hızlıca görmenize yardımcı olur.') }}
             </p>
 
             <div class="mt-4 flex flex-wrap gap-2">
-                <span class="rounded-full bg-rg-lightLavender px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-deepPurple dark:bg-white/10 dark:text-rg-lavender">{{ __('Kategori Rotası') }}</span>
-                <span class="rounded-full border border-black/6 bg-white/76 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-grayText dark:border-white/10 dark:bg-white/8 dark:text-white/76">{{ __('Otomatik Vitrin') }}</span>
+                <span class="rounded-full bg-rg-lightLavender px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-deepPurple dark:bg-white/10 dark:text-rg-lavender">{{ __('Kategori Seçimi') }}</span>
+                <span class="rounded-full border border-black/6 bg-white/76 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-grayText dark:border-white/10 dark:bg-white/8 dark:text-white/76">{{ __('Güncel Öneriler') }}</span>
             </div>
 
             @if ($routeCategories->isNotEmpty())
@@ -86,7 +86,7 @@
                     <div class="mb-3 flex items-center justify-between gap-3">
                         <div>
                             <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/58">{{ __('Hazır Ürün Önerileri') }}</p>
-                            <p class="mt-1 text-xs leading-relaxed text-rg-grayText dark:text-white/72">{{ __('Liste, vitrin verisine göre otomatik güncellenir.') }}</p>
+                            <p class="mt-1 text-xs leading-relaxed text-rg-grayText dark:text-white/72">{{ __('Popüler ve yeni ürünlerden kısa bir seçki.') }}</p>
                         </div>
                         <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}" class="shrink-0 text-xs font-semibold uppercase tracking-[0.14em] text-rg-midPurple transition-colors hover:text-rg-deepPurple dark:text-rg-lavender dark:hover:text-white">
                             {{ __('Tümü') }}
@@ -100,7 +100,7 @@
                 </div>
             @else
                 <div class="mt-5 rounded-[1.2rem] border border-black/6 bg-white/76 px-4 py-3 text-sm leading-relaxed text-rg-grayText dark:border-white/10 dark:bg-white/8 dark:text-white/82">
-                    {{ __('Ürün önerileri için katalog güncellendiğinde bu alan otomatik dolacaktır.') }}
+                    {{ __('Yeni öneriler eklendiğinde bu alan dolacaktır.') }}
                 </div>
             @endif
 
@@ -116,7 +116,7 @@
             </div>
 
             <div class="mt-4 rounded-[1.2rem] border border-black/6 bg-white/76 px-4 py-3 text-sm leading-relaxed text-rg-grayText dark:border-white/10 dark:bg-white/8 dark:text-white/82">
-                {{ __('Bu bölümün amacı ürünleri tek tek ezberletmek değil, müşteriyi doğru kategoriye ve güncel vitrin ürünlerine hızlıca taşımaktır.') }}
+                {{ __('Kararsız kaldığınızda önce kategoriyi seçin; ardından size en yakın buket ve hediye alternatiflerine geçin.') }}
             </div>
         </aside>
     </div>

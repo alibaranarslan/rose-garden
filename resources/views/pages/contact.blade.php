@@ -18,7 +18,7 @@
             class="rg-page-hero--compact"
             :eyebrow="__('İletişim')"
             :title="__('Mağaza, teslimat ve ürün seçimi için doğrudan ulaşılabilir bir destek hattı')"
-            :description="__('Rose Garden iletişim sayfası; hızlı cevap, WhatsApp yönlendirmesi, mağaza bilgileri ve form akışını daha yalın bir düzende bir araya getirir.')"
+            :description="__('Rose Garden ile WhatsApp, telefon veya iletişim formu üzerinden hızlıca bağlantı kurabilirsiniz.')"
             compact
         >
             <x-slot:actions>

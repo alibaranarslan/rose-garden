@@ -87,7 +87,7 @@
                                 <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ $isTurkish ? 'Rose Garden Atölye' : __('Rose Garden Atölye') }}</p>
                                 <h3 class="mt-2 font-display text-xl text-rg-deepPurple dark:text-white">{{ $isTurkish ? 'Teslime hazır canlı katalog' : __('Teslime hazır canlı katalog') }}</h3>
                                 <p class="mt-3 text-sm leading-relaxed text-rg-grayText dark:text-white/86">
-                                    {{ $isTurkish ? 'Buket, saksı bitkisi ve özel seçkiler aynı akışta daha sakin bir keşif deneyimi sunar.' : __('Buket, saksı bitkisi ve özel seçkiler aynı akışta daha sakin bir keşif deneyimi sunar.') }}
+                                    {{ $isTurkish ? 'Buket, saksı bitkisi ve özel seçkileri daha kolay karşılaştırın.' : __('Buket, saksı bitkisi ve özel seçkileri daha kolay karşılaştırın.') }}
                                 </p>
                                 <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}"
                                    class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rg-deepPurple transition-colors duration-200 hover:text-rg-purple dark:text-white dark:hover:text-rg-lavender">

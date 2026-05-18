@@ -6,7 +6,7 @@
         ],
         [
             'title' => __('Not kartı ve yönlendirme'),
-            'body' => __('Mesaj, teslim notu ve kısa tercih bilgileri sipariş akışında net biçimde eklenir.'),
+            'body' => __('Mesaj, teslim notu ve kısa tercih bilgileri sipariş öncesinde net biçimde eklenir.'),
         ],
         [
             'title' => __('İnsana yakın destek'),

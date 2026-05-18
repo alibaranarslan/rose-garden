@@ -70,7 +70,7 @@
                             {{ $siteTagline ?: __('Yerel çiçek seçkisini, güven veren ve sakin bir teslim deneyimine dönüştürüyoruz.') }}
                         </h2>
                         <p class="max-w-2xl text-pretty text-sm leading-[1.7] text-rg-grayText md:text-base dark:text-white/84">
-                            {{ $footerDescription ?: __('Rose Garden; Adıyaman içinde özenli hazırlık, kontrollü katalog ve profesyonel teslimat akışı sunar. Sipariş, destek ve mağaza bilgileri aynı bütünlük içinde çalışır.') }}
+                            {{ $footerDescription ?: __('Rose Garden; Adıyaman içinde özenle hazırlanan çiçek, saksı bitkisi ve butik hediye seçenekleri sunar. Sipariş ve destek için her zaman bize ulaşabilirsiniz.') }}
                         </p>
                     </div>
                     <div class="rg-footer-cta-row flex flex-col gap-3 sm:flex-row sm:flex-wrap">

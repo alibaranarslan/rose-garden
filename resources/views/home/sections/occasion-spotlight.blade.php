@@ -57,10 +57,10 @@
                     </div>
 
                     <div class="px-5 py-5 md:px-6 md:py-6">
-                        <span class="rg-kicker">{{ $isTurkish ? 'Anlamlı Hediye Akışı' : __('Anlamlı Hediye Akışı') }}</span>
+                        <span class="rg-kicker">{{ $isTurkish ? 'Yaklaşan Kutlama' : __('Yaklaşan Kutlama') }}</span>
                         <h2 class="mt-3 text-balance font-display text-3xl text-rg-deepPurple dark:text-white md:text-4xl">{{ $occasionTitle }}</h2>
                         <p class="mt-3 text-sm leading-relaxed text-rg-grayText dark:text-white/82">
-                            {{ data_get($settings, 'subtitle_override.'.app()->getLocale()) ?: ($isTurkish ? 'Bu blok tek bir ara katman gibi değil, tarih ve ilgili ürünleri birlikte göstererek daha hızlı karar aldıran bir keşif alanı gibi çalışır.' : __('Bu blok tek bir ara katman gibi değil, tarih ve ilgili ürünleri birlikte göstererek daha hızlı karar aldıran bir keşif alanı gibi çalışır.')) }}
+                            {{ data_get($settings, 'subtitle_override.'.app()->getLocale()) ?: ($isTurkish ? 'Yaklaşan güne uygun çiçek ve hediye seçeneklerini tek bakışta inceleyin; dilerseniz aynı gün teslimat için destek alın.' : __('Yaklaşan güne uygun çiçek ve hediye seçeneklerini tek bakışta inceleyin; dilerseniz aynı gün teslimat için destek alın.')) }}
                         </p>
 
                         <div class="mt-5 grid gap-3 sm:grid-cols-3">
@@ -134,12 +134,12 @@
                         @elseif ($slot === 0)
                             <a href="{{ \App\Support\StorefrontLocale::route('special-occasions.show', ['slug' => $activeOccasion->slug]) }}" class="flex h-full flex-col justify-between rounded-[1.35rem] border border-black/6 bg-white/84 px-4 py-4 shadow-[0_12px_26px_rgba(34,24,40,0.05)] transition-colors duration-200 hover:border-rg-purple/20 dark:border-white/10 dark:bg-white/8">
                                 <div>
-                                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/56">{{ $isTurkish ? 'Seçki Akışı' : __('Seçki Akışı') }}</p>
+                                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/56">{{ $isTurkish ? 'Kutlama Seçkisi' : __('Kutlama Seçkisi') }}</p>
                                     <h3 class="mt-2 text-base font-semibold text-rg-deepPurple dark:text-white">{{ $occasionTitle }}</h3>
                                     <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/80">
                                         {{ $occasionProductCount > 0
                                             ? ($isTurkish ? 'Mevcut ürünlerle özel gün seçkisine devam edin.' : __('Mevcut ürünlerle özel gün seçkisine devam edin.'))
-                                            : ($isTurkish ? 'Tarih ve seçim yönü korunurken daha temiz bir keşif akışı sunulur.' : __('Tarih ve seçim yönü korunurken daha temiz bir keşif akışı sunulur.')) }}
+                                            : ($isTurkish ? 'Bu güne uygun seçenekleri inceleyin veya WhatsApp üzerinden destek alın.' : __('Bu güne uygun seçenekleri inceleyin veya WhatsApp üzerinden destek alın.')) }}
                                     </p>
                                 </div>
                                 <div class="mt-4 flex flex-wrap gap-2">
@@ -150,7 +150,7 @@
                         @elseif ($occasionCategory)
                             <a href="{{ \App\Support\StorefrontLocale::route('products.category', ['slug' => $occasionCategory->slug]) }}" class="flex h-full flex-col justify-between rounded-[1.35rem] border border-black/6 bg-white/84 px-4 py-4 shadow-[0_12px_26px_rgba(34,24,40,0.05)] transition-colors duration-200 hover:border-rg-purple/20 dark:border-white/10 dark:bg-white/8">
                                 <div>
-                                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/56">{{ $isTurkish ? 'Kategori Rotası' : __('Kategori Rotası') }}</p>
+                                    <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/56">{{ $isTurkish ? 'İlgili Kategori' : __('İlgili Kategori') }}</p>
                                     <h3 class="mt-2 text-base font-semibold text-rg-deepPurple dark:text-white">{{ $occasionCategoryName }}</h3>
                                     <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/80">
                                         {{ $isTurkish ? 'Bu özel gün için ilişkili kategoriye geçip daha geniş ürün seçkisini görün.' : __('Bu özel gün için ilişkili kategoriye geçip daha geniş ürün seçkisini görün.') }}
@@ -184,7 +184,7 @@
                                 <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/56">{{ $isTurkish ? 'Seçim Desteği' : __('Seçim Desteği') }}</p>
                                 <h3 class="mt-2 text-lg font-semibold text-rg-deepPurple dark:text-white">{{ $occasionTitle }}</h3>
                                 <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/80">
-                                    {{ $isTurkish ? 'Bu özel gün için editoryel seçki, tarih ve kategori yönü birlikte korunuyor.' : __('Bu özel gün için editoryel seçki, tarih ve kategori yönü birlikte korunuyor.') }}
+                                    {{ $isTurkish ? 'Bu özel gün için çiçek ve hediye seçeneklerini birlikte inceleyebilirsiniz.' : __('Bu özel gün için çiçek ve hediye seçeneklerini birlikte inceleyebilirsiniz.') }}
                                 </p>
                             </div>
                             <div class="mt-4 flex flex-wrap gap-2">
@@ -196,7 +196,7 @@
                             <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/56">{{ __('Teslimat Ritmi') }}</p>
                             <p class="mt-2 text-lg font-semibold text-rg-deepPurple dark:text-white">{{ __('Aynı gün hazırlık desteği') }}</p>
                             <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/80">
-                                {{ $isTurkish ? 'Gerçek ürün sayısı sınırlı olsa da seçki akışı ve teslimat yönü korunur.' : __('Gerçek ürün sayısı sınırlı olsa da seçki akışı ve teslimat yönü korunur.') }}
+                                {{ $isTurkish ? 'Uygun ürün sayısı sınırlıysa aynı gün teslimat için destek alabilirsiniz.' : __('Uygun ürün sayısı sınırlıysa aynı gün teslimat için destek alabilirsiniz.') }}
                             </p>
                         </div>
                     </div>

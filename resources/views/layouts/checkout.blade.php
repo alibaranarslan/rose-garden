@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <p class="text-xs text-rg-grayText dark:text-white/78">{{ __('Bilgiler, teslimat ve ödeme tek akışta ilerler.') }}</p>
+                <p class="text-xs text-rg-grayText dark:text-white/78">{{ __('Bilgiler, teslimat ve ödeme adım adım tamamlanır.') }}</p>
             </div>
         </header>
 

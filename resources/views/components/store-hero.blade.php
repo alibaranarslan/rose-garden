@@ -24,7 +24,7 @@
     $heroImageSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($heroImage, [640, 960, 1280]);
     $heroImageIsPlaceholder = \App\Support\StorefrontImage::isResolvedProductPlaceholder($heroImage);
     $headingText = $heading ?: __('Adıyaman’da floral tasarım ve aynı gün teslimat, daha sakin ve rafine bir dille buluşuyor.');
-    $subheadingText = $subheading ?: __('Rose Garden, stock görseller yerine gerçek ürün fotoğraflarıyla ilerleyen butik bir vitrin. Her sipariş; sunum, not kartı ve teslimat akışı birlikte düşünülerek hazırlanıyor.');
+    $subheadingText = $subheading ?: __('Rose Garden’da buketler ve saksı bitkileri gerçek ürün fotoğraflarıyla sunulur; her sipariş not kartı ve teslimat detayıyla birlikte özenle hazırlanır.');
     $ctaText = $ctaLabel ?: __('Koleksiyonu Keşfet');
     $ctaHref = $ctaUrl ?: \App\Support\StorefrontLocale::route('products.index');
     $secondaryText = $secondaryCtaLabel ?: __('WhatsApp ile İletişim');
@@ -37,8 +37,8 @@
 
     if ($highlightItems->isEmpty()) {
         $highlightItems = collect([
-            ['label' => __('Canlı Katalog'), 'value' => __('Sadece yerel ürün görselleriyle çalışan, teslime hazır vitrin.')],
-            ['label' => __('Butik Akış'), 'value' => __('Ürün seçimi, not kartı ve teslimat dili aynı kurguda ilerler.')],
+            ['label' => __('Canlı Katalog'), 'value' => __('Yerel ürün fotoğraflarıyla hazırlanan, siparişe hazır seçenekler.')],
+            ['label' => __('Butik Hazırlık'), 'value' => __('Ürün seçimi, not kartı ve teslimat detayı birlikte düşünülür.')],
         ]);
     }
 
@@ -130,7 +130,7 @@
                     <div class="rg-store-hero-spotlight mt-4 rounded-[1.7rem] border border-black/8 bg-white/86 p-5 shadow-[0_22px_50px_rgba(60,38,56,0.1)] backdrop-blur dark:border-white/12 dark:bg-[#1c1522]/92 dark:shadow-[0_24px_60px_rgba(0,0,0,0.38)] md:absolute md:-bottom-6 md:left-2 md:mt-0 md:max-w-[20rem]">
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-[#d4bdf0]">{{ $spotlightEyebrow ?: __('Seçili Vitrin') }}</p>
                         <h2 class="mt-3 font-display text-[1.85rem] leading-tight text-rg-deepPurple dark:text-white">{{ $featuredProduct->name }}</h2>
-                        <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ $spotlightSummary ?: __('Atölyenin bu dönem öne çıkardığı ürün; daha sakin bir sunum yüzeyiyle vitrinin karar alanını güçlendirir.') }}</p>
+                        <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ $spotlightSummary ?: __('Atölyenin bu dönem öne çıkardığı ürün; zarif görünümü ve hediye etkisiyle öne çıkar.') }}</p>
 
                         @if ($spotlightPrice)
                             <div class="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-t border-black/6 pt-4 dark:border-white/12">

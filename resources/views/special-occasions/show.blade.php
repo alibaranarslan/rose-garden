@@ -31,7 +31,7 @@
 
         $occasionSummary = $occasionCategory
             ? __(':category kategorisindeki seçili ürünler ve bu güne özel atanan tasarımlar, aynı koleksiyonda bir araya gelir.', ['category' => $occasionCategory])
-            : __('Bu özel gün için seçilmiş çiçek ve hediye tasarımları, tek bir butik akışta birlikte sunulur.');
+            : __('Bu özel gün için seçilmiş çiçek ve hediye tasarımları birlikte sunulur.');
 
         $curationNotes = [
             __('Kart mesajını kısa ve kişisel tutmak, aranjmanın etkisini daha sıcak bir jeste dönüştürür.'),
@@ -88,13 +88,13 @@
                             <span class="text-[11px] uppercase tracking-[0.24em] text-rg-copy-soft dark:text-white/48">{{ __('Seçim Dili') }}</span>
                             <strong class="mt-3 block text-base text-rg-copy-strong dark:text-white">{{ __('Daha rafine, daha net bir vitrin') }}</strong>
                             <p class="mt-2 text-sm leading-6 text-rg-copy-muted dark:text-white/84">
-                                {{ __('Aynı günün ruhuna uygun ürünler birlikte gösterilir; karar alanı gereksiz gürültüden arındırılır.') }}
+                                {{ __('Aynı günün ruhuna uygun ürünleri sade ve net bir seçkiyle inceleyebilirsiniz.') }}
                             </p>
                         </div>
 
                         <div class="rg-occasion-stage-stat">
                             <span class="text-[11px] uppercase tracking-[0.24em] text-rg-copy-soft dark:text-white/48">{{ __('Teslimat Ritmi') }}</span>
-                            <strong class="mt-3 block text-base text-rg-copy-strong dark:text-white">{{ __('Aynı gün teslim uyumlu akış') }}</strong>
+                            <strong class="mt-3 block text-base text-rg-copy-strong dark:text-white">{{ __('Aynı gün teslimata uygun') }}</strong>
                             <p class="mt-2 text-sm leading-6 text-rg-copy-muted dark:text-white/84">
                                 {{ __('Hızlı seçilebilen ürünler üst vitrinde öne çıkar; tüm koleksiyon aşağıda sakin bir grid içinde devam eder.') }}
                             </p>
@@ -129,7 +129,7 @@
                                 {{ __('Duygu, teslimat ve sunum aynı çizgide') }}
                             </h2>
                             <p class="mt-3 text-sm leading-7 text-rg-copy-muted dark:text-white/86">
-                                {{ __('Ürün seçkisi, görsel atmosfer ve hediye önerileri tek bir sayfada toparlanır; böylece seçim akışı daha hızlı ama daha özenli ilerler.') }}
+                                {{ __('Çiçek, hediye ve not seçeneklerini aynı sayfada inceleyerek daha rahat karar verebilirsiniz.') }}
                             </p>
                         </div>
                     </div>
@@ -144,10 +144,10 @@
                         <span class="rg-kicker">{{ __('Hızlı Seçim') }}</span>
                         <div>
                             <h2 class="font-display text-2xl text-rg-copy-strong dark:text-white md:text-[2rem]">
-                                {{ $occasionTitle }} {{ __('için ilk bakış vitrini') }}
+                                {{ $occasionTitle }} {{ __('için öne çıkanlar') }}
                             </h2>
                             <p class="max-w-2xl text-sm leading-7 text-rg-copy-muted dark:text-white/72">
-                                {{ __('En çok tercih edilen seçenekler önce yatay vitrinde görünür; detaylı koleksiyon akışı hemen ardından devam eder.') }}
+                                {{ __('En çok tercih edilen seçenekleri önce görün, ardından tüm koleksiyonu inceleyin.') }}
                             </p>
                         </div>
                     </div>

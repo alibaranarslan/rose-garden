@@ -8,7 +8,7 @@
         : __('Adıyaman’da butik çiçek ve saksı bitki seçkisi, daha sakin ve profesyonel bir mağaza ritmiyle sunuluyor.');
     $heroSubheading = filled(data_get($homeContent, 'hero_subheading'))
         ? data_get($homeContent, 'hero_subheading')
-        : __('Rose Garden vitrini yalnızca yerel ürün görselleriyle çalışır. Buketler ve saksı bitkileri; hazırlık kalitesi, teslimat akışı ve jest etkisi birlikte düşünülerek sunulur.');
+        : __('Rose Garden’da buketler ve saksı bitkileri gerçek ürün görselleriyle sunulur; her sipariş özenli hazırlık ve teslimat desteğiyle tamamlanır.');
 
     $heroHighlights = collect(data_get($homeContent, 'hero_highlights', []))
         ->filter(fn ($item) => filled(data_get($item, 'label')) && filled(data_get($item, 'value')))
@@ -24,10 +24,10 @@
 
     $collectionHeading = filled(data_get($homeContent, 'home_intro_heading'))
         ? data_get($homeContent, 'home_intro_heading')
-        : __('Teslime hazır bir katalog, sade bir keşif akışıyla daha güçlü görünür.');
+        : __('Teslime hazır çiçek ve hediye seçeneklerini sade bir katalog içinde keşfedin.');
     $collectionBody = filled(data_get($homeContent, 'home_intro_body'))
         ? data_get($homeContent, 'home_intro_body')
-        : __('Ana sayfa; kategori keşfi, editoryal seçki ve ticari vitrin akışlarını birbirinden ayıracak şekilde yeniden dengelendi. Böylece ziyaretçi hem marka tonunu hisseder hem de ürün seçimine daha rahat yaklaşır.');
+        : __('Buket, saksı bitkisi ve özel gün seçeneklerini daha rahat karşılaştırabileceğiniz sade bir ana sayfa deneyimi.');
 
     $collectionPoints = collect(data_get($homeContent, 'home_intro_points', []))
         ->filter(fn ($item) => filled(data_get($item, 'title')) && filled(data_get($item, 'text')))
@@ -36,7 +36,7 @@
 
     if ($collectionPoints->isEmpty()) {
         $collectionPoints = collect([
-            ['title' => __('Teslim Hissi'), 'text' => __('Vitrin artık müşteriye sunulacak gerçek katalog ölçeğinde, daha net karar alanlarıyla çalışıyor.')],
+            ['title' => __('Teslimat Güveni'), 'text' => __('Ürünleri net fotoğraflar, açık fiyatlar ve anlaşılır teslimat bilgileriyle inceleyin.')],
             ['title' => __('Admin Kontrolü'), 'text' => __('Galeri, highlight kartları, varyantlar ve etiketler panelden yönetilebilir kurguda korunuyor.')],
             ['title' => __('Kategori Derinliği'), 'text' => __('Buketler ve saksı bitkileri alt kataloglarla birlikte daha okunaklı biçimde keşfediliyor.')],
         ]);
@@ -198,11 +198,11 @@
                     <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
                         <div class="rounded-[1.3rem] border border-black/6 bg-rg-cream/72 px-4 py-4 dark:border-white/10 dark:bg-[#241f2c]">
                             <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Keşif') }}</p>
-                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ __('Kategori blokları daha geniş katalog resmi verir; editoryal seçki tek üründe karar hissi kurar.') }}</p>
+                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ __('Kategoriler, aradığınız buket ya da saksı bitkisine daha hızlı ulaşmanızı sağlar.') }}</p>
                         </div>
                         <div class="rounded-[1.3rem] border border-black/6 bg-rg-cream/72 px-4 py-4 dark:border-white/10 dark:bg-[#241f2c]">
                             <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Teslim Dili') }}</p>
-                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ __('Ürün notu, fiyat ve yönlendirme aynı blokta toplandığı için kullanıcı daha az dağılır.') }}</p>
+                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ __('Ürün notu, fiyat ve detay bağlantısı tek yerde durduğu için seçim yapmak kolaylaşır.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -374,4 +374,3 @@
         </section>
     @endif
 @endsection
-

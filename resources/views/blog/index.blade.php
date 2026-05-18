@@ -85,7 +85,7 @@
                         {{ __('Blog artık mağazanın doğal uzantısı gibi davranıyor.') }}
                     </h2>
                     <p class="mt-4 text-sm leading-[1.85] text-rg-grayText dark:text-white/84 md:text-[15px]">
-                        {{ __('Daha sakin tipografi, daha net kart hiyerarşisi ve daha büyük görsel alanlarla blog; bilgi veren ama alışveriş akışını bölmeyen bir editoryal katman haline getirildi.') }}
+                        {{ __('Çiçek bakımı, hediye seçimi ve özel gün hazırlıkları için kısa, okunabilir ve işe yarar öneriler.') }}
                     </p>
 
                     <div class="mt-6 space-y-3">

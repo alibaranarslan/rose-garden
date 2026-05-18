@@ -31,7 +31,7 @@
             ],
         ];
         $catalogSupportNotes = [
-            __('Kart mesajı ve teslim notu sipariş akışında ayrıca eklenebilir.'),
+            __('Kart mesajı ve teslim notunu ödeme öncesinde ayrıca ekleyebilirsiniz.'),
             __('Katalog dar geliyorsa destek hattı benzer tonda alternatif önerebilir.'),
         ];
     @endphp

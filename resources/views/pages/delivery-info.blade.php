@@ -5,7 +5,7 @@
         <x-page-hero
             class="rg-page-hero--compact"
             :eyebrow="__('Teslimat Bilgileri')"
-            :title="__('Siparişinizin hazırlanma, yönlendirilme ve teslim edilme akışı tek bakışta')"
+            :title="__('Siparişinizin hazırlanma ve teslimat adımları tek bakışta')"
             :description="__('Teslimat sayfası; hız, bölge, ücret ve özel gün yoğunluğu gibi karar verdiren bilgileri daha profesyonel ve daha hızlı okunan bir düzende sunar.')"
             compact
         >
@@ -52,7 +52,7 @@
                         </div>
                         <div>
                             <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Teslimat saatleri') }}</p>
-                            <h2 class="mt-1 font-display text-2xl text-rg-deepPurple dark:text-white">{{ __('Günlük akış ve sipariş kesim saatleri') }}</h2>
+                            <h2 class="mt-1 font-display text-2xl text-rg-deepPurple dark:text-white">{{ __('Günlük hazırlık ve sipariş kesim saatleri') }}</h2>
                         </div>
                     </div>
 

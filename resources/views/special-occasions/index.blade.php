@@ -61,7 +61,7 @@
             [
                 'label' => __('Katalog'),
                 'title' => __('Gerçek ürün görselleriyle ilerler'),
-                'copy' => __('Özel gün akışları dekoratif ikonlara değil, vitrindeki gerçek ürün fotoğraflarına dayanır.'),
+                'copy' => __('Özel gün sayfalarında gerçek ürün fotoğrafları ve hediye önerileri öne çıkar.'),
             ],
         ];
     @endphp
@@ -82,7 +82,7 @@
                             {{ __('Kutlamaya değer her an için seçilmiş çiçek ve hediye koleksiyonları') }}
                         </h1>
                         <p class="max-w-xl text-sm leading-7 text-rg-copy-muted dark:text-white/78 md:text-[15px]">
-                            {{ __('Sevgililer Günü’nden Anneler Günü’ne, yıl boyunca hatırlanmak istenen her tarih için çiçek ve hediye seçimleri tek bir akışta buluşur.') }}
+                            {{ __('Sevgililer Günü’nden Anneler Günü’ne, yıl boyunca hatırlanmak istenen her tarih için çiçek ve hediye seçeneklerini bir arada inceleyin.') }}
                         </p>
                     </div>
 
@@ -142,7 +142,7 @@
                         <div class="rg-surface-soft px-5 py-5">
                             <span class="rg-kicker">{{ __('Canlı Katalog') }}</span>
                             <p class="text-sm leading-7 text-rg-copy-muted dark:text-white/86">
-                                {{ __('Özel gün akışları gerçek ürün görselleriyle beslenir; karar alanı dekoratif semboller yerine canlı katalogla kurulur.') }}
+                                {{ __('Özel gün sayfaları gerçek ürün görselleriyle hazırlanır; seçim yaparken buketi ve hediye tonunu daha net görürsünüz.') }}
                             </p>
                         </div>
                     </div>

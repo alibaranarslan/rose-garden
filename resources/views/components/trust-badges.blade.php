@@ -20,7 +20,7 @@
         ],
         [
             'title' => __('Güvenli Ödeme'),
-            'body' => __('SSL koruması, 3D Secure desteği ve PayTR altyapısıyla güvenli ödeme akışı.'),
+            'body' => __('SSL koruması, 3D Secure desteği ve PayTR altyapısıyla güvenli ödeme.'),
         ],
         [
             'title' => __('Taze Hazırlık'),

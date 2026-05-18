@@ -47,7 +47,7 @@
                     @endif
                     <span class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/72">{{ __('Siparişe özel hazırlanır') }}</span>
                     @if ($showcaseCompanions->isNotEmpty())
-                        <span class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-midPurple dark:text-rg-lavender/78">{{ __('Daha fazla ürün proof') }}</span>
+                        <span class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-midPurple dark:text-rg-lavender/78">{{ __('Benzer seçenekler') }}</span>
                     @endif
                 </div>
 
@@ -56,7 +56,7 @@
                         {{ __('Ürünü incele') }}
                     </a>
                     <a href="{{ \App\Support\StorefrontLocale::route('products.index', ['sort' => 'best_sellers']) }}" class="rg-button-secondary">
-                        {{ __('Çok satanlara geç') }}
+                        {{ __('Çok satanları gör') }}
                     </a>
                 </div>
 
@@ -64,11 +64,11 @@
                     <div class="mt-6 rounded-[1.5rem] border border-black/6 bg-white/80 p-4 dark:border-white/10 dark:bg-[#17111d]">
                         <div class="mb-3 flex items-center justify-between gap-3">
                             <div>
-                                <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Aynı akışta') }}</p>
-                                <h3 class="mt-1 text-sm font-semibold text-rg-deepPurple dark:text-white">{{ __('Bu vitrine yakın ürünler') }}</h3>
+                                <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Birlikte iyi gider') }}</p>
+                                <h3 class="mt-1 text-sm font-semibold text-rg-deepPurple dark:text-white">{{ __('Benzer hediye önerileri') }}</h3>
                             </div>
                             <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}" class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-grayText transition-colors hover:text-rg-purple dark:text-white/72 dark:hover:text-rg-lavender">
-                                {{ __('Tümünü aç') }}
+                                {{ __('Tümünü gör') }}
                             </a>
                         </div>
 
@@ -97,11 +97,11 @@
 
                 <div class="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-3 rounded-[1.4rem] border border-white/25 bg-[#1f1622]/74 px-4 py-4 text-white shadow-[0_20px_44px_rgba(18,10,20,0.25)] backdrop-blur-md">
                     <div>
-                        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">{{ __('Satın alma yönü') }}</p>
-                        <p class="mt-1 text-sm font-semibold text-white">{{ __('Vitrinden PDP’ye tek adımda geçiş') }}</p>
+                        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">{{ __('Hediye seçimi') }}</p>
+                        <p class="mt-1 text-sm font-semibold text-white">{{ __('Detayları gör, siparişe geç') }}</p>
                     </div>
                     <span class="inline-flex items-center rounded-full border border-white/18 bg-white/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/88">
-                        {{ __('Gerçek ürün') }}
+                        {{ __('Atölye ürünü') }}
                     </span>
                 </div>
             </div>

@@ -85,7 +85,7 @@
                 <p class="mt-2 text-2xl font-semibold tabular-nums text-rg-deepPurple dark:text-white">{{ number_format($totalCount, 0, ',', '.') }}</p>
                 <p class="mt-1 text-sm text-rg-copy-muted dark:text-white/82">{{ __('ürün görünür durumda') }}</p>
             </div>
-            <p class="max-w-sm text-xs leading-6 text-rg-copy-muted dark:text-white/72">{{ __('Ara katman büyümeden, filtre ve sıralama üzerinden grid kararını hızlandırın.') }}</p>
+            <p class="max-w-sm text-xs leading-6 text-rg-copy-muted dark:text-white/72">{{ __('Filtre ve sıralama ile aradığınız buket ya da hediyeye daha kolay ulaşın.') }}</p>
         </x-slot:stats>
 
         <x-slot:aside>
