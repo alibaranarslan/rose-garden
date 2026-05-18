@@ -24,6 +24,7 @@ The old block mixed a "Kategori seç, ürünü daha hızlı bul" message with a 
 - `npm run build`
 - `php artisan test tests\Feature\Storefront\PublicSurfaceSmokeTest.php`
 - Playwright mobile smoke on `http://127.0.0.1:8001/tr`
+- Playwright mobile smoke on `https://rosegardencicekcilik.com.tr/tr`
 
 ## Evidence
 
@@ -31,4 +32,10 @@ The old block mixed a "Kategori seç, ürünü daha hızlı bul" message with a 
 - Horizontal overflow: false.
 - Console errors: none.
 - Screenshot: `%LOCALAPPDATA%\Temp\rg-category-showcase-polish\mobile-category-showcase-clean.png`
+- Live screenshot: `%LOCALAPPDATA%\Temp\rg-live-category-showcase-polish\mobile-category-showcase-live.png`
 
+## Deployment
+
+- Deployed subtree branch: `deploy/rose-garden-main-c589e98`
+- Live URL checked: `https://rosegardencicekcilik.com.tr/tr`
+- Browser path note: in-app Browser setup timed out, so rendered validation used Playwright fallback.
