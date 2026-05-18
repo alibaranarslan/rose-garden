@@ -22,8 +22,17 @@ Targeted mobile header polish. The night/dark mode feature already existed, but 
 
 ## Evidence
 
-- Pending live smoke after deployment:
-  - Mobile header shows cart, logo, visible theme toggle, and menu in the first row.
-  - Tapping the visible theme toggle switches `html.dark`.
+- Live mobile smoke on `https://rosegardencicekcilik.com.tr/tr`:
+  - Mobile header shows cart, visible theme toggle, and menu in the first row.
+  - Tapping the visible theme toggle switches `html.dark` from `false` to `true`.
+  - Theme toggle `aria-pressed` becomes `true`.
   - Header has no horizontal overflow.
   - Console errors are absent.
+- Screenshots:
+  - `%LOCALAPPDATA%\Temp\rg-mobile-header-theme-toggle\mobile-header-theme-before.png`
+  - `%LOCALAPPDATA%\Temp\rg-mobile-header-theme-toggle\mobile-header-theme-after-dark.png`
+
+## Deployment
+
+- Deployed subtree branch: `deploy/rose-garden-main-64460fe`
+- Browser path note: in-app Browser setup timed out, so rendered validation used Playwright fallback.
