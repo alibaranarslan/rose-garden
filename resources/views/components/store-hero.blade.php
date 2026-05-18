@@ -53,35 +53,31 @@
 
     <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 md:pb-14 md:pt-14">
         <div class="rg-store-hero-grid grid gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:items-center">
-            @unless ($heroImageIsPlaceholder)
-                <div class="rg-store-hero-ambient-image" aria-hidden="true">
-                    <img src="{{ $heroImage }}" alt="" loading="eager" decoding="async">
-                </div>
-            @endunless
-
             <div class="rg-store-hero-copy max-w-2xl">
-                <div class="rg-store-hero-lockup inline-flex items-center gap-4 rounded-full border border-black/8 bg-white/80 px-4 py-2.5 shadow-[0_12px_32px_rgba(72,45,70,0.08)] backdrop-blur dark:border-white/14 dark:bg-white/10 dark:shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
-                    <x-site-logo variant="adaptive" type="lockup" class="h-8 w-auto sm:h-9" />
-                    <span class="hidden h-8 w-px bg-black/10 dark:bg-white/18 sm:block"></span>
-                    <span class="hidden text-[11px] font-semibold uppercase tracking-[0.26em] text-rg-deepPurple/62 dark:text-white/82 sm:block">{{ __('Rose Garden Atelier') }}</span>
-                </div>
+                <div class="rg-store-hero-intro-card" style="--rg-store-hero-mobile-image: url('{{ e($heroImage) }}');">
+                    <div class="rg-store-hero-lockup inline-flex items-center gap-4 rounded-full border border-black/8 bg-white/80 px-4 py-2.5 shadow-[0_12px_32px_rgba(72,45,70,0.08)] backdrop-blur dark:border-white/14 dark:bg-white/10 dark:shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
+                        <x-site-logo variant="adaptive" type="lockup" class="h-8 w-auto sm:h-9" />
+                        <span class="hidden h-8 w-px bg-black/10 dark:bg-white/18 sm:block"></span>
+                        <span class="hidden text-[11px] font-semibold uppercase tracking-[0.26em] text-rg-deepPurple/62 dark:text-white/82 sm:block">{{ __('Rose Garden Atelier') }}</span>
+                    </div>
 
-                <h1 class="rg-store-hero-title mt-7 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-[-0.02em] text-rg-deepPurple dark:text-white sm:text-5xl lg:text-[3.8rem] lg:leading-[1.02]">
-                    {{ $headingText }}
-                </h1>
-                <p class="rg-store-hero-subheading mt-5 max-w-xl text-pretty text-base leading-relaxed text-rg-grayText dark:text-white/84 sm:text-lg">
-                    {{ $subheadingText }}
-                </p>
+                    <h1 class="rg-store-hero-title mt-7 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-[-0.02em] text-rg-deepPurple dark:text-white sm:text-5xl lg:text-[3.8rem] lg:leading-[1.02]">
+                        {{ $headingText }}
+                    </h1>
+                    <p class="rg-store-hero-subheading mt-5 max-w-xl text-pretty text-base leading-relaxed text-rg-grayText dark:text-white/84 sm:text-lg">
+                        {{ $subheadingText }}
+                    </p>
 
-                <div class="rg-store-hero-actions mt-7 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ $ctaHref }}"
-                        class="inline-flex items-center justify-center rounded-full bg-rg-deepPurple px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_35px_rgba(55,34,59,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-rg-purple dark:bg-white dark:text-rg-deepPurple dark:hover:bg-white/92">
-                        {{ $ctaText }}
-                    </a>
-                    <a href="{{ $secondaryHref }}" target="_blank" rel="noopener"
-                        class="inline-flex items-center justify-center rounded-full border border-black/10 bg-white/80 px-6 py-3.5 text-sm font-semibold text-rg-deepPurple transition-colors duration-200 hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/14">
-                        {{ $secondaryText }}
-                    </a>
+                    <div class="rg-store-hero-actions mt-7 flex flex-col gap-3 sm:flex-row">
+                        <a href="{{ $ctaHref }}"
+                            class="inline-flex items-center justify-center rounded-full bg-rg-deepPurple px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_35px_rgba(55,34,59,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-rg-purple dark:bg-white dark:text-rg-deepPurple dark:hover:bg-white/92">
+                            {{ $ctaText }}
+                        </a>
+                        <a href="{{ $secondaryHref }}" target="_blank" rel="noopener"
+                            class="inline-flex items-center justify-center rounded-full border border-black/10 bg-white/80 px-6 py-3.5 text-sm font-semibold text-rg-deepPurple transition-colors duration-200 hover:bg-white dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/14">
+                            {{ $secondaryText }}
+                        </a>
+                    </div>
                 </div>
 
                 <div class="rg-store-hero-highlights mt-7 grid gap-3 sm:grid-cols-2">

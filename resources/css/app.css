@@ -2131,36 +2131,10 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 }
 
 .rg-store-hero-copy,
+.rg-store-hero-intro-card,
 .rg-store-hero-visual {
   position: relative;
   z-index: 1;
-}
-
-.rg-store-hero-ambient-image {
-  position: absolute;
-  inset-block-start: 1.15rem;
-  inset-inline-start: clamp(17rem, 30vw, 25rem);
-  z-index: 0;
-  width: clamp(14rem, 24vw, 22rem);
-  aspect-ratio: 1 / 1;
-  pointer-events: none;
-  opacity: 0.16;
-  filter: saturate(0.95) contrast(0.96);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 48%, transparent 74%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 0 48%, transparent 74%);
-}
-
-.rg-store-hero-ambient-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 999px;
-  transform: rotate(-4deg);
-}
-
-html.dark .rg-store-hero-ambient-image {
-  opacity: 0.12;
-  filter: saturate(0.8) contrast(0.92);
 }
 
 .rg-footer-feature h2 {
@@ -2337,34 +2311,60 @@ html.dark .rg-store-hero-ambient-image {
   }
 
   .rg-store-hero > .relative.mx-auto {
-    padding-top: 1.65rem;
-    padding-bottom: 2.25rem;
+    padding-top: 1.05rem;
+    padding-bottom: 1.65rem;
   }
 
   .rg-store-hero-grid {
-    gap: 1rem;
-  }
-
-  .rg-store-hero-ambient-image {
-    inset-block-start: 4.35rem;
-    inset-inline-start: auto;
-    inset-inline-end: -2.6rem;
-    width: 13.8rem;
-    opacity: 0.13;
+    gap: 0.85rem;
   }
 
   .rg-store-hero-copy {
-    display: contents;
+    display: block;
     min-width: 0;
   }
 
+  .rg-store-hero-intro-card {
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 1.55rem;
+    background:
+      linear-gradient(90deg, rgba(255, 250, 247, 0.97) 0%, rgba(255, 250, 247, 0.9) 45%, rgba(255, 250, 247, 0.54) 100%),
+      var(--rg-store-hero-mobile-image);
+    background-position: center, right center;
+    background-size: auto, cover;
+    box-shadow: 0 22px 50px rgba(56, 35, 54, 0.13);
+    padding: 1rem;
+  }
+
+  .rg-store-hero-intro-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 82% 16%, rgba(255, 255, 255, 0.68), transparent 34%),
+      linear-gradient(100deg, rgba(255, 244, 249, 0.18), rgba(88, 45, 76, 0.24));
+    pointer-events: none;
+  }
+
+  html.dark .rg-store-hero-intro-card {
+    border-color: rgba(255, 255, 255, 0.12);
+    background:
+      linear-gradient(90deg, rgba(25, 18, 32, 0.98) 0%, rgba(25, 18, 32, 0.92) 49%, rgba(25, 18, 32, 0.6) 100%),
+      var(--rg-store-hero-mobile-image);
+    background-position: center, right center;
+    background-size: auto, cover;
+    box-shadow: 0 24px 52px rgba(0, 0, 0, 0.32);
+  }
+
   .rg-store-hero-lockup {
-    order: 1;
     gap: 0.65rem;
     align-self: flex-start;
     justify-self: start;
     width: max-content;
-    max-width: 78%;
+    max-width: 72%;
     padding: 0.52rem 0.9rem;
     box-shadow: 0 10px 24px rgba(72, 45, 70, 0.07);
   }
@@ -2375,34 +2375,32 @@ html.dark .rg-store-hero-ambient-image {
   }
 
   .rg-store-hero-title {
-    order: 2;
-    margin-top: 1.05rem;
-    max-width: 20rem;
-    font-size: clamp(2rem, 9.8vw, 2.55rem) !important;
-    line-height: 0.98 !important;
+    margin-top: 0.95rem;
+    max-width: 18.75rem;
+    font-size: clamp(1.9rem, 9.2vw, 2.42rem) !important;
+    line-height: 1 !important;
     letter-spacing: -0.035em;
   }
 
   .rg-store-hero-subheading {
     display: -webkit-box;
-    order: 3;
-    margin-top: 0.85rem;
-    max-width: 21rem;
+    margin-top: 0.72rem;
+    max-width: 17.5rem;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    font-size: 0.92rem !important;
-    line-height: 1.55;
+    font-size: 0.88rem !important;
+    line-height: 1.48;
   }
 
   .rg-store-hero-actions {
-    order: 4;
-    margin-top: 1.15rem;
+    margin-top: 0.98rem;
   }
 
   .rg-store-hero-actions a {
-    min-height: 3rem;
-    padding: 0.82rem 1.1rem;
+    min-height: 2.85rem;
+    width: max-content;
+    padding: 0.76rem 1.08rem;
   }
 
   .rg-store-hero-actions a:nth-child(2) {
@@ -2410,33 +2408,12 @@ html.dark .rg-store-hero-ambient-image {
   }
 
   .rg-store-hero-visual {
-    margin-top: 0.2rem;
-    order: 5;
-  }
-
-  .rg-store-hero-visual > div:first-child {
-    border-radius: 1.35rem;
-    padding: 0.42rem;
-    box-shadow: 0 18px 46px rgba(56, 35, 54, 0.11);
-  }
-
-  .rg-store-hero-visual > div:first-child > div {
-    aspect-ratio: 16 / 9;
-    border-radius: 1.12rem;
-  }
-
-  .rg-store-hero-visual .absolute.left-4.top-4 {
-    left: 0.7rem;
-    top: 0.7rem;
-    padding: 0.42rem 0.7rem;
-    font-size: 0.55rem;
-    letter-spacing: 0.14em;
+    display: none;
   }
 
   .rg-store-hero-highlights {
     display: flex;
-    order: 6;
-    margin-top: 0;
+    margin-top: 0.85rem;
     gap: 0.65rem;
     overflow-x: auto;
     padding-bottom: 0.1rem;
