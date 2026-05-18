@@ -90,7 +90,9 @@
     </article>
 @else
     <article @class([
-        'group relative flex h-full flex-col overflow-hidden rounded-[1.55rem] border border-black/5 bg-white/94 shadow-[0_14px_38px_rgba(34,24,40,0.07)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(34,24,40,0.1)] dark:border-white/10 dark:bg-[#1e1a26]',
+        'rg-product-card group relative flex h-full flex-col overflow-hidden rounded-[1.55rem] border border-black/5 bg-white/94 shadow-[0_14px_38px_rgba(34,24,40,0.07)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(34,24,40,0.1)] dark:border-white/10 dark:bg-[#1e1a26]',
+        'rg-product-card--catalog' => ! $isShowcase,
+        'rg-product-card--showcase' => $isShowcase,
         'min-h-[26rem] sm:min-h-[28rem]' => ! $isShowcase,
     ])>
         <div class="absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-2 p-2.5">
@@ -145,11 +147,11 @@
         ])>
             <div class="min-h-0 space-y-2">
                 @if ($categoryName)
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ $categoryName }}</p>
+                    <p class="rg-product-card-category text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ $categoryName }}</p>
                 @endif
 
                 <h3 @class([
-                    'font-display leading-snug text-rg-deepPurple dark:text-white',
+                    'rg-product-card-title font-display leading-snug text-rg-deepPurple dark:text-white',
                     'line-clamp-2 min-h-[2.75rem] text-[1.35rem] sm:text-[1.45rem]' => ! $isShowcase,
                     'line-clamp-3 text-[1.45rem] sm:text-[1.55rem]' => $isShowcase,
                 ])>
@@ -158,7 +160,7 @@
 
                 @if ($description !== '')
                     <p @class([
-                        'leading-relaxed text-rg-grayText dark:text-zinc-300',
+                        'rg-product-card-description leading-relaxed text-rg-grayText dark:text-zinc-300',
                         'line-clamp-3 text-sm' => ! $isShowcase,
                         'line-clamp-3 text-[15px]' => $isShowcase,
                     ])>{{ $description }}</p>

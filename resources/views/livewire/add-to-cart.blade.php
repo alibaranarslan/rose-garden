@@ -3,7 +3,10 @@
     $gapClass = $isCard ? 'gap-2' : 'space-y-4';
 @endphp
 
-<div class="flex flex-col flex-1 min-h-0 w-full">
+<div @class([
+    'rg-add-to-cart flex flex-col flex-1 min-h-0 w-full',
+    'rg-add-to-cart--card' => $isCard,
+])>
     <div class="flex min-h-0 flex-1 flex-col {{ $gapClass }}">
     {{-- Fiyat (varyantlı / varyantsız tek yerden) --}}
     @if($product)
@@ -18,7 +21,7 @@
     @endif
 
     @if($variants->isNotEmpty())
-        <div class="{{ $isCard ? '' : 'mt-1' }}">
+        <div class="{{ $isCard ? '' : 'mt-1' }}" @if($isCard) data-rg-card-variant @endif>
             <label for="variant-{{ $productId }}" class="{{ $isCard ? 'sr-only' : 'block text-sm font-semibold text-rg-darkText dark:text-white/90 mb-2' }}">
                 {{ __('Boyut / Seçenek') }}
             </label>
@@ -39,7 +42,7 @@
     @endif
 
     {{-- Adet: kompakt yatay --}}
-    <div class="flex flex-row items-center gap-2 {{ $isCard ? 'mt-0.5' : '' }}">
+    <div class="flex flex-row items-center gap-2 {{ $isCard ? 'mt-0.5' : '' }}" @if($isCard) data-rg-card-quantity @endif>
         <span class="text-xs font-medium text-rg-grayText dark:text-white/78 shrink-0">{{ __('Adet') }}</span>
         <div class="inline-flex items-stretch border border-rg-lightLavender dark:border-white/20 rounded-btn overflow-hidden h-8 flex-1 max-w-[6.5rem]">
             <button

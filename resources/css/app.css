@@ -2323,6 +2323,96 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     letter-spacing: 0.14em !important;
   }
 
+  .rg-plp-hero {
+    border-radius: 1.25rem;
+    box-shadow: 0 14px 34px rgba(34, 24, 40, 0.07);
+  }
+
+  .rg-plp-hero::before,
+  .rg-plp-hero::after {
+    opacity: 0.22;
+    filter: blur(34px);
+  }
+
+  .rg-plp-hero .rg-page-hero__grid {
+    gap: 0.65rem;
+    padding: 0.82rem 0.88rem;
+  }
+
+  .rg-plp-hero .space-y-5 {
+    gap: 0.55rem;
+  }
+
+  .rg-plp-hero .space-y-3 {
+    gap: 0.38rem;
+  }
+
+  .rg-plp-hero .rg-kicker {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+  }
+
+  .rg-plp-hero h1 {
+    max-width: 16rem;
+    font-size: clamp(1.72rem, 8vw, 2.08rem);
+    line-height: 0.98;
+  }
+
+  .rg-plp-hero h1 + p {
+    display: -webkit-box;
+    max-width: 18.5rem;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .rg-plp-hero .flex.flex-wrap.gap-3 {
+    gap: 0.42rem;
+    flex-wrap: nowrap;
+    margin-right: -0.25rem;
+    overflow-x: auto;
+    padding-bottom: 0.08rem;
+    scrollbar-width: none;
+  }
+
+  .rg-plp-hero .flex.flex-wrap.gap-3::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rg-plp-hero .flex.flex-wrap.gap-3 a {
+    min-height: 2rem;
+    flex: 0 0 auto;
+    padding: 0.42rem 0.65rem;
+    font-size: 0.68rem;
+  }
+
+  .rg-plp-hero .rg-page-hero__stats {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.45rem;
+  }
+
+  .rg-plp-hero .rg-page-stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-radius: 0.95rem;
+    padding: 0.62rem 0.72rem;
+  }
+
+  .rg-plp-hero .rg-page-stat p:first-child,
+  .rg-plp-hero .rg-page-stat p:last-child,
+  .rg-plp-hero .rg-page-stat + p {
+    display: none;
+  }
+
+  .rg-plp-hero .rg-page-stat p:nth-child(2) {
+    margin-top: 0;
+    font-size: 1.18rem;
+  }
+
   .rg-store-hero > .relative.mx-auto {
     padding-top: 1.05rem;
     padding-bottom: 1.65rem;
@@ -2471,6 +2561,61 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 
   .rg-store-hero-spotlight {
     display: none;
+  }
+
+  .rg-catalog-grid {
+    gap: 0.68rem;
+  }
+
+  .rg-catalog-grid .rg-product-card--catalog {
+    min-height: 0;
+    border-radius: 1rem;
+    box-shadow: 0 10px 24px rgba(34, 24, 40, 0.06);
+  }
+
+  .rg-catalog-grid .rg-product-card--catalog > a {
+    aspect-ratio: 1 / 1.04;
+  }
+
+  .rg-catalog-grid .rg-product-card--catalog > a img {
+    padding: 0.62rem;
+  }
+
+  .rg-catalog-grid .rg-product-card--catalog > div:last-child {
+    padding: 0.68rem 0.68rem 0.72rem;
+  }
+
+  .rg-catalog-grid .rg-product-card-category,
+  .rg-catalog-grid .rg-product-card-description,
+  .rg-catalog-grid .rg-add-to-cart--card [data-rg-card-variant],
+  .rg-catalog-grid .rg-add-to-cart--card [data-rg-card-quantity] {
+    display: none;
+  }
+
+  .rg-catalog-grid .rg-product-card-title {
+    min-height: 2.1rem;
+    font-size: 1rem !important;
+    line-height: 1.05;
+    letter-spacing: -0.018em;
+  }
+
+  .rg-catalog-grid .rg-add-to-cart--card {
+    gap: 0.42rem;
+  }
+
+  .rg-catalog-grid .rg-add-to-cart--card > div:first-child {
+    gap: 0.35rem;
+  }
+
+  .rg-catalog-grid .rg-add-to-cart--card span.font-bold {
+    font-size: 1rem;
+  }
+
+  .rg-catalog-grid .rg-add-to-cart--card button {
+    min-height: 2.25rem;
+    border-radius: 999px;
+    padding: 0.52rem 0.6rem;
+    font-size: 0.76rem;
   }
 
   .rg-footer {
