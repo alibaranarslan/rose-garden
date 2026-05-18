@@ -2125,3 +2125,161 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     animation: rgPulse 8s ease-in-out infinite;
   }
 }
+
+@media (max-width: 767px) {
+  #rg-site-header > .mx-auto {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  #rg-site-header > .mx-auto > div {
+    border-radius: 0 0 1.35rem 1.35rem;
+    padding: 0.85rem 0.75rem 0.95rem !important;
+  }
+
+  #rg-site-header .rg-mobile-header-cart {
+    display: flex;
+    z-index: 8;
+  }
+
+  #rg-site-header .rg-mobile-header-cart .rg-header-cart-root,
+  #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a,
+  #rg-site-header .rg-mobile-menu-button {
+    border: 1px solid rgba(55, 35, 60, 0.1);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 12px 26px rgba(36, 22, 40, 0.08);
+    color: #2f1936;
+    backdrop-filter: blur(12px);
+  }
+
+  html.dark #rg-site-header .rg-mobile-header-cart .rg-header-cart-root > a,
+  html.dark #rg-site-header .rg-mobile-menu-button {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 26px rgba(12, 6, 16, 0.18);
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  #rg-site-header .rg-header-control-cluster {
+    display: none !important;
+  }
+
+  #rg-site-header .rg-header-search-shell {
+    order: 1;
+    height: 2.65rem;
+    margin-top: 0.1rem;
+  }
+
+  #rg-site-header .rg-header-search-shell input {
+    font-size: 0.78rem;
+  }
+
+  #rg-site-header .rg-header-search-submit {
+    min-width: 3.4rem;
+    padding-inline: 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  #rg-site-header.rg-header-campaign .special-day-campaign {
+    margin-top: 0.65rem;
+    padding: 0.95rem 1rem 1rem;
+  }
+
+  #rg-site-header.rg-header-campaign .special-day-campaign h2 {
+    max-width: 18rem;
+    font-size: clamp(1.42rem, 7.2vw, 1.9rem);
+  }
+
+  #rg-site-header.rg-header-campaign .special-day-campaign p {
+    font-size: 0.8rem;
+    line-height: 1.48;
+  }
+
+  .rg-mobile-nav-scroll {
+    scrollbar-width: none;
+    scroll-padding-inline: 1rem;
+  }
+
+  .rg-mobile-nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rg-mobile-nav-pill {
+    display: inline-flex;
+    min-height: 2.35rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(55, 35, 60, 0.08);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 0.55rem 0.9rem;
+    color: #2f1936;
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 18px rgba(36, 22, 40, 0.05);
+    white-space: nowrap;
+  }
+
+  .rg-mobile-nav-pill-active {
+    border-color: rgba(107, 65, 136, 0.28);
+    background: rgba(244, 229, 237, 0.95);
+    color: #6b4188;
+  }
+
+  html.dark .rg-mobile-nav-pill {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  html.dark .rg-mobile-nav-pill-active {
+    background: rgba(216, 190, 231, 0.18);
+    color: #dcc8ee;
+  }
+
+  .rg-cookie-consent {
+    right: 0.75rem !important;
+    bottom: 0.75rem !important;
+    left: 0.75rem !important;
+    width: auto !important;
+  }
+
+  .rg-cookie-consent > div {
+    max-height: 30dvh !important;
+    border-radius: 1rem !important;
+  }
+
+  .rg-cookie-consent > div > div {
+    padding: 0.72rem 0.9rem !important;
+  }
+
+  .rg-cookie-consent h3 {
+    font-size: 0.94rem !important;
+  }
+
+  .rg-cookie-consent > div > div:nth-child(2) > p {
+    display: none !important;
+  }
+
+  .rg-cookie-consent .space-y-3 {
+    gap: 0.58rem !important;
+  }
+
+  .rg-cookie-consent button {
+    min-height: 2.2rem;
+    padding: 0.45rem 0.82rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .rg-cookie-consent [class*="tracking"] {
+    letter-spacing: 0.14em !important;
+  }
+}

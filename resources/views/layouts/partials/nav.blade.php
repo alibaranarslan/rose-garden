@@ -31,7 +31,26 @@
 
 <nav class="relative z-20 border-t border-black/6 bg-rg-warmWhite/86 backdrop-blur-lg dark:border-white/10 dark:bg-[#17101f]/90" x-data="{ mobileNavOpen: false }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
-        <div class="flex items-center justify-between gap-3 py-2.5 md:hidden">
+        <div class="rg-mobile-nav-scroll -mx-4 flex gap-2 overflow-x-auto px-4 py-2.5 md:hidden" aria-label="{{ __('Mobil hızlı gezinme') }}">
+            <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}"
+                class="rg-mobile-nav-pill {{ request()->routeIs('products.index') && ! $currentSlug ? 'rg-mobile-nav-pill-active' : '' }}">
+                {{ $isTurkish ? 'Tüm Koleksiyon' : __('Tüm Koleksiyon') }}
+            </a>
+            <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}"
+                class="rg-mobile-nav-pill {{ request()->routeIs('products.category') ? 'rg-mobile-nav-pill-active' : '' }}">
+                {{ __('Kategoriler') }}
+            </a>
+            <a href="{{ \App\Support\StorefrontLocale::route('special-occasions.index') }}"
+                class="rg-mobile-nav-pill {{ request()->routeIs('special-occasions.*') ? 'rg-mobile-nav-pill-active' : '' }}">
+                {{ __('Özel Günler') }}
+            </a>
+            <a href="{{ \App\Support\StorefrontLocale::route('blog.index') }}"
+                class="rg-mobile-nav-pill {{ request()->routeIs('blog.*') ? 'rg-mobile-nav-pill-active' : '' }}">
+                Blog
+            </a>
+        </div>
+
+        <div class="hidden">
             <span class="text-sm font-medium text-rg-grayText dark:text-white/80">{{ __('Keşfet') }}</span>
             <button type="button"
                 @click="mobileNavOpen = !mobileNavOpen"

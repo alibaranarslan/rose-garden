@@ -24,6 +24,10 @@
             </div>
 
             <div class="relative flex items-center justify-center">
+                <div class="rg-mobile-header-cart absolute left-0 top-1/2 -translate-y-1/2 md:hidden">
+                    <livewire:cart-icon />
+                </div>
+
                 <a href="{{ \App\Support\StorefrontLocale::route('home') }}" class="block shrink-0" aria-label="{{ $siteName }}">
                     <x-site-logo
                         variant="adaptive"
@@ -64,16 +68,6 @@
                         {{ __('Ara') }}
                     </button>
                 </form>
-
-                <button type="button"
-                    @click="mobileMenu = !mobileMenu"
-                    class="order-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-black/8 bg-white/86 px-4 py-2.5 text-sm font-semibold text-rg-deepPurple shadow-sm transition-colors hover:border-rg-purple/30 hover:text-rg-purple dark:border-white/10 dark:bg-white/12 dark:text-white dark:hover:text-rg-lavender md:hidden"
-                    aria-label="{{ __('Menü') }}">
-                    <span x-text="mobileMenu ? '{{ __('Kapat') }}' : '{{ __('Menü') }}'"></span>
-                    <svg class="h-4 w-4 transition-transform duration-200" :class="mobileMenu ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
 
                 <div class="rg-header-control-cluster order-1 flex min-h-[2.75rem] w-full items-center justify-end gap-2.5 text-sm text-rg-darkText dark:text-white/85 md:order-2 md:w-auto md:justify-end">
                     <div class="rg-header-pill-row hidden gap-2 md:flex">
@@ -194,16 +188,6 @@
         class="border-t border-black/5 bg-white/92 backdrop-blur-xl dark:border-white/10 dark:bg-[#17101f]/95 md:hidden"
     >
         <div class="mx-auto max-w-7xl space-y-4 px-4 py-4 sm:px-6">
-            <form action="{{ \App\Support\StorefrontLocale::route('search') }}" method="GET" class="flex items-center overflow-hidden rounded-full border border-black/8 bg-white shadow-sm dark:border-white/12 dark:bg-white/14">
-                <span class="pl-4 text-rg-midPurple/80 dark:text-rg-lavender/70">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </span>
-                <input name="q" value="{{ request('q') }}" placeholder="{{ __('Buket, çikolata veya özel gün ara...') }}" class="flex-1 bg-transparent px-3 py-3 text-sm outline-none placeholder:text-rg-grayText dark:text-white dark:placeholder:text-white/40">
-                <button type="submit" class="mr-1.5 inline-flex h-9 items-center justify-center rounded-full bg-rg-purple px-4 text-sm font-semibold text-white">{{ __('Ara') }}</button>
-            </form>
-
             <div class="flex items-center justify-between rounded-[1.5rem] border border-black/5 bg-rg-cream/80 px-3.5 py-3 dark:border-white/10 dark:bg-white/10">
                 <span class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/72">{{ __('Dil ve tema') }}</span>
                 <div class="flex items-center gap-2">
