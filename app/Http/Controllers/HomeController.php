@@ -62,18 +62,7 @@ class HomeController extends Controller
 
         $this->attachCategoryCoverPaths($categories);
 
-        $today = now();
-        $futureDate = $today->copy()->addDays(14);
-        $activeOccasion = SpecialOccasion::active()
-            ->where(function ($query) use ($today, $futureDate) {
-                $query->where('date_month', $today->month)
-                    ->orWhere(function ($inner) use ($futureDate) {
-                        $inner->where('date_month', $futureDate->month)
-                            ->where('date_day', '<=', $futureDate->day);
-                    });
-            })
-            ->orderByRaw('date_month ASC, date_day ASC')
-            ->first();
+        $activeOccasion = SpecialOccasion::nearestActive(with: ['category']);
 
         $occasionProducts = $activeOccasion
             ? Product::storefrontReady()

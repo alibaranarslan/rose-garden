@@ -49,6 +49,16 @@ class SpecialOccasion extends Model
         return $query->where('is_active', true);
     }
 
+    public static function nearestActive(?CarbonInterface $from = null, array $with = []): ?self
+    {
+        return self::query()
+            ->active()
+            ->with($with)
+            ->get()
+            ->sortBy(fn (self $occasion): int => $occasion->daysUntil($from))
+            ->first();
+    }
+
     public function nextOccurrence(?CarbonInterface $from = null)
     {
         $from = $from ? $from->copy()->startOfDay() : now()->startOfDay();
