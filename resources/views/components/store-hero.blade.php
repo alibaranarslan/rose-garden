@@ -46,28 +46,28 @@
     ]);
 @endphp
 
-<section class="relative isolate overflow-hidden border-b border-black/5 bg-[#fbf3ee] text-rg-deepPurple dark:border-white/8 dark:bg-[#150f1c] dark:text-white">
+<section class="rg-store-hero relative isolate overflow-hidden border-b border-black/5 bg-[#fbf3ee] text-rg-deepPurple dark:border-white/8 dark:bg-[#150f1c] dark:text-white">
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(238,218,225,0.88),transparent_34rem),radial-gradient(circle_at_85%_18%,rgba(206,188,223,0.42),transparent_24rem),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(251,243,238,0.98))] dark:hidden"></div>
     <div class="absolute inset-0 hidden bg-[radial-gradient(circle_at_top_left,rgba(125,88,150,0.3),transparent_26rem),radial-gradient(circle_at_85%_18%,rgba(93,73,128,0.22),transparent_20rem),linear-gradient(180deg,rgba(27,19,36,0.98),rgba(18,12,24,1))] dark:block"></div>
     <div class="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,rgba(77,58,82,0.8)_1px,transparent_1px),linear-gradient(to_bottom,rgba(77,58,82,0.8)_1px,transparent_1px)] [background-size:42px_42px] dark:opacity-[0.1] dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.14)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.14)_1px,transparent_1px)]"></div>
 
     <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 md:pb-14 md:pt-14">
-        <div class="grid gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:items-center">
-            <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-4 rounded-full border border-black/8 bg-white/80 px-4 py-2.5 shadow-[0_12px_32px_rgba(72,45,70,0.08)] backdrop-blur dark:border-white/14 dark:bg-white/10 dark:shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
+        <div class="rg-store-hero-grid grid gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:items-center">
+            <div class="rg-store-hero-copy max-w-2xl">
+                <div class="rg-store-hero-lockup inline-flex items-center gap-4 rounded-full border border-black/8 bg-white/80 px-4 py-2.5 shadow-[0_12px_32px_rgba(72,45,70,0.08)] backdrop-blur dark:border-white/14 dark:bg-white/10 dark:shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
                     <x-site-logo variant="adaptive" type="lockup" class="h-8 w-auto sm:h-9" />
                     <span class="hidden h-8 w-px bg-black/10 dark:bg-white/18 sm:block"></span>
                     <span class="hidden text-[11px] font-semibold uppercase tracking-[0.26em] text-rg-deepPurple/62 dark:text-white/82 sm:block">{{ __('Rose Garden Atelier') }}</span>
                 </div>
 
-                <h1 class="mt-7 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-[-0.02em] text-rg-deepPurple dark:text-white sm:text-5xl lg:text-[3.8rem] lg:leading-[1.02]">
+                <h1 class="rg-store-hero-title mt-7 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-[-0.02em] text-rg-deepPurple dark:text-white sm:text-5xl lg:text-[3.8rem] lg:leading-[1.02]">
                     {{ $headingText }}
                 </h1>
-                <p class="mt-5 max-w-xl text-pretty text-base leading-relaxed text-rg-grayText dark:text-white/84 sm:text-lg">
+                <p class="rg-store-hero-subheading mt-5 max-w-xl text-pretty text-base leading-relaxed text-rg-grayText dark:text-white/84 sm:text-lg">
                     {{ $subheadingText }}
                 </p>
 
-                <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+                <div class="rg-store-hero-actions mt-7 flex flex-col gap-3 sm:flex-row">
                     <a href="{{ $ctaHref }}"
                         class="inline-flex items-center justify-center rounded-full bg-rg-deepPurple px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_35px_rgba(55,34,59,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-rg-purple dark:bg-white dark:text-rg-deepPurple dark:hover:bg-white/92">
                         {{ $ctaText }}
@@ -78,7 +78,7 @@
                     </a>
                 </div>
 
-                <div class="mt-7 grid gap-3 sm:grid-cols-2">
+                <div class="rg-store-hero-highlights mt-7 grid gap-3 sm:grid-cols-2">
                     @foreach ($highlightItems as $item)
                         <div class="rounded-[1.5rem] border border-black/7 bg-white/72 px-4 py-4 shadow-[0_14px_30px_rgba(72,45,70,0.05)] backdrop-blur dark:border-white/12 dark:bg-white/10 dark:shadow-[0_14px_32px_rgba(0,0,0,0.2)]">
                             <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-[#d4bdf0]">{{ data_get($item, 'label') }}</p>
@@ -87,14 +87,14 @@
                     @endforeach
                 </div>
 
-                <div class="mt-5 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">
+                <div class="rg-store-hero-tags mt-5 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">
                     @foreach ($heroServiceTags as $tag)
                         <span class="rounded-full border border-black/8 bg-white/70 px-3 py-2 dark:border-white/10 dark:bg-white/8">{{ $tag }}</span>
                     @endforeach
                 </div>
             </div>
 
-            <div class="relative lg:pl-8">
+            <div class="rg-store-hero-visual relative lg:pl-8">
                 <div class="rounded-[2rem] border border-white/55 bg-white/58 p-3 shadow-[0_28px_76px_rgba(56,35,54,0.14)] ring-1 ring-white/35 backdrop-blur-md dark:border-white/14 dark:bg-white/10 dark:ring-white/10">
                     <div class="relative aspect-[5/6] overflow-hidden rounded-[1.75rem] bg-[#efe6ea] ring-1 ring-black/[0.04] dark:bg-[#241b2c] dark:ring-white/[0.06]">
                         <img
@@ -115,7 +115,7 @@
                 </div>
 
                 @if ($featuredProduct)
-                    <div class="mt-4 rounded-[1.7rem] border border-black/8 bg-white/86 p-5 shadow-[0_22px_50px_rgba(60,38,56,0.1)] backdrop-blur dark:border-white/12 dark:bg-[#1c1522]/92 dark:shadow-[0_24px_60px_rgba(0,0,0,0.38)] md:absolute md:-bottom-6 md:left-2 md:mt-0 md:max-w-[20rem]">
+                    <div class="rg-store-hero-spotlight mt-4 rounded-[1.7rem] border border-black/8 bg-white/86 p-5 shadow-[0_22px_50px_rgba(60,38,56,0.1)] backdrop-blur dark:border-white/12 dark:bg-[#1c1522]/92 dark:shadow-[0_24px_60px_rgba(0,0,0,0.38)] md:absolute md:-bottom-6 md:left-2 md:mt-0 md:max-w-[20rem]">
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-[#d4bdf0]">{{ $spotlightEyebrow ?: __('Seçili Vitrin') }}</p>
                         <h2 class="mt-3 font-display text-[1.85rem] leading-tight text-rg-deepPurple dark:text-white">{{ $featuredProduct->name }}</h2>
                         <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">{{ $spotlightSummary ?: __('Atölyenin bu dönem öne çıkardığı ürün; daha sakin bir sunum yüzeyiyle vitrinin karar alanını güçlendirir.') }}</p>
