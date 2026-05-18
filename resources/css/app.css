@@ -2339,8 +2339,8 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 
   .rg-store-hero-intro-card {
     isolation: isolate;
-    width: calc(100% - 0.25rem);
-    margin-inline: auto;
+    width: 100%;
+    margin-inline: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: 1.55rem;
