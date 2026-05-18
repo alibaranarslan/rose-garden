@@ -20,7 +20,7 @@
         <div x-ref="track" class="rg-scroll-rail">
             @foreach ($items as $product)
                 <div class="rg-rail-card {{ $cardWidth }}">
-                    <x-product-card :product="$product" :interactive="$interactive" :eager-image="true" :image-alternate-products="$items" />
+                    <x-product-card :product="$product" :interactive="$interactive" :eager-image="$loop->index < 2" :image-alternate-products="$items" />
                 </div>
             @endforeach
         </div>

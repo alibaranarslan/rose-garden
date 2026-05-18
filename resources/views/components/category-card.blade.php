@@ -10,7 +10,8 @@
         data_get($category, 'slug'),
         data_get($category, 'name'),
     );
-    $imageSrc = \App\Support\StorefrontImage::publicImgSrc($image);
+    $imageSrc = \App\Support\StorefrontImage::optimizedImgSrc($image, $featured ? 960 : 640);
+    $imageSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($image, $featured ? [480, 640, 960] : [320, 480, 640]);
     $imageIsSvg = \Illuminate\Support\Str::endsWith(parse_url($image, PHP_URL_PATH) ?? $image, '.svg');
 @endphp
 
@@ -19,6 +20,7 @@
     <img src="{{ $imageSrc }}"
          alt="{{ data_get($category, 'name') }}"
          loading="lazy"
+         @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $featured ? '(min-width: 768px) 34vw, 92vw' : '(min-width: 768px) 18vw, 45vw' }}" @endif
          class="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.04] {{ $imageIsSvg ? 'object-contain object-center p-8 sm:p-10' : 'object-cover' }}">
     @if ($imageIsSvg)
         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/68 via-black/22 to-black/5" aria-hidden="true"></div>

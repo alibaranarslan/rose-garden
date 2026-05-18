@@ -15,6 +15,8 @@
                 $activeOccasion->category?->slug,
             )
         );
+        $occasionVisualSrc = \App\Support\StorefrontImage::optimizedImgSrc($occasionVisual, 960);
+        $occasionVisualSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($occasionVisual, [480, 640, 960]);
         $occasionDateLabel = $activeOccasion->nextOccurrence()
             ->locale(app()->getLocale())
             ->translatedFormat('d F');
@@ -28,6 +30,8 @@
                 data_get($leadProduct, 'name'),
             ))
             : null;
+        $leadProductImageSrc = $leadProductImage ? \App\Support\StorefrontImage::optimizedImgSrc($leadProductImage, 960) : null;
+        $leadProductImageSrcset = $leadProductImage ? \App\Support\StorefrontImage::optimizedImgSrcset($leadProductImage, [480, 640, 960]) : '';
         $leadProductPrice = $leadProduct?->cardPriceDisplay();
         $occasionProductCount = $occasionProducts->count();
     @endphp
@@ -37,7 +41,14 @@
             <article class="overflow-hidden rounded-[1.85rem] border border-black/6 bg-white/90 shadow-[0_16px_40px_rgba(34,24,40,0.06)] dark:border-white/10 dark:bg-[#211927]">
                 <div class="grid gap-0 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
                     <div class="relative min-h-[18rem] overflow-hidden bg-rg-lightLavender/40 dark:bg-white/8">
-                        <img src="{{ $occasionVisual }}" alt="{{ $occasionTitle }}" loading="lazy" class="h-full w-full object-cover object-center">
+                        <img
+                            src="{{ $occasionVisualSrc }}"
+                            alt="{{ $occasionTitle }}"
+                            loading="lazy"
+                            decoding="async"
+                            @if ($occasionVisualSrcset !== '') srcset="{{ $occasionVisualSrcset }}" sizes="(min-width: 768px) 34vw, 100vw" @endif
+                            class="h-full w-full object-cover object-center"
+                        >
                         <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(22,12,24,0.42))]"></div>
                         <div class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-white/24 bg-white/82 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-deepPurple shadow-md backdrop-blur dark:border-white/16 dark:bg-[#1b1420]/86 dark:text-white">
                             <span class="h-2 w-2 rounded-full bg-rg-rosePink"></span>
@@ -88,7 +99,14 @@
                 @if ($leadProduct)
                     <article class="overflow-hidden rounded-[1.55rem] border border-black/6 bg-white/88 shadow-[0_16px_36px_rgba(34,24,40,0.08)] dark:border-white/10 dark:bg-[#1a1420]">
                         <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $leadProduct->slug]) }}" class="relative block aspect-[16/9] overflow-hidden">
-                            <img src="{{ $leadProductImage }}" alt="{{ $leadProduct->name }}" loading="lazy" class="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]">
+                            <img
+                                src="{{ $leadProductImageSrc }}"
+                                alt="{{ $leadProduct->name }}"
+                                loading="lazy"
+                                decoding="async"
+                                @if ($leadProductImageSrcset !== '') srcset="{{ $leadProductImageSrcset }}" sizes="(min-width: 1280px) 50vw, 100vw" @endif
+                                class="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
+                            >
                             <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(22,12,24,0.06),rgba(22,12,24,0.72))]"></div>
                             <div class="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
                                 <div>

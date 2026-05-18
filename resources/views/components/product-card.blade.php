@@ -20,6 +20,8 @@
         : (data_get($product, 'image') ?? data_get($product, 'images.0.image_path'));
     $image = \App\Support\StorefrontImage::resolveProduct($path, $slug, $name);
     $imageSrc = \App\Support\StorefrontImage::publicImgSrc($image);
+    $imageOptimizedSrc = \App\Support\StorefrontImage::optimizedImgSrc($imageSrc, $isExplore ? 640 : 960);
+    $imageSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($imageSrc, $isExplore ? [320, 480, 640] : [320, 640, 960]);
     $imageFallbackSrc = \App\Support\StorefrontImage::productPlaceholderImgSrc();
     $imgLoading = $eagerImage ? 'eager' : 'lazy';
     $categoryName = data_get($product, 'categories.0.name');
@@ -43,7 +45,8 @@
     <article class="group relative h-full w-full min-h-0 overflow-hidden rounded-[1.2rem] border border-black/[0.07] bg-gradient-to-b from-white to-rg-cream/95 shadow-card-soft ring-1 ring-black/[0.03] transition-[transform,box-shadow] duration-300 ease-rg-out dark:border-white/12 dark:from-[#2a2433] dark:to-[#1c1622] dark:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.5)] dark:ring-white/[0.05] sm:rounded-[1.35rem] sm:hover:-translate-y-0.5 sm:hover:shadow-card-soft-hover">
         <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $slug]) }}" class="relative block h-full w-full focus-visible:outline-none">
             <img
-                src="{{ $imageSrc }}"
+                src="{{ $imageOptimizedSrc }}"
+                @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $isExplore ? '(min-width: 768px) 18rem, 46vw' : '(min-width: 1280px) 23rem, (min-width: 768px) 33vw, 84vw' }}" @endif
                 alt="{{ $name }}"
                 loading="{{ $imgLoading }}"
                 decoding="async"
@@ -120,7 +123,8 @@
             'aspect-[5/4] min-h-[13rem] bg-rg-lightLavender/45 dark:bg-[#2a2633]' => $isShowcase,
         ])>
             <img
-                src="{{ $imageSrc }}"
+                src="{{ $imageOptimizedSrc }}"
+                @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $isShowcase ? '(min-width: 1024px) 26rem, 100vw' : '(min-width: 1280px) 18rem, (min-width: 768px) 33vw, 84vw' }}" @endif
                 alt="{{ $name }}"
                 loading="{{ $imgLoading }}"
                 decoding="async"

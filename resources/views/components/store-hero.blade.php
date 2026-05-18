@@ -19,6 +19,9 @@
         data_get($featuredProduct, 'slug'),
         data_get($featuredProduct, 'name'),
     ));
+    $heroImageOptimized = \App\Support\StorefrontImage::optimizedImgSrc($heroImage, 1280);
+    $heroImageMobileOptimized = \App\Support\StorefrontImage::optimizedImgSrc($heroImage, 640);
+    $heroImageSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($heroImage, [640, 960, 1280]);
     $heroImageIsPlaceholder = \App\Support\StorefrontImage::isResolvedProductPlaceholder($heroImage);
     $headingText = $heading ?: __('Adıyaman’da floral tasarım ve aynı gün teslimat, daha sakin ve rafine bir dille buluşuyor.');
     $subheadingText = $subheading ?: __('Rose Garden, stock görseller yerine gerçek ürün fotoğraflarıyla ilerleyen butik bir vitrin. Her sipariş; sunum, not kartı ve teslimat akışı birlikte düşünülerek hazırlanıyor.');
@@ -46,6 +49,12 @@
     ]);
 @endphp
 
+@if ($heroImageOptimized !== $heroImage)
+    @push('head')
+        <link rel="preload" as="image" href="{{ $heroImageOptimized }}" @if ($heroImageSrcset !== '') imagesrcset="{{ $heroImageSrcset }}" imagesizes="(min-width: 1024px) 46vw, 100vw" @endif>
+    @endpush
+@endif
+
 <section class="rg-store-hero relative isolate overflow-hidden border-b border-black/5 bg-[#fbf3ee] text-rg-deepPurple dark:border-white/8 dark:bg-[#150f1c] dark:text-white">
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(238,218,225,0.88),transparent_34rem),radial-gradient(circle_at_85%_18%,rgba(206,188,223,0.42),transparent_24rem),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(251,243,238,0.98))] dark:hidden"></div>
     <div class="absolute inset-0 hidden bg-[radial-gradient(circle_at_top_left,rgba(125,88,150,0.3),transparent_26rem),radial-gradient(circle_at_85%_18%,rgba(93,73,128,0.22),transparent_20rem),linear-gradient(180deg,rgba(27,19,36,0.98),rgba(18,12,24,1))] dark:block"></div>
@@ -54,7 +63,7 @@
     <div class="relative mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6 md:pb-14 md:pt-14">
         <div class="rg-store-hero-grid grid gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:items-center">
             <div class="rg-store-hero-copy max-w-2xl">
-                <div class="rg-store-hero-intro-card" style="--rg-store-hero-mobile-image: url('{{ e($heroImage) }}');">
+                <div class="rg-store-hero-intro-card" style="--rg-store-hero-mobile-image: url('{{ e($heroImageMobileOptimized) }}');">
                     <div class="rg-store-hero-lockup inline-flex items-center gap-4 rounded-full border border-black/8 bg-white/80 px-4 py-2.5 shadow-[0_12px_32px_rgba(72,45,70,0.08)] backdrop-blur dark:border-white/14 dark:bg-white/10 dark:shadow-[0_14px_36px_rgba(0,0,0,0.35)]">
                         <x-site-logo variant="adaptive" type="lockup" class="h-8 w-auto sm:h-9" />
                         <span class="hidden h-8 w-px bg-black/10 dark:bg-white/18 sm:block"></span>
@@ -100,7 +109,8 @@
                 <div class="rounded-[2rem] border border-white/55 bg-white/58 p-3 shadow-[0_28px_76px_rgba(56,35,54,0.14)] ring-1 ring-white/35 backdrop-blur-md dark:border-white/14 dark:bg-white/10 dark:ring-white/10">
                     <div class="relative aspect-[5/6] overflow-hidden rounded-[1.75rem] bg-[#efe6ea] ring-1 ring-black/[0.04] dark:bg-[#241b2c] dark:ring-white/[0.06]">
                         <img
-                            src="{{ $heroImage }}"
+                            src="{{ $heroImageOptimized }}"
+                            @if ($heroImageSrcset !== '') srcset="{{ $heroImageSrcset }}" sizes="(min-width: 1280px) 42rem, (min-width: 1024px) 46vw, 100vw" @endif
                             alt="{{ \Illuminate\Support\Str::limit(strip_tags((string) $headingText), 160) }}"
                             class="h-full w-full object-center {{ $heroImageIsPlaceholder ? 'object-contain p-6 sm:p-8' : 'object-cover' }}"
                             loading="eager"

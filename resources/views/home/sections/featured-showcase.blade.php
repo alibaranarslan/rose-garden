@@ -13,6 +13,8 @@
         $featuredShowcase->slug,
         $featuredShowcase->name,
     ));
+    $showcaseImageSrc = \App\Support\StorefrontImage::optimizedImgSrc($showcaseImage, 960);
+    $showcaseImageSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($showcaseImage, [480, 640, 960]);
     $priceDisplay = $featuredShowcase->cardPriceDisplay();
     $categoryName = data_get($featuredShowcase, 'categories.0.name');
     $showcaseCompanions = collect($showcaseCompanions ?? [])->take(2);
@@ -81,7 +83,14 @@
 
             <div class="relative border-t border-black/6 bg-rg-lightLavender/25 dark:border-white/10 dark:bg-white/6 lg:border-l lg:border-t-0">
                 <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $featuredShowcase->slug]) }}" class="block aspect-[5/4] overflow-hidden bg-rg-lightLavender/30 dark:bg-white/8 lg:h-full lg:min-h-[32rem] lg:aspect-auto">
-                    <img src="{{ $showcaseImage }}" alt="{{ $featuredShowcase->name }}" loading="lazy" class="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]">
+                    <img
+                        src="{{ $showcaseImageSrc }}"
+                        alt="{{ $featuredShowcase->name }}"
+                        loading="lazy"
+                        decoding="async"
+                        @if ($showcaseImageSrcset !== '') srcset="{{ $showcaseImageSrcset }}" sizes="(min-width: 1024px) 46vw, 100vw" @endif
+                        class="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
+                    >
                 </a>
 
                 <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#1d131f]/65 to-transparent"></div>

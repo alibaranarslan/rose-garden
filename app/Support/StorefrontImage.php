@@ -539,6 +539,32 @@ final class StorefrontImage
         return $out;
     }
 
+    public static function optimizedImgSrc(string $url, int $width = 960): string
+    {
+        $optimized = self::optimizedPublicPath($url, $width);
+
+        return $optimized !== null ? self::webPublicUrl($optimized) : self::publicImgSrc($url);
+    }
+
+    public static function optimizedImgSrcset(string $url, array $widths = [320, 640, 960]): string
+    {
+        $items = [];
+
+        foreach ($widths as $width) {
+            $width = (int) $width;
+            if ($width < 80) {
+                continue;
+            }
+
+            $optimized = self::optimizedPublicPath($url, $width);
+            if ($optimized !== null) {
+                $items[] = self::webPublicUrl($optimized).' '.$width.'w';
+            }
+        }
+
+        return implode(', ', array_values(array_unique($items)));
+    }
+
     public static function isResolvedProductPlaceholder(string $url): bool
     {
         $path = parse_url($url, PHP_URL_PATH) ?? $url;
@@ -647,6 +673,65 @@ final class StorefrontImage
         }
 
         return asset($relative);
+    }
+
+    private static function optimizedPublicPath(string $url, int $width): ?string
+    {
+        $source = self::storageBackedPublicImagePath($url);
+        if ($source === null || Str::endsWith(Str::lower($source), '.svg')) {
+            return null;
+        }
+
+        $optimized = self::optimizedStorageRelativePath($source, $width);
+
+        return is_file(storage_path('app/public/'.$optimized))
+            ? 'storage/'.$optimized
+            : null;
+    }
+
+    public static function optimizedStorageRelativePath(string $storageRelativePath, int $width): string
+    {
+        $storageRelativePath = ltrim(str_replace('\\', '/', $storageRelativePath), '/');
+        if (Str::startsWith($storageRelativePath, 'storage/')) {
+            $storageRelativePath = substr($storageRelativePath, strlen('storage/'));
+        }
+
+        $width = max(80, min(2560, $width));
+        $dir = trim((string) pathinfo($storageRelativePath, PATHINFO_DIRNAME), '.');
+        $name = Str::slug((string) pathinfo($storageRelativePath, PATHINFO_FILENAME));
+        if ($name === '') {
+            $name = md5($storageRelativePath);
+        }
+
+        $prefix = 'optimized';
+        if ($dir !== '') {
+            $prefix .= '/'.$dir;
+        }
+
+        return $prefix.'/'.$name.'-'.$width.'.webp';
+    }
+
+    public static function storageBackedPublicImagePath(string $url): ?string
+    {
+        if ($url === '' || Str::startsWith($url, 'data:')) {
+            return null;
+        }
+
+        $path = parse_url($url, PHP_URL_PATH);
+        if (! is_string($path) || $path === '') {
+            $path = $url;
+        }
+
+        $path = ltrim(rawurldecode(str_replace('\\', '/', $path)), '/');
+        if (Str::startsWith($path, 'storage/')) {
+            $path = substr($path, strlen('storage/'));
+        }
+
+        if (! Str::startsWith(Str::lower($path), ['products/', 'categories/', 'blog/'])) {
+            return null;
+        }
+
+        return is_file(storage_path('app/public/'.$path)) ? $path : null;
     }
 
     private static function normalizeLocalPath(?string $path, string $fallback): string
