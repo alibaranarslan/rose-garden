@@ -16,13 +16,8 @@
   </defs>
   <rect width="512" height="512" rx="116" fill="url(#rg-bg)"/>
   <rect width="512" height="512" rx="116" fill="url(#rg-glow)"/>
-  <path d="M99 401C139 335 182 292 228 274C191 318 164 365 148 417C129 416 112 410 99 401Z" fill="#4a7c59" opacity="0.92"/>
-  <path d="M411 105C362 115 324 138 297 174C337 164 378 151 424 134C425 123 420 113 411 105Z" fill="#c4789b" opacity="0.9"/>
-  <path d="M288 183C335 149 382 134 424 134" fill="none" stroke="#fffaf7" stroke-width="13" stroke-linecap="round" opacity="0.88"/>
   <g filter="url(#rg-shadow)">
     <text x="256" y="333" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="192" font-weight="700" letter-spacing="-18" fill="#2a1f35">RG</text>
   </g>
-  <path d="M260 188C291 207 306 240 292 282C263 265 247 231 260 188Z" fill="#4a7c59"/>
-  <path d="M265 197C278 223 280 250 290 276" fill="none" stroke="#fffaf7" stroke-width="10" stroke-linecap="round" opacity="0.88"/>
   <circle cx="348" cy="127" r="18" fill="#a51d4e" opacity="0.92"/>
 </svg>
