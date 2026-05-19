@@ -26,11 +26,20 @@ Tarih: 2026-05-19
   - `/tr/urunler` katalog grid'i 2 kolon verdi: `174.688px 174.688px`.
   - `/tr/urunler` 16 katalog kartı render oldu, yatay overflow yok.
   - Console error/warn yok.
+- Canlı deploy: Rose Garden server commit `622075a`.
+- Canlı Playwright mobile smoke, 390x844 viewport:
+  - `https://rosegardencicekcilik.com.tr/tr` title `Rose Garden`, hero kartı render oldu, yatay overflow yok.
+  - `https://rosegardencicekcilik.com.tr/tr/urunler` title `Rose Garden Ürünleri | Rose Garden`, `rg-plp-hero--mobile-slim` ve `rg-catalog-grid` render oldu.
+  - Canlı katalog grid'i 2 kolon verdi: `174.688px 174.688px`.
+  - Canlı katalogda 16 ürün kartı render oldu, yatay overflow yok.
+  - Canlı console error/warn yok.
 
 ## Kanıt Dosyaları
 
 - `C:\Users\Ali\AppData\Local\Temp\rg-next-three-mobile-home.png`
 - `C:\Users\Ali\AppData\Local\Temp\rg-next-three-mobile-catalog.png`
+- `C:\Users\Ali\AppData\Local\Temp\rg-next-three-live-mobile-home.png`
+- `C:\Users\Ali\AppData\Local\Temp\rg-next-three-live-mobile-catalog.png`
 
 ## Not
 
