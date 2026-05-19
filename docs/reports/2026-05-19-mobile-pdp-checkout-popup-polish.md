@@ -41,12 +41,23 @@ No broad redesign, payment integration, admin work, or localization overhaul was
   - Cookie consent z-index remained below the purchase bar (`40` vs bar `55`).
   - Horizontal overflow: false.
   - Console/page errors: none.
+- Live Playwright mobile smoke at 390x844 on `https://rosegardencicekcilik.com.tr`:
+  - PDP asset: `/build/assets/app-DOmgma1r.css`.
+  - PDP: mobile purchase bar `top=763`, `bottom=830`, visible in viewport.
+  - PDP add-to-cart click: success notice and cart link visible.
+  - Checkout: mobile action bar `top=763`, `bottom=830`, visible in viewport.
+  - Loyalty prompt markup absent on PDP and checkout commerce path.
+  - Horizontal overflow: false.
+  - Console/page errors: none.
 
 ## Evidence
 
 - Local screenshots:
   - `%LOCALAPPDATA%\Temp\rg-mobile-pdp-checkout-after-final\pdp-mobile.png`
   - `%LOCALAPPDATA%\Temp\rg-mobile-pdp-checkout-after-final\checkout-mobile.png`
+- Live screenshots:
+  - `%LOCALAPPDATA%\Temp\rg-mobile-pdp-checkout-live-final\pdp-mobile-live.png`
+  - `%LOCALAPPDATA%\Temp\rg-mobile-pdp-checkout-live-final\checkout-mobile-live.png`
 
 ## Remaining Risk
 
