@@ -62,7 +62,7 @@ class HomeController extends Controller
 
         $this->attachCategoryCoverPaths($categories);
 
-        $activeOccasion = SpecialOccasion::nearestActive(with: ['category']);
+        $activeOccasion = SpecialOccasion::nearestActiveUpcoming(with: ['category']);
 
         $occasionProducts = $activeOccasion
             ? Product::storefrontReady()

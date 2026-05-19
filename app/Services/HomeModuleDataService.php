@@ -55,7 +55,7 @@ class HomeModuleDataService
             ->take((int) data_get($moduleMap, 'category_showcase.settings.content_limit', 6))
             ->values();
 
-        $activeOccasion = SpecialOccasion::nearestActive(with: ['category']);
+        $activeOccasion = SpecialOccasion::nearestActiveUpcoming(with: ['category']);
 
         $occasionProducts = $activeOccasion
             ? Product::storefrontReady()

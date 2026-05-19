@@ -49,7 +49,7 @@
 <div class="w-full" x-data="{ plpDrawer: false }" @keydown.escape.window="plpDrawer = false">
     <x-breadcrumb :items="$breadcrumbItems" class="rg-plp-breadcrumb mb-2 text-xs text-rg-grayText dark:text-white/72 md:mb-4" />
 
-    <x-page-hero class="rg-plp-hero mb-3 md:mb-4" :eyebrow="$category ? __('Kategori Koleksiyonu') : __('Rose Garden Katalog')" :title="$pageTitle" :description="$pageDescription" compact>
+    <x-page-hero class="rg-plp-hero rg-plp-hero--mobile-slim mb-3 md:mb-4" :eyebrow="$category ? __('Kategori Koleksiyonu') : __('Rose Garden Katalog')" :title="$pageTitle" :description="$pageDescription" compact>
         <x-slot:actions>
             @if ($heroLinks->isNotEmpty())
                 <div class="flex flex-wrap gap-2">

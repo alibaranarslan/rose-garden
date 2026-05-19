@@ -4,7 +4,10 @@ namespace Tests\Feature\Storefront;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Product;
 use App\Models\Setting;
+use App\Models\SpecialOccasion;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class PublicSurfaceSmokeTest extends TestCase
@@ -69,6 +72,54 @@ class PublicSurfaceSmokeTest extends TestCase
             ->assertSee('rg-cookie-consent-card', false)
             ->assertSee('rg-cookie-consent-actions', false)
             ->assertDontSee('fixed bottom-3 right-3 z-40 w-[min(16.75rem', false);
+    }
+
+    public function test_nearest_home_occasion_ignores_far_annual_rollover_dates(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 5, 19, 12));
+
+        try {
+            SpecialOccasion::query()->create([
+                'name' => ['tr' => 'Geçmiş Anneler Günü'],
+                'slug' => 'past-mothers-day',
+                'date_month' => 5,
+                'date_day' => 11,
+                'is_active' => true,
+            ]);
+
+            $father = SpecialOccasion::query()->create([
+                'name' => ['tr' => 'Babalar Günü'],
+                'slug' => 'fathers-day',
+                'date_month' => 6,
+                'date_day' => 21,
+                'is_active' => true,
+            ]);
+
+            $this->assertTrue($father->is(SpecialOccasion::nearestActiveUpcoming(daysAhead: 90)));
+        } finally {
+            Carbon::setTestNow();
+        }
+    }
+
+    public function test_mobile_catalog_and_hero_polish_classes_are_rendered(): void
+    {
+        Product::query()->create([
+            'name' => ['tr' => 'Mobil Katalog Buketi'],
+            'slug' => 'mobil-katalog-buketi',
+            'price' => 1250,
+            'stock_status' => 'in_stock',
+            'status' => 'active',
+        ]);
+
+        $this->get('/tr/urunler')
+            ->assertOk()
+            ->assertSee('rg-plp-hero--mobile-slim', false)
+            ->assertSee('rg-catalog-grid', false);
+
+        $this->get('/tr')
+            ->assertOk()
+            ->assertSee('rg-store-hero-intro-card', false)
+            ->assertSee('--rg-store-hero-mobile-image', false);
     }
 
     public function test_robots_txt_includes_extra_rules_and_current_sitemap_url(): void
