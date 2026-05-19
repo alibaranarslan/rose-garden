@@ -24,6 +24,9 @@ Tarih: 2026-05-19
 - Browser QA: `http://localhost:8001/tr` açıldı, title `Rose Garden`, console error/warn yok.
 - Browser QA: cookie bar ilk ekranda alt bar olarak göründü; `Tümünü Kabul Et` tıklanınca banner kapandı.
 - Browser QA: local optimize clear sonrası HTML'de `info@rosegardencicekcilik.com.tr` göründü, `adiyamancicekcisi.com.tr` görünmedi.
+- Canlı deploy: Rose Garden server commit `8ac6ed1`.
+- Canlı smoke: `https://rosegardencicekcilik.com.tr/tr` 200 döndü; HTML'de yeni domain, kompakt cookie class'ı ve `promptDelayMs = 12000` görüldü; eski domain görünmedi.
+- Canlı Browser QA: `https://rosegardencicekcilik.com.tr/tr` title `Rose Garden`; console error/warn yok; cookie bar kompakt alt bar olarak göründü.
 
 ## Not
 
