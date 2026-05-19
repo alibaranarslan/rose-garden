@@ -2335,8 +2335,8 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
   }
 
   .rg-plp-hero .rg-page-hero__grid {
-    gap: 0.65rem;
-    padding: 0.82rem 0.88rem;
+    gap: 0.46rem;
+    padding: 0.74rem 0.82rem 0.78rem;
   }
 
   .rg-plp-hero .space-y-5 {
@@ -2353,19 +2353,13 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
   }
 
   .rg-plp-hero h1 {
-    max-width: 16rem;
-    font-size: clamp(1.72rem, 8vw, 2.08rem);
+    max-width: 15rem;
+    font-size: clamp(1.48rem, 7vw, 1.86rem);
     line-height: 0.98;
   }
 
   .rg-plp-hero h1 + p {
-    display: -webkit-box;
-    max-width: 18.5rem;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    font-size: 0.78rem;
-    line-height: 1.45;
+    display: none;
   }
 
   .rg-plp-hero .flex.flex-wrap.gap-3 {
@@ -2389,28 +2383,7 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
   }
 
   .rg-plp-hero .rg-page-hero__stats {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.45rem;
-  }
-
-  .rg-plp-hero .rg-page-stat {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    border-radius: 0.95rem;
-    padding: 0.62rem 0.72rem;
-  }
-
-  .rg-plp-hero .rg-page-stat p:first-child,
-  .rg-plp-hero .rg-page-stat p:last-child,
-  .rg-plp-hero .rg-page-stat + p {
     display: none;
-  }
-
-  .rg-plp-hero .rg-page-stat p:nth-child(2) {
-    margin-top: 0;
-    font-size: 1.18rem;
   }
 
   .rg-store-hero > .relative.mx-auto {
