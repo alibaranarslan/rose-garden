@@ -28,6 +28,15 @@ Tarih: 2026-05-19
 
 Sonuç: hedef testler 20/20 geçti, Vite production build başarılı.
 
+## Canlı Smoke
+
+Canlı domain: `https://rosegardencicekcilik.com.tr`
+
+- `/sitemap.xml`: `https://rosegardencicekcilik.com.tr` içeriyor.
+- `/sitemap.xml`: `phase3-sitemap.example.test`, `127.0.0.1` ve `http://rosegardencicekcilik.com.tr` içermiyor.
+- `/`: `<title>` değeri `Rose Garden`, `Rose Garden | Rose Garden` tekrarı yok.
+- `/en/iletisim`: `Call now` görünüyor; `Hemen ara` ve `Rose Garden presents this detail in a clear customer-friendly layout` görünmüyor.
+
 ## Not
 
 Bu tur genel i18n overhaul değildir. Yüksek etkili EN/KU müşteri yüzeylerindeki görünür sorunlar düzeltildi; tüm CMS/admin içerik çeviri kapsamı ayrı scope olarak kalır.
