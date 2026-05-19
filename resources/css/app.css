@@ -1148,6 +1148,59 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
   display: none;
 }
 
+.rg-pdp-mobile-purchasebar,
+.rg-checkout-mobile-actionbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .rg-add-to-cart--detail,
+  .rg-checkout-wizard {
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .rg-product-buybox {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .rg-pdp-mobile-purchasebar,
+  .rg-checkout-mobile-actionbar {
+    position: fixed;
+    right: 0.85rem;
+    bottom: calc(0.85rem + env(safe-area-inset-bottom, 0px));
+    left: 0.85rem;
+    z-index: 55;
+    display: flex !important;
+    min-height: 4.2rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    border: 1px solid rgba(216, 190, 231, 0.72);
+    border-radius: 1.35rem;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 0.72rem 0.8rem 0.72rem 0.95rem;
+    box-shadow: 0 22px 54px rgba(34, 24, 40, 0.18);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  .rg-pdp-mobile-purchasebar--disabled {
+    opacity: 0.92;
+  }
+
+  .rg-checkout-actions {
+    display: none !important;
+  }
+
+  html.dark .rg-pdp-mobile-purchasebar,
+  html.dark .rg-checkout-mobile-actionbar {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(31, 20, 41, 0.96);
+    box-shadow: 0 24px 58px rgba(4, 2, 8, 0.55);
+  }
+}
+
   #rg-site-header .rg-header-utility-control {
     height: 2.75rem;
     align-self: center;

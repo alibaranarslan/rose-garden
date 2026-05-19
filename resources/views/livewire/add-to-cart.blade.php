@@ -6,6 +6,7 @@
 <div @class([
     'rg-add-to-cart flex flex-col flex-1 min-h-0 w-full',
     'rg-add-to-cart--card' => $isCard,
+    'rg-add-to-cart--detail' => ! $isCard,
 ])>
     <div class="flex min-h-0 flex-1 flex-col {{ $gapClass }}">
     {{-- Fiyat (varyantlı / varyantsız tek yerden) --}}
@@ -95,6 +96,24 @@
                 <span wire:loading.remove wire:target="{{ $isCard ? 'openCartMessageModal' : 'addToCart' }}">{{ __('Sepete Ekle') }}</span>
                 <span wire:loading wire:target="{{ $isCard ? 'openCartMessageModal' : 'addToCart' }}">{{ __('Bekleyin…') }}</span>
             </button>
+            @unless($isCard)
+                <div class="rg-pdp-mobile-purchasebar md:hidden" aria-label="{{ __('Mobil satın alma kısayolu') }}">
+                    <div class="min-w-0">
+                        <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-midPurple dark:text-rg-lavender">{{ __('Sepete hazır') }}</p>
+                        <p class="text-sm font-bold tabular-nums text-rg-deepPurple dark:text-white">₺ {{ number_format($priceAmount, 0, ',', '.') }}</p>
+                    </div>
+                    <button
+                        type="button"
+                        wire:click="addToCart"
+                        wire:loading.attr="disabled"
+                        wire:target="addToCart"
+                        class="inline-flex shrink-0 items-center justify-center rounded-full bg-rg-purple px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rg-darkPlum focus:outline-none focus-visible:ring-2 focus-visible:ring-rg-purple focus-visible:ring-offset-2 disabled:opacity-60 dark:focus-visible:ring-offset-rg-deepPurple"
+                    >
+                        <span wire:loading.remove wire:target="addToCart">{{ __('Sepete Ekle') }}</span>
+                        <span wire:loading wire:target="addToCart">{{ __('Bekleyin…') }}</span>
+                    </button>
+                </div>
+            @endunless
         @else
             <button
                 type="button"
@@ -104,6 +123,21 @@
             >
                 {{ __('Stokta Yok') }}
             </button>
+            @unless($isCard)
+                <div class="rg-pdp-mobile-purchasebar rg-pdp-mobile-purchasebar--disabled md:hidden" aria-label="{{ __('Mobil satın alma kısayolu') }}">
+                    <div class="min-w-0">
+                        <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-grayText dark:text-white/60">{{ __('Stok bilgisi') }}</p>
+                        <p class="text-sm font-bold text-rg-deepPurple dark:text-white">{{ __('Stokta Yok') }}</p>
+                    </div>
+                    <button
+                        type="button"
+                        disabled
+                        class="inline-flex shrink-0 cursor-not-allowed items-center justify-center rounded-full bg-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600"
+                    >
+                        {{ __('Stokta Yok') }}
+                    </button>
+                </div>
+            @endunless
         @endif
 
         @if($layout === 'detail' && $showAddedNotice)

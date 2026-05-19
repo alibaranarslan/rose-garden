@@ -4,7 +4,7 @@
     $errorText = 'mt-1.5 text-xs font-medium text-red-600 dark:text-red-300';
 @endphp
 
-<div class="mx-auto max-w-3xl">
+<div class="rg-checkout-wizard mx-auto max-w-3xl">
     @if (session('status'))
         <p class="mb-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">{{ session('status') }}</p>
     @endif
@@ -327,7 +327,7 @@
         </div>
     @endif
 
-    <div class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+    <div class="rg-checkout-actions mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
         <div>
             @if ($step > 1)
                 <button type="button" wire:click="prevStep" wire:loading.attr="disabled" wire:target="prevStep,nextStep,createOrder" class="rounded-xl border-2 border-rg-lightLavender bg-white px-5 py-3 text-sm font-semibold text-rg-darkPlum shadow-sm transition hover:bg-rg-cream disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/15 dark:bg-rg-deepPurple/50 dark:text-white dark:hover:bg-white/10">
@@ -345,6 +345,41 @@
                 {{ __('Siparişi tamamla') }}
             </button>
         @endif
+    </div>
+
+    <div class="rg-checkout-mobile-actionbar md:hidden" aria-label="{{ __('Mobil ödeme adımı kısayolu') }}">
+        <div class="min-w-0">
+            <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-midPurple dark:text-rg-lavender">
+                {{ __('Adım :step / 3', ['step' => $step]) }}
+            </p>
+            <p class="text-sm font-bold text-rg-deepPurple dark:text-white">
+                @if ($step === 1)
+                    {{ __('Bilgileri tamamla') }}
+                @elseif ($step === 2)
+                    {{ __('Teslimatı seç') }}
+                @else
+                    {{ __('Siparişi onayla') }}
+                @endif
+            </p>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-2">
+            @if ($step > 1)
+                <button type="button" wire:click="prevStep" wire:loading.attr="disabled" wire:target="prevStep,nextStep,createOrder" class="inline-flex h-10 items-center justify-center rounded-full border border-rg-lightLavender bg-white px-4 text-xs font-semibold text-rg-darkPlum shadow-sm transition hover:bg-rg-cream disabled:cursor-not-allowed disabled:opacity-70 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/15">
+                    {{ __('Geri') }}
+                </button>
+            @endif
+
+            @if ($step < 3)
+                <button type="button" wire:click="nextStep" wire:loading.attr="disabled" wire:target="nextStep,createOrder" class="inline-flex h-10 items-center justify-center rounded-full bg-rg-purple px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-rg-darkPlum disabled:cursor-not-allowed disabled:opacity-70">
+                    {{ __('Devam et') }}
+                </button>
+            @else
+                <button type="button" wire:click="createOrder" wire:loading.attr="disabled" wire:target="createOrder" class="inline-flex h-10 items-center justify-center rounded-full bg-rg-purple px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-rg-darkPlum disabled:cursor-not-allowed disabled:opacity-70">
+                    {{ __('Tamamla') }}
+                </button>
+            @endif
+        </div>
     </div>
 </div>
 

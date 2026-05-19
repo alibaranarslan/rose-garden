@@ -3,9 +3,13 @@
     $guestLoyaltyBlockedPath = in_array($guestLoyaltyPath, ['giris', 'kayit', 'sifremi-unuttum', 'odeme'], true)
         || str_starts_with($guestLoyaltyPath, 'sifre-sifirla/')
         || str_starts_with($guestLoyaltyPath, 'odeme/');
+    $guestLoyaltyCommercePath = in_array($guestLoyaltyPath, ['sepet', 'cart'], true)
+        || str_starts_with($guestLoyaltyPath, 'urun/')
+        || str_starts_with($guestLoyaltyPath, 'product/');
     $eligibleForPrompt = ! auth()->check()
-        && ! request()->routeIs(['login', 'register', 'password.*', 'checkout', 'checkout.*'])
-        && ! $guestLoyaltyBlockedPath;
+        && ! request()->routeIs(['login', 'register', 'password.*', 'checkout', 'checkout.*', 'cart', 'products.show'])
+        && ! $guestLoyaltyBlockedPath
+        && ! $guestLoyaltyCommercePath;
     $registerUrl = \App\Support\StorefrontLocale::route('register');
     $featuredProduct = $eligibleForPrompt
         ? \App\Models\Product::query()

@@ -49,6 +49,7 @@ class ProductCartCheckoutSurfaceTest extends TestCase
             ->assertSee('api.whatsapp.com/send')
             ->assertSee('Toggle favorite')
             ->assertSee('Sepete')
+            ->assertSee('rg-pdp-mobile-purchasebar', false)
             ->assertSee('Standart');
     }
 
@@ -290,6 +291,35 @@ class ProductCartCheckoutSurfaceTest extends TestCase
             ->set('step', 3)
             ->assertSeeText('Üye ol, puan biriktir')
             ->assertSeeText('yaklaşık 25 Paraçiçek Puan');
+    }
+
+    public function test_checkout_wizard_renders_mobile_action_bar(): void
+    {
+        Livewire::test(CheckoutWizard::class)
+            ->assertSeeHtml('rg-checkout-actions')
+            ->assertSeeHtml('rg-checkout-mobile-actionbar')
+            ->assertSeeText('Devam et');
+    }
+
+    public function test_guest_loyalty_popup_does_not_render_on_commerce_paths(): void
+    {
+        session(['cart_session_id' => 'commerce-loyalty-prompt-session']);
+
+        $product = $this->makeStorefrontProduct('popup-blocked-buket', 690);
+
+        CartItem::create([
+            'session_id' => 'commerce-loyalty-prompt-session',
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+
+        $this->get(route('products.show', ['slug' => $product->slug]))
+            ->assertOk()
+            ->assertDontSee('x-data="rgGuestLoyaltyPrompt()"', false);
+
+        $this->get(route('cart'))
+            ->assertOk()
+            ->assertDontSee('x-data="rgGuestLoyaltyPrompt()"', false);
     }
 
     public function test_credit_card_payment_page_renders_when_paytr_is_configured(): void
