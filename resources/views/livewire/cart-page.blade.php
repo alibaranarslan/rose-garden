@@ -5,7 +5,7 @@ $summarySupport = [
     ];
 @endphp
 
-<div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
+<div class="rg-cart-commerce-shell grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
     <div class="lg:col-span-7 xl:col-span-8">
         <div class="rg-surface overflow-hidden">
             <div class="border-b border-rg-lightLavender/80 px-5 py-4 dark:border-white/10 md:px-8 md:py-5">
@@ -80,7 +80,7 @@ $summarySupport = [
                         </div>
                     </div>
 
-                    <div class="flex flex-col gap-4 p-5 md:hidden">
+                    <div class="rg-cart-mobile-line flex flex-col gap-4 p-5 md:hidden">
                         <div class="flex gap-4">
                             <a href="{{ $item->product ? \App\Support\StorefrontLocale::route('products.show', ['slug' => $item->product->slug]) : '#' }}" class="block aspect-square h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-zinc-200/80 dark:border-white/10">
                                 <img src="{{ $cartImg }}" alt="" class="h-full w-full object-cover" loading="lazy">
@@ -103,7 +103,9 @@ $summarySupport = [
                             </div>
                             <button wire:click="removeItem({{ $item->id }})" type="button" class="text-sm font-medium text-red-600 dark:text-red-400">{{ __('Kaldır') }}</button>
                         </div>
-                        <div class="rounded-xl border border-rg-lightLavender/80 bg-rg-cream/60 p-4 dark:border-white/10 dark:bg-white/10">
+                        <details class="rg-cart-mobile-card-message rounded-xl border border-rg-lightLavender/80 bg-rg-cream/60 p-4 dark:border-white/10 dark:bg-white/10">
+                            <summary class="cursor-pointer list-none text-xs font-semibold text-rg-midPurple dark:text-rg-lavender">{{ __('Kart mesajı') }}</summary>
+                            <div class="mt-3">
                             <label for="card-message-m-{{ $item->id }}" class="mb-2 block text-xs font-semibold text-rg-midPurple dark:text-rg-lavender">{{ __('Kart mesajı') }}</label>
                             <textarea
                                 id="card-message-m-{{ $item->id }}"
@@ -117,7 +119,8 @@ $summarySupport = [
                                 <p class="rg-copy-soft text-[11px]">{{ mb_strlen($cardMessages[$item->id] ?? '') }}/500</p>
                                 <button wire:click="saveCardMessage({{ $item->id }})" type="button" class="text-xs font-semibold text-rg-purple">{{ __('Kaydet') }}</button>
                             </div>
-                        </div>
+                            </div>
+                        </details>
                     </div>
                 @empty
                     <div class="px-6 py-10 md:px-8 md:py-12">
@@ -140,7 +143,7 @@ $summarySupport = [
         </div>
     </div>
 
-    <aside class="lg:col-span-5 xl:col-span-4">
+    <aside class="rg-cart-summary-column lg:col-span-5 xl:col-span-4">
         <div class="sticky top-28 rounded-2xl border border-black/6 bg-[#f5efe8] p-6 shadow-sm dark:border-white/10 dark:bg-[#241b2b]/88 dark:shadow-black/25 md:p-7">
             <h3 class="font-display text-lg font-semibold text-rg-deepPurple dark:text-white">{{ __('Sipariş özeti') }}</h3>
             <div class="mt-5 space-y-3 text-sm">
@@ -202,5 +205,20 @@ $summarySupport = [
                 @endforeach
             </div>
         </div>
+
+        @if ($items->isNotEmpty())
+            <div class="rg-cart-mobile-checkoutbar md:hidden" aria-label="{{ __('Mobil sepet ödeme kısayolu') }}">
+                <div class="min-w-0">
+                    <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-midPurple dark:text-rg-lavender">{{ __('Sepet toplamı') }}</p>
+                    <p class="text-sm font-bold tabular-nums text-rg-deepPurple dark:text-white">₺ {{ number_format($this->total, 2, ',', '.') }}</p>
+                </div>
+                <a
+                    href="{{ \App\Support\StorefrontLocale::route('checkout', prefixDefault: true) }}"
+                    class="inline-flex shrink-0 items-center justify-center rounded-full bg-rg-purple px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rg-darkPlum"
+                >
+                    {{ __('Ödemeye geç') }}
+                </a>
+            </div>
+        @endif
     </aside>
 </div>

@@ -73,7 +73,7 @@
         ['label' => $product->name],
     ]" />
 
-    <section class="grid gap-8 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] lg:items-start">
+    <section class="rg-pdp-shell grid gap-8 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] lg:items-start">
         <div class="contents lg:block lg:space-y-6">
             <div
                 x-data="{
@@ -83,7 +83,7 @@
                     lightboxImage: '',
                     openLightbox(src) { this.lightboxImage = src; this.lightbox = true; },
                 }"
-                class="order-1 space-y-4 lg:order-none"
+                class="rg-pdp-gallery order-1 space-y-4 lg:order-none"
             >
                 <div class="rg-surface p-2.5 md:p-3">
                     <div class="relative aspect-[4/3] overflow-hidden rounded-[1.8rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.96),rgba(239,228,235,0.72)_58%,rgba(227,215,224,0.88))] dark:bg-[radial-gradient(circle_at_top,rgba(62,43,72,0.9),rgba(31,23,37,0.96)_60%,rgba(22,15,28,0.98))] sm:aspect-[4/5]">
@@ -130,7 +130,7 @@
                 </div>
             </div>
 
-            <div class="order-3 rg-surface p-5 lg:order-none md:p-6">
+            <div class="rg-pdp-story order-3 rg-surface p-5 lg:order-none md:p-6">
                 <div class="max-w-3xl">
                     <span class="rg-kicker">{{ __('Ürün Hikâyesi') }}</span>
                     <h2 class="mt-3 font-display text-[2rem] leading-tight text-rg-deepPurple dark:text-white md:text-[2.15rem]">{{ __('Hazırlık ve sunum dili') }}</h2>
@@ -189,7 +189,7 @@
                     <livewire:add-to-cart :product-id="$product->id" layout="detail" />
                 </div>
 
-                <div class="mt-4">
+                <div class="rg-pdp-whatsapp-action mt-4">
                     <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '905522717067') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
                        target="_blank" rel="noopener"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-emerald-600">
@@ -200,7 +200,7 @@
                     </a>
                 </div>
 
-                <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rg-pdp-support-grid mt-6 grid gap-3 sm:grid-cols-2">
                     <div class="rounded-[1.15rem] border border-black/6 bg-rg-cream/72 px-4 py-3.5 dark:border-white/10 dark:bg-[#17131f]">
                         <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Teslimat Notu') }}</p>
                         <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/84">{{ $deliveryNote }}</p>
@@ -211,12 +211,12 @@
                     </div>
                 </div>
 
-                <div class="mt-4 flex flex-wrap gap-2">
+                <div class="rg-pdp-trust-chips mt-4 flex flex-wrap gap-2">
                     <span class="rounded-full border border-black/6 bg-white/76 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-rg-deepPurple dark:border-white/10 dark:bg-white/10 dark:text-white/84">{{ __('Gerçek ürün fotoğrafı') }}</span>
                     <span class="rounded-full border border-black/6 bg-white/76 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-rg-deepPurple dark:border-white/10 dark:bg-white/10 dark:text-white/84">{{ __('Butik sunum') }}</span>
                 </div>
 
-                <div class="mt-4">
+                <div class="rg-pdp-whatsapp-action rg-pdp-whatsapp-action--duplicate mt-4">
                     <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '905522717067') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
                        target="_blank" rel="noopener"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-emerald-600">
@@ -228,7 +228,7 @@
                 </div>
 
                 @if ($highlightCards->isNotEmpty())
-                    <div class="mt-6 border-t border-black/5 pt-6 dark:border-white/10">
+                    <div class="rg-pdp-highlights mt-6 border-t border-black/5 pt-6 dark:border-white/10">
                         <div class="mb-4">
                             <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Neden Seçiliyor') }}</p>
                             <h2 class="mt-2 font-display text-2xl text-rg-deepPurple dark:text-white">{{ __('Kararı hızlandıran detaylar') }}</h2>
@@ -273,13 +273,13 @@
         </div>
     </section>
 
-    <section class="mt-14 border-t border-black/5 pt-10 dark:border-white/10">
+    <section class="rg-pdp-related mt-14 border-t border-black/5 pt-10 dark:border-white/10">
         <div class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
                 <span class="rg-kicker">{{ __('İlgili Ürünler') }}</span>
                 <h2 class="mt-3 font-display text-3xl text-rg-deepPurple dark:text-white md:text-4xl">{{ __('Benzer atmosferde seçimler') }}</h2>
             </div>
-            <p class="max-w-md text-sm leading-relaxed text-rg-grayText dark:text-white/84">{{ __('Aynı kategori ve sunum tonunda kalan gerçek alternatifler burada öne çıkar.') }}</p>
+            <p class="rg-pdp-related-copy max-w-md text-sm leading-relaxed text-rg-grayText dark:text-white/84">{{ __('Aynı kategori ve sunum tonunda kalan gerçek alternatifler burada öne çıkar.') }}</p>
         </div>
 
         @if ($related->isNotEmpty())

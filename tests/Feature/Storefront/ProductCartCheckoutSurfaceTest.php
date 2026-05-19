@@ -50,6 +50,8 @@ class ProductCartCheckoutSurfaceTest extends TestCase
             ->assertSee('Toggle favorite')
             ->assertSee('Sepete')
             ->assertSee('rg-pdp-mobile-purchasebar', false)
+            ->assertSee('rg-pdp-gallery', false)
+            ->assertSee('rg-pdp-related', false)
             ->assertSee('Standart');
     }
 
@@ -156,6 +158,7 @@ class ProductCartCheckoutSurfaceTest extends TestCase
         Livewire::test(CartPage::class)
             ->set('couponCode', $coupon->code)
             ->call('applyCoupon')
+            ->assertSeeHtml('rg-cart-mobile-checkoutbar')
             ->assertSet('couponMessage', 'Kupon uygulandı.');
 
         $this->assertSame($coupon->id, session('cart_coupon_id'));
