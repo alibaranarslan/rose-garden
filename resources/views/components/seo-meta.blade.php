@@ -34,8 +34,22 @@
 
     $rootUrl = $canonicalDomain !== '' ? $canonicalDomain : url('/');
 
-    $rawTitle = $title ?: $siteName;
-    $metaTitle = trim($rawTitle . ' ' . $titleSuffix);
+    $titleWasProvided = trim((string) $title) !== '';
+    $rawTitle = trim((string) ($titleWasProvided ? $title : $siteName));
+    $titleSuffix = trim((string) $titleSuffix);
+    $siteLabelFromSuffix = trim((string) preg_replace('/^[\|\-\x{2013}\x{2014}\s]+/u', '', $titleSuffix));
+    $rawTitleLower = mb_strtolower($rawTitle);
+    $suffixLower = mb_strtolower($titleSuffix);
+    $siteLabelLower = mb_strtolower($siteLabelFromSuffix);
+    $alreadyHasSuffix = $titleSuffix !== '' && str_ends_with($rawTitleLower, $suffixLower);
+    $alreadyHasSiteLabel = $siteLabelFromSuffix !== ''
+        && (
+            $rawTitleLower === $siteLabelLower
+            || preg_match('/[\|\-\x{2013}\x{2014}]\s*'.preg_quote($siteLabelFromSuffix, '/').'$/iu', $rawTitle) === 1
+        );
+    $metaTitle = $titleWasProvided && $titleSuffix !== '' && ! $alreadyHasSuffix && ! $alreadyHasSiteLabel
+        ? trim($rawTitle.' '.$titleSuffix)
+        : $rawTitle;
     $metaDescription = $description ?: $defaultDescription;
     $metaImage = $image ?: $defaultImage;
     $metaImageUrl = $metaImage ? (str_starts_with($metaImage, 'http') ? $metaImage : asset($metaImage)) : null;

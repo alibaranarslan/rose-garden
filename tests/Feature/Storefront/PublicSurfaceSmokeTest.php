@@ -23,15 +23,34 @@ class PublicSurfaceSmokeTest extends TestCase
 
     public function test_sitemap_xml_route_matches_public_file_presence(): void
     {
-        $path = public_path('sitemap.xml');
+        config(['app.url' => 'https://example.test']);
+
         $response = $this->get('/sitemap.xml');
 
-        if (is_file($path)) {
-            $response->assertOk();
-            $response->assertHeader('Content-Type', 'application/xml');
-        } else {
-            $response->assertNotFound();
-        }
+        $response->assertOk()
+            ->assertHeader('Content-Type', 'application/xml')
+            ->assertSee('<?xml version="1.0" encoding="UTF-8"?>', false)
+            ->assertSee('<loc>https://example.test</loc>', false)
+            ->assertSee('<loc>https://example.test/urunler</loc>', false)
+            ->assertDontSee('phase3-sitemap.example.test', false);
+    }
+
+    public function test_home_meta_title_does_not_duplicate_brand_suffix(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('<title>Rose Garden Çiçek Çikolata</title>', false)
+            ->assertDontSee('<title>Rose Garden | Rose Garden</title>', false);
+    }
+
+    public function test_english_contact_page_uses_localized_customer_copy(): void
+    {
+        $this->get('/en/iletisim')
+            ->assertOk()
+            ->assertSeeText('Reach the store directly for product selection and delivery support')
+            ->assertSeeText('Call now')
+            ->assertDontSeeText('Hemen ara')
+            ->assertDontSeeText('Rose Garden presents this detail in a clear customer-friendly layout');
     }
 
     public function test_robots_txt_includes_extra_rules_and_current_sitemap_url(): void

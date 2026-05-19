@@ -93,8 +93,8 @@ class ProductController extends Controller
             ->values();
 
         return view('products.index', compact('products', 'category', 'allCategories', 'sort', 'availableSizes', 'filterTags', 'catalogTotalCount'))->with([
-            'metaTitle' => $category?->name ? $category->name.' Ürünleri' : 'Rose Garden Ürünleri',
-            'metaDescription' => 'Rose Garden yerel ürün kataloğu ve filtrelenmiş ürün listesi.',
+            'metaTitle' => $this->localizedListingTitle($category),
+            'metaDescription' => $this->localizedListingDescription($category),
         ]);
     }
 
@@ -178,6 +178,34 @@ class ProductController extends Controller
         }
 
         return '';
+    }
+
+    private function localizedListingTitle(?Category $category): string
+    {
+        $name = $category?->name;
+
+        return match (app()->getLocale()) {
+            'en' => $name ? $name.' Products' : 'Rose Garden Products',
+            'ku' => $name ? 'Berhemên '.$name : 'Berhemên Rose Garden',
+            default => $name ? $name.' Ürünleri' : 'Rose Garden Ürünleri',
+        };
+    }
+
+    private function localizedListingDescription(?Category $category): string
+    {
+        $name = $category?->name;
+
+        return match (app()->getLocale()) {
+            'en' => $name
+                ? 'Browse Rose Garden selections in the '.$name.' category with clear filters and real product photos.'
+                : 'Browse the Rose Garden local product catalog with clear filters and real product photos.',
+            'ku' => $name
+                ? 'Hilbijartinên Rose Garden ên kategoriya '.$name.' bi fîltre û wêneyên rastîn bibînin.'
+                : 'Kataloga berhemên Rose Garden bi fîltre û wêneyên rastîn bibînin.',
+            default => $name
+                ? $name.' kategorisindeki Rose Garden ürünlerini filtreler ve gerçek ürün görselleriyle inceleyin.'
+                : 'Rose Garden yerel ürün kataloğunu filtreler ve gerçek ürün görselleriyle inceleyin.',
+        };
     }
 
     private function getAvailableSizes(): Collection

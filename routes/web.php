@@ -20,6 +20,7 @@ use App\Models\Order;
 use App\Models\Setting;
 use App\Services\PaytrService;
 use App\Support\AdminPrivileges;
+use App\Support\SitemapXml;
 use App\Support\StorefrontLocale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -65,10 +66,7 @@ Route::get('/health', function () {
 });
 
 Route::get('/sitemap.xml', function () {
-    $path = public_path('sitemap.xml');
-    abort_unless(file_exists($path), 404);
-
-    return response()->file($path, ['Content-Type' => 'application/xml']);
+    return response(SitemapXml::render(), 200)->header('Content-Type', 'application/xml');
 });
 
 Route::get('/robots.txt', function () {
