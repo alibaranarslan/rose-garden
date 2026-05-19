@@ -36,10 +36,13 @@
                 class="rg-mobile-nav-pill {{ request()->routeIs('products.index') && ! $currentSlug ? 'rg-mobile-nav-pill-active' : '' }}">
                 {{ $isTurkish ? 'Tüm Koleksiyon' : __('Tüm Koleksiyon') }}
             </a>
-            <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}"
+            <button type="button"
+                @click="mobileNavOpen = true"
+                aria-controls="mobile-nav-panel"
+                :aria-expanded="mobileNavOpen.toString()"
                 class="rg-mobile-nav-pill {{ request()->routeIs('products.category') ? 'rg-mobile-nav-pill-active' : '' }}">
                 {{ __('Kategoriler') }}
-            </a>
+            </button>
             <a href="{{ \App\Support\StorefrontLocale::route('special-occasions.index') }}"
                 class="rg-mobile-nav-pill {{ request()->routeIs('special-occasions.*') ? 'rg-mobile-nav-pill-active' : '' }}">
                 {{ __('Özel Günler') }}

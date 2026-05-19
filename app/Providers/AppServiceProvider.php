@@ -214,6 +214,7 @@ class AppServiceProvider extends ServiceProvider
             return SpecialOccasion::active()
                 ->with('category')
                 ->get()
+                ->filter(fn (SpecialOccasion $occasion): bool => $this->hasValidOccasionDate($occasion))
                 ->sortBy(fn (SpecialOccasion $occasion) => $occasion->daysUntil())
                 ->take(6)
                 ->values();
@@ -280,6 +281,15 @@ class AppServiceProvider extends ServiceProvider
 
             return $fallback;
         }
+    }
+
+    private function hasValidOccasionDate(SpecialOccasion $occasion): bool
+    {
+        return checkdate(
+            (int) $occasion->date_month,
+            (int) $occasion->date_day,
+            (int) now()->year
+        );
     }
 
     private function normalizeReminderChannel(string $channel): string

@@ -22,8 +22,12 @@
     $imageSrc = \App\Support\StorefrontImage::publicImgSrc($image);
     $imageOptimizedSrc = \App\Support\StorefrontImage::optimizedImgSrc($imageSrc, $isExplore ? 640 : 960);
     $imageSrcset = \App\Support\StorefrontImage::optimizedImgSrcset($imageSrc, $isExplore ? [320, 480, 640] : [320, 640, 960]);
+    $imageSizes = $isExplore
+        ? '(min-width: 768px) 18rem, 46vw'
+        : ($isShowcase ? '(min-width: 1024px) 26rem, 100vw' : '(max-width: 767px) 46vw, (min-width: 1280px) 18rem, 33vw');
     $imageFallbackSrc = \App\Support\StorefrontImage::productPlaceholderImgSrc();
     $imgLoading = $eagerImage ? 'eager' : 'lazy';
+    $imgFetchPriority = $eagerImage ? 'high' : 'low';
     $categoryName = data_get($product, 'categories.0.name');
     $description = trim((string) data_get($product, 'short_description'));
     if ($description === '') {
@@ -46,9 +50,10 @@
         <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $slug]) }}" class="relative block h-full w-full focus-visible:outline-none">
             <img
                 src="{{ $imageOptimizedSrc }}"
-                @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $isExplore ? '(min-width: 768px) 18rem, 46vw' : '(min-width: 1280px) 23rem, (min-width: 768px) 33vw, 84vw' }}" @endif
+                @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $imageSizes }}" @endif
                 alt="{{ $name }}"
                 loading="{{ $imgLoading }}"
+                fetchpriority="{{ $imgFetchPriority }}"
                 decoding="async"
                 onerror='this.onerror=null;this.src={{ json_encode($imageFallbackSrc) }}'
                 class="absolute inset-0 z-0 h-full w-full object-cover object-center transition-transform duration-500 ease-rg-out group-hover:scale-[1.04]"
@@ -126,9 +131,10 @@
         ])>
             <img
                 src="{{ $imageOptimizedSrc }}"
-                @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $isShowcase ? '(min-width: 1024px) 26rem, 100vw' : '(min-width: 1280px) 18rem, (min-width: 768px) 33vw, 84vw' }}" @endif
+                @if ($imageSrcset !== '') srcset="{{ $imageSrcset }}" sizes="{{ $imageSizes }}" @endif
                 alt="{{ $name }}"
                 loading="{{ $imgLoading }}"
+                fetchpriority="{{ $imgFetchPriority }}"
                 decoding="async"
                 onerror='this.onerror=null;this.src={{ json_encode($imageFallbackSrc) }}'
                 class="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.03] {{ $useCoverImage ? 'object-cover object-center' : 'object-contain object-center p-5 sm:p-6' }}"

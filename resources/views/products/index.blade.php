@@ -55,7 +55,7 @@
                     <x-product-card
                         :product="$product"
                         :image-alternate-products="$products"
-                        :eager-image="$loop->index < 8"
+                        :eager-image="$loop->index < 4"
                     />
                 @endforeach
             </x-product-grid>

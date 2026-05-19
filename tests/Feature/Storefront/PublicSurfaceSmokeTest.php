@@ -5,6 +5,7 @@ namespace Tests\Feature\Storefront;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Setting;
 use App\Models\SpecialOccasion;
 use Carbon\Carbon;
@@ -120,6 +121,59 @@ class PublicSurfaceSmokeTest extends TestCase
             ->assertOk()
             ->assertSee('rg-store-hero-intro-card', false)
             ->assertSee('--rg-store-hero-mobile-image', false);
+    }
+
+    public function test_mobile_category_nav_opens_panel_instead_of_navigating_to_a_fragile_link(): void
+    {
+        $this->get('/tr')
+            ->assertOk()
+            ->assertSee('type="button"', false)
+            ->assertSee('@click="mobileNavOpen = true"', false)
+            ->assertSee('aria-controls="mobile-nav-panel"', false);
+    }
+
+    public function test_product_listing_limits_eager_product_images_to_initial_catalog_row(): void
+    {
+        foreach (range(1, 5) as $index) {
+            $product = Product::query()->create([
+                'name' => ['tr' => 'Performans Buketi '.$index],
+                'slug' => 'performans-buketi-'.$index,
+                'price' => 1250 + $index,
+                'stock_status' => 'in_stock',
+                'status' => 'active',
+            ]);
+
+            ProductImage::query()->create([
+                'product_id' => $product->id,
+                'image_path' => 'storage/products/2li-beyaz-orkide.png',
+                'is_primary' => true,
+                'sort_order' => 1,
+            ]);
+        }
+
+        $response = $this->get('/tr/urunler');
+
+        $response->assertOk()
+            ->assertSee('sizes="(max-width: 767px) 46vw, (min-width: 1280px) 18rem, 33vw"', false);
+
+        $html = $response->getContent();
+
+        $this->assertSame(4, substr_count($html, 'fetchpriority="high"'));
+        $this->assertGreaterThanOrEqual(1, substr_count($html, 'fetchpriority="low"'));
+    }
+
+    public function test_invalid_special_occasion_date_does_not_break_public_header_navigation(): void
+    {
+        SpecialOccasion::query()->create([
+            'name' => ['tr' => 'Eksik Takvim Günü'],
+            'slug' => 'eksik-takvim-gunu',
+            'date_month' => 13,
+            'date_day' => 40,
+            'is_active' => true,
+        ]);
+
+        $this->get('/tr')
+            ->assertOk();
     }
 
     public function test_robots_txt_includes_extra_rules_and_current_sitemap_url(): void
