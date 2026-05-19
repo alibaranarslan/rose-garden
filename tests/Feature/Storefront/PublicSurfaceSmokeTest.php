@@ -23,7 +23,7 @@ class PublicSurfaceSmokeTest extends TestCase
 
     public function test_sitemap_xml_route_matches_public_file_presence(): void
     {
-        config(['app.url' => 'https://example.test']);
+        config(['app.url' => 'http://example.test']);
 
         $response = $this->get('/sitemap.xml');
 

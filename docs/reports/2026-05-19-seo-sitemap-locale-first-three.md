@@ -11,6 +11,7 @@ Tarih: 2026-05-19
 ## Yapılanlar
 
 - `/sitemap.xml` Laravel route'u artık dinamik `App\Support\SitemapXml` çıktısı döndürüyor.
+- Public domainlerde sitemap URL şeması `https://` olarak normalize ediliyor; localhost geliştirme adresleri korunuyor.
 - Tracked `public/sitemap.xml` kaldırıldı ve tekrar commit edilmemesi için `.gitignore` kapsamına alındı.
 - `sitemap:generate` komutu aynı `SitemapXml` kaynağını kullanacak şekilde sadeleştirildi.
 - SEO meta bileşeni, başlık sağlanmadığında site adını tek başına kullanıyor; başlık zaten marka suffix'i içeriyorsa tekrar eklemiyor.

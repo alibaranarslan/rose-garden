@@ -116,10 +116,16 @@ class SitemapXml
             return rtrim((string) config('app.url'), '/');
         }
 
+        $host = (string) $parts['host'];
         $scheme = $parts['scheme'] ?? 'https';
+
+        if ($scheme === 'http' && ! in_array($host, ['127.0.0.1', 'localhost'], true)) {
+            $scheme = 'https';
+        }
+
         $port = isset($parts['port']) ? ':'.$parts['port'] : '';
 
-        return rtrim("{$scheme}://{$parts['host']}{$port}", '/');
+        return rtrim("{$scheme}://{$host}{$port}", '/');
     }
 
     private static function entry(string $loc, string $priority, string $changefreq, ?string $lastmod = null): array
