@@ -44,6 +44,16 @@ No admin, payment provider, SMS/mail, content import, or broad redesign work was
   - Checkout section padding: `16px`; input top padding: `9.28px`.
   - Blog, special occasions, contact, FAQ, delivery info: 200-equivalent render, no error copy, no horizontal overflow.
   - Console/page errors: none.
+- Live Playwright mobile smoke at 390x844 on `https://rosegardencicekcilik.com.tr`:
+  - Asset: `/build/assets/app-CN10fHGi.css`.
+  - PDP gallery height: `358px`.
+  - PDP duplicate WhatsApp display: `none`.
+  - PDP horizontal overflow: `false`.
+  - Cart mobile checkout bar: `top=763`, `bottom=830`, visible.
+  - Cart card-message editor: `DETAILS`, default open state `false`.
+  - Checkout mobile action bar: `top=763`, `bottom=830`, visible.
+  - Blog, special occasions, contact, FAQ, delivery info: no error copy, no horizontal overflow.
+  - Console/page errors: none.
 
 ## Evidence
 
@@ -51,6 +61,10 @@ No admin, payment provider, SMS/mail, content import, or broad redesign work was
   - `%LOCALAPPDATA%\Temp\rg-remaining-polish-local\pdp-top.png`
   - `%LOCALAPPDATA%\Temp\rg-remaining-polish-local\cart-mobile.png`
   - `%LOCALAPPDATA%\Temp\rg-remaining-polish-local\checkout-mobile.png`
+- Live screenshots:
+  - `%LOCALAPPDATA%\Temp\rg-remaining-polish-live\pdp-top-live.png`
+  - `%LOCALAPPDATA%\Temp\rg-remaining-polish-live\cart-mobile-live.png`
+  - `%LOCALAPPDATA%\Temp\rg-remaining-polish-live\checkout-mobile-live.png`
 
 ## Remaining Risk
 
