@@ -87,6 +87,7 @@ class SettingsGovernanceTest extends TestCase
             ->test(GeneralSettings::class)
             ->set('data.contact_email', 'INFO@EXAMPLE.TEST')
             ->set('data.contact_phone', '+90   416 214 00 00')
+            ->set('data.whatsapp_phone', '0 416 214 00 00')
             ->set('data.social_links', [
                 ['platform' => 'instagram', 'url' => ' https://instagram.com/rosegarden '],
                 ['platform' => '', 'url' => ''],
@@ -96,6 +97,7 @@ class SettingsGovernanceTest extends TestCase
 
         $this->assertSame('info@example.test', Setting::get('contact', 'contact_email'));
         $this->assertSame('+90 416 214 00 00', Setting::get('contact', 'contact_phone'));
+        $this->assertSame('0 416 214 00 00', Setting::get('contact', 'whatsapp_phone'));
         $this->assertSame(
             [['platform' => 'instagram', 'url' => 'https://instagram.com/rosegarden']],
             json_decode((string) Setting::get('social', 'links'), true)

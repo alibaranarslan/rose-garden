@@ -7,9 +7,9 @@
         $storePhone = $siteSettings->get('contact', collect())->get('contact_phone', '0552 271 70 67');
         $storeEmail = $siteSettings->get('contact', collect())->get('contact_email', '');
         $storeAddress = $siteSettings->get('contact', collect())->get('address', 'Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez');
-        $storeWa = $siteSettings->get('contact', collect())->get('whatsapp_phone', '905522717067');
-        $phoneRawStore = preg_replace('/\D/', '', $storePhone);
-        $phoneRawStore = str_starts_with($phoneRawStore, '0') ? '90'.substr($phoneRawStore, 1) : $phoneRawStore;
+        $contactSettings = $siteSettings->get('contact', collect());
+        $storeWa = \App\Support\ContactLinks::phoneForWhatsApp($contactSettings);
+        $phoneRawStore = \App\Support\ContactLinks::phoneForTel($contactSettings);
         $rgMapQuery = rawurlencode('Yeni Sanayi Mah. 2819 Sk. No 70/2B K.A.06 Adıyaman Merkez');
     @endphp
 

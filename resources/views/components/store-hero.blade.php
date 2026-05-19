@@ -13,7 +13,7 @@
 
 @php
     $contact = $siteSettings?->get('contact', collect()) ?? collect();
-    $whatsAppPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '905522717067'));
+    $whatsAppPhone = \App\Support\ContactLinks::phoneForWhatsApp($contact);
     $heroImage = \App\Support\StorefrontImage::publicImgSrc(\App\Support\StorefrontImage::resolveProduct(
         data_get($featuredProduct, 'images.0.image_path'),
         data_get($featuredProduct, 'slug'),

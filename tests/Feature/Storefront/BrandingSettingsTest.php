@@ -40,7 +40,7 @@ class BrandingSettingsTest extends TestCase
         $this->get(route('home'))
             ->assertOk()
             ->assertSee('Rose Garden Çiçek Çikolata', false)
-            ->assertSee('<title>Rose Garden Çiçek Çikolata | Rose Garden</title>', false)
+            ->assertSee('<title>Rose Garden Çiçek Çikolata</title>', false)
             ->assertSee('images/branding/rg-logo-dark.png', false)
             ->assertSee('images/branding/favicon.png', false);
     }
@@ -64,6 +64,30 @@ class BrandingSettingsTest extends TestCase
             ->assertOk()
             ->assertSee('Rose Garden Atelier')
             ->assertSee('Boutique floral experience');
+    }
+
+    public function test_admin_contact_phone_controls_storefront_whatsapp_links_when_whatsapp_is_blank(): void
+    {
+        Setting::set('contact', 'contact_phone', '0552 271 70 67');
+        Setting::set('contact', 'whatsapp_phone', '');
+
+        Cache::flush();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('api.whatsapp.com/send?phone=905522717067', false);
+    }
+
+    public function test_admin_whatsapp_phone_overrides_storefront_whatsapp_links(): void
+    {
+        Setting::set('contact', 'contact_phone', '0552 271 70 67');
+        Setting::set('contact', 'whatsapp_phone', '+90 416 214 00 00');
+
+        Cache::flush();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('api.whatsapp.com/send?phone=904162140000', false);
     }
 
     public function test_canonical_domain_is_normalized_in_meta_tags(): void

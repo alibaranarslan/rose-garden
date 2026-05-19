@@ -189,8 +189,13 @@
                     <livewire:add-to-cart :product-id="$product->id" layout="detail" />
                 </div>
 
+                @php
+                    $productWhatsAppPhone = \App\Support\ContactLinks::phoneForWhatsApp(data_get($siteSettings, 'contact', collect()));
+                    $productWhatsAppText = urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current());
+                @endphp
+
                 <div class="rg-pdp-whatsapp-action mt-4">
-                    <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '905522717067') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
+                    <a href="https://api.whatsapp.com/send?phone={{ $productWhatsAppPhone }}&text={{ $productWhatsAppText }}"
                        target="_blank" rel="noopener"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-emerald-600">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -217,7 +222,7 @@
                 </div>
 
                 <div class="rg-pdp-whatsapp-action rg-pdp-whatsapp-action--duplicate mt-4">
-                    <a href="https://api.whatsapp.com/send?phone={{ data_get($siteSettings, 'contact.whatsapp_phone', '905522717067') }}&text={{ urlencode(__('Merhaba, bu ürünü sipariş vermek istiyorum: ') . $product->name . ' - ' . url()->current()) }}"
+                    <a href="https://api.whatsapp.com/send?phone={{ $productWhatsAppPhone }}&text={{ $productWhatsAppText }}"
                        target="_blank" rel="noopener"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-emerald-600">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

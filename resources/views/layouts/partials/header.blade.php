@@ -1,6 +1,6 @@
 @php
     $contact = $siteSettings->get('contact', collect());
-    $waPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '905522717067'));
+    $waPhone = \App\Support\ContactLinks::phoneForWhatsApp($contact);
     $branding = \App\Support\SiteBranding::current();
     $siteName = $branding['site_name'] ?? 'Rose Garden';
     $headerTheme = $activeHeaderTheme ?? null;

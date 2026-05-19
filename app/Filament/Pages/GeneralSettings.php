@@ -41,6 +41,7 @@ class GeneralSettings extends Page implements HasForms
             'favicon_path' => Setting::get('general', 'favicon_path', ''),
             'contact_email' => Setting::get('contact', 'contact_email', Setting::get('general', 'contact_email', '')),
             'contact_phone' => Setting::get('contact', 'contact_phone', Setting::get('general', 'contact_phone', '')),
+            'whatsapp_phone' => Setting::get('contact', 'whatsapp_phone', Setting::get('contact', 'contact_phone', Setting::get('general', 'contact_phone', ''))),
             'address' => LocalizedSettings::decodeText(Setting::get('contact', 'address', Setting::get('general', 'address', ''))),
             'social_links' => $this->decodeJsonSetting('social', 'links'),
             'hero_heading' => LocalizedSettings::decodeText(Setting::get('storefront', 'hero_heading', '')),
@@ -108,6 +109,12 @@ class GeneralSettings extends Page implements HasForms
                         ->regex('/^\+?[0-9\s().-]{10,32}$/')
                         ->dehydrateStateUsing(fn (mixed $state): string => trim((string) preg_replace('/\s+/', ' ', (string) $state)))
                         ->helperText('Footer iletişim alanında görünür.'),
+                    TextInput::make('whatsapp_phone')->label('WhatsApp Telefonu')
+                        ->tel()
+                        ->maxLength(32)
+                        ->regex('/^\+?[0-9\s().-]{10,32}$/')
+                        ->dehydrateStateUsing(fn (mixed $state): string => trim((string) preg_replace('/\s+/', ' ', (string) $state)))
+                        ->helperText('Header, footer, ürün ve iletişim sayfasındaki WhatsApp linklerinde kullanılır. Boş bırakılırsa telefon alanı kullanılır.'),
                     $this->localizedTextTabs(
                         'address',
                         'Adres',
@@ -218,6 +225,7 @@ class GeneralSettings extends Page implements HasForms
         $data = $this->form->getState();
         $data['contact_email'] = $this->normalizeEmail($data['contact_email'] ?? '');
         $data['contact_phone'] = $this->normalizePhone($data['contact_phone'] ?? '');
+        $data['whatsapp_phone'] = $this->normalizePhone($data['whatsapp_phone'] ?? '');
         $data['social_links'] = $this->normalizeSocialLinks($data['social_links'] ?? []);
 
         if (! $this->validateGeneralState($data)) {
@@ -256,10 +264,12 @@ class GeneralSettings extends Page implements HasForms
 
         Setting::set('contact', 'contact_email', $data['contact_email'] ?? '');
         Setting::set('contact', 'contact_phone', $data['contact_phone'] ?? '');
+        Setting::set('contact', 'whatsapp_phone', $data['whatsapp_phone'] ?: ($data['contact_phone'] ?? ''));
         Setting::set('contact', 'address', LocalizedSettings::encodeText($data['address'] ?? []));
 
         Setting::set('general', 'contact_email', $data['contact_email'] ?? '');
         Setting::set('general', 'contact_phone', $data['contact_phone'] ?? '');
+        Setting::set('general', 'whatsapp_phone', $data['whatsapp_phone'] ?: ($data['contact_phone'] ?? ''));
         Setting::set('general', 'address', LocalizedSettings::encodeText($data['address'] ?? []));
 
         Setting::set('social', 'links', json_encode($data['social_links'] ?? [], JSON_UNESCAPED_UNICODE));
@@ -327,6 +337,11 @@ class GeneralSettings extends Page implements HasForms
 
         if (filled($data['contact_phone'] ?? '') && ! preg_match('/^\+?[0-9\s().-]{10,32}$/', $data['contact_phone'])) {
             $this->addError('data.contact_phone', 'Geçerli bir telefon numarası girin.');
+            $valid = false;
+        }
+
+        if (filled($data['whatsapp_phone'] ?? '') && ! preg_match('/^\+?[0-9\s().-]{10,32}$/', $data['whatsapp_phone'])) {
+            $this->addError('data.whatsapp_phone', 'Geçerli bir WhatsApp telefon numarası girin.');
             $valid = false;
         }
 
