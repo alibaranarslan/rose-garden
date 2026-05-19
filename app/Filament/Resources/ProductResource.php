@@ -7,6 +7,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Tag;
+use App\Support\AdminActionLogger;
 use App\Support\ProductDuplicator;
 use App\Support\StorefrontImage;
 use Filament\Forms\Components\DateTimePicker;
@@ -466,8 +467,16 @@ class ProductResource extends Resource
                 Action::make('duplicate')
                     ->label('Kopyala')
                     ->icon('heroicon-o-document-duplicate')
+                    ->requiresConfirmation()
+                    ->modalHeading('Ürünü kopyala')
+                    ->modalDescription('Bu işlem ürünün yeni bir kopyasını oluşturur. Kopya ürün yayına alınmadan önce fiyat, stok, görsel ve kategori bilgilerini kontrol edin.')
+                    ->modalSubmitActionLabel('Kopyayı oluştur')
                     ->action(function (Product $record): void {
-                        ProductDuplicator::duplicate($record);
+                        $copy = ProductDuplicator::duplicate($record);
+
+                        AdminActionLogger::record('product.duplicate', $record, [
+                            'copy_id' => $copy->getKey(),
+                        ]);
 
                         Notification::make()
                             ->success()
@@ -479,21 +488,52 @@ class ProductResource extends Resource
                 BulkActionGroup::make([
                     BulkAction::make('activate')
                         ->label('Aktifleştir')
-                        ->action(fn (Collection $records) => $records->each->update(['status' => 'active'])),
+                        ->requiresConfirmation()
+                        ->modalHeading('Seçili ürünleri aktifleştir')
+                        ->modalDescription('Seçili ürünler storefront içinde görünür hale gelebilir. Görsel, fiyat ve stok bilgilerini kontrol ettiğinizden emin olun.')
+                        ->modalSubmitActionLabel('Aktifleştir')
+                        ->action(function (Collection $records): void {
+                            $records->each->update(['status' => 'active']);
+                            AdminActionLogger::record('product.bulk_activate', null, ['count' => $records->count()]);
+                        }),
 
                     BulkAction::make('deactivate')
                         ->label('Pasifleştir')
-                        ->action(fn (Collection $records) => $records->each->update(['status' => 'inactive'])),
+                        ->requiresConfirmation()
+                        ->modalHeading('Seçili ürünleri pasifleştir')
+                        ->modalDescription('Seçili ürünler storefront vitrinlerinden kalkabilir. Aktif kampanya veya özel gün bağlantılarını kontrol edin.')
+                        ->modalSubmitActionLabel('Pasifleştir')
+                        ->action(function (Collection $records): void {
+                            $records->each->update(['status' => 'inactive']);
+                            AdminActionLogger::record('product.bulk_deactivate', null, ['count' => $records->count()]);
+                        }),
 
                     BulkAction::make('set_featured')
                         ->label('Öne Çıkar')
-                        ->action(fn (Collection $records) => $records->each->update(['is_featured' => true])),
+                        ->requiresConfirmation()
+                        ->modalHeading('Seçili ürünleri öne çıkar')
+                        ->modalDescription('Bu işlem ana vitrin ve öneri alanlarının ticari sıralamasını etkileyebilir.')
+                        ->modalSubmitActionLabel('Öne çıkar')
+                        ->action(function (Collection $records): void {
+                            $records->each->update(['is_featured' => true]);
+                            AdminActionLogger::record('product.bulk_set_featured', null, ['count' => $records->count()]);
+                        }),
 
                     BulkAction::make('unset_featured')
                         ->label('Öne Çıkarmayı Kaldır')
-                        ->action(fn (Collection $records) => $records->each->update(['is_featured' => false])),
+                        ->requiresConfirmation()
+                        ->modalHeading('Öne çıkarma işaretini kaldır')
+                        ->modalDescription('Seçili ürünler vitrin önceliğini kaybedebilir. Bu değişiklik merchandising görünümünü etkiler.')
+                        ->modalSubmitActionLabel('Kaldır')
+                        ->action(function (Collection $records): void {
+                            $records->each->update(['is_featured' => false]);
+                            AdminActionLogger::record('product.bulk_unset_featured', null, ['count' => $records->count()]);
+                        }),
 
-                    DeleteBulkAction::make()->label('Sil'),
+                    DeleteBulkAction::make()
+                        ->label('Sil')
+                        ->modalHeading('Seçili ürünleri sil')
+                        ->modalDescription('Silme işlemi ürünlerin storefront ve sipariş geçmişiyle ilişkisini etkileyebilir. Emin değilseniz pasifleştirmeyi tercih edin.'),
                 ]),
             ])
             ->defaultSort('sort_order');

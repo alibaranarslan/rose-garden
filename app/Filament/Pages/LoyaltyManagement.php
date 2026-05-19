@@ -6,6 +6,7 @@ use App\Models\LoyaltyPoint;
 use App\Models\LoyaltyTransaction;
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\AdminActionLogger;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -105,6 +106,11 @@ class LoyaltyManagement extends Page implements HasForms
         Setting::set('loyalty', 'earn_rate', $this->normalizeEarnRateForStorage($this->data['earn_rate'] ?? '5'));
         Setting::set('loyalty', 'min_use_amount', $this->data['min_use_amount'] ?? '50');
         Setting::set('loyalty', 'expiry_months', $this->data['expiry_months'] ?? '12');
+        AdminActionLogger::record('loyalty.rules_save', null, [
+            'earn_rate_percent' => $this->data['earn_rate'] ?? null,
+            'min_use_amount' => $this->data['min_use_amount'] ?? null,
+            'expiry_months' => $this->data['expiry_months'] ?? null,
+        ]);
         Notification::make()->success()->title('Puan kuralları kaydedildi')->send();
     }
 
@@ -155,6 +161,13 @@ class LoyaltyManagement extends Page implements HasForms
             Notification::make()->success()->title("{$amount} puan eklendi")->send();
         } else {
             if ($loyaltyPoint->balance < $amount) {
+                AdminActionLogger::record('loyalty.manual_points_failed', $loyaltyPoint, [
+                    'user_id' => $userId,
+                    'operation' => $operation,
+                    'amount' => $amount,
+                    'reason' => 'insufficient_balance',
+                ]);
+
                 Notification::make()->danger()->title('Yetersiz puan bakiyesi')->send();
 
                 return;
@@ -163,6 +176,12 @@ class LoyaltyManagement extends Page implements HasForms
             $loyaltyPoint->spendPoints(abs($amount), "[Admin] {$reason}");
             Notification::make()->success()->title("{$amount} puan çıkarıldı")->send();
         }
+
+        AdminActionLogger::record('loyalty.manual_points', $loyaltyPoint, [
+            'user_id' => $userId,
+            'operation' => $operation,
+            'amount' => $amount,
+        ]);
 
         $this->manualData = [];
         $this->data['manualData'] = [];

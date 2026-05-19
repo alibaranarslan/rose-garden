@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\NotificationTemplateResource\Pages;
 use App\Models\NotificationTemplate;
 use App\Services\SmsService;
+use App\Support\AdminActionLogger;
 use App\Support\DynamicMailConfig;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -123,6 +124,10 @@ class NotificationTemplateResource extends Resource
                 Action::make('test_send')
                     ->label('Test Gönder')
                     ->icon('heroicon-o-paper-airplane')
+                    ->requiresConfirmation()
+                    ->modalHeading('Test bildirimi gönder')
+                    ->modalDescription('Bu işlem girilen test e-posta veya telefon bilgisine gerçek test bildirimi gönderebilir. Canlı alıcı yerine kontrollü test alıcısı kullandığınızdan emin olun.')
+                    ->modalSubmitActionLabel('Test gönder')
                     ->form([
                         TextInput::make('email')
                             ->label('Test E-posta')
@@ -171,6 +176,13 @@ class NotificationTemplateResource extends Resource
                         }
 
                         if (! $emailSent && ! $smsSent) {
+                            AdminActionLogger::record('notification_template.test_send_failed', $record, [
+                                'channel' => $record->channel,
+                                'locale' => $locale,
+                                'has_email' => filled($data['email'] ?? null),
+                                'has_phone' => filled($data['phone'] ?? null),
+                            ]);
+
                             Notification::make()
                                 ->danger()
                                 ->title('Test bildirimi gönderilemedi')
@@ -188,6 +200,13 @@ class NotificationTemplateResource extends Resource
                                 $smsSent ? 'SMS gönderildi.' : null,
                             ])->filter()->implode(' ')))
                             ->send();
+
+                        AdminActionLogger::record('notification_template.test_send', $record, [
+                            'channel' => $record->channel,
+                            'locale' => $locale,
+                            'email_sent' => $emailSent,
+                            'sms_sent' => $smsSent,
+                        ]);
                     }),
             ]);
     }

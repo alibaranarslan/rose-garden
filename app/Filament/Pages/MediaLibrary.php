@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Support\AdminActionLogger;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Database\Eloquent\Model;
@@ -45,7 +46,7 @@ class MediaLibrary extends Page
                 'file_name' => $media->file_name,
                 'size' => $this->humanFileSize($media->size),
                 'collection' => $media->collection_name,
-                'model_type' => $media->model_type ? class_basename($media->model_type) : '—',
+                'model_type' => $media->model_type ? class_basename($media->model_type) : '-',
                 'model_id' => $media->model_id,
                 'thumb_url' => $media->hasGeneratedConversion('thumb')
                     ? $media->getUrl('thumb')
@@ -62,12 +63,18 @@ class MediaLibrary extends Page
         $media = Media::find($id);
 
         if (! $media) {
+            AdminActionLogger::record('media.delete_failed', null, ['media_id' => $id, 'reason' => 'not_found']);
             Notification::make()->danger()->title('Medya bulunamadı')->send();
 
             return;
         }
 
         if (! $this->isOrphaned($media)) {
+            AdminActionLogger::record('media.delete_blocked_attached', $media, [
+                'model_type' => $media->model_type,
+                'model_id' => $media->model_id,
+            ]);
+
             Notification::make()
                 ->danger()
                 ->title('Bu medya aktif bir kayda bağlı')
@@ -77,6 +84,7 @@ class MediaLibrary extends Page
             return;
         }
 
+        AdminActionLogger::record('media.delete_orphaned', $media, ['file_name' => $media->file_name]);
         $media->delete();
         Notification::make()->success()->title('Medya silindi')->send();
     }

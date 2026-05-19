@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\LayoutRevision;
 use App\Services\LayoutConfigService;
+use App\Support\AdminActionLogger;
 use App\Support\AdminPrivileges;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -235,7 +236,7 @@ class LayoutStudio extends Page
         Notification::make()
             ->success()
             ->title('Görünüm ön ayarı uygulandı')
-            ->body('Sayfan1n genel vitrin karar1 taslaa i_lendi.')
+            ->body('Sayfanın genel vitrin kararı taslağa işlendi.')
             ->send();
     }
 
@@ -282,6 +283,11 @@ class LayoutStudio extends Page
         app(LayoutConfigService::class)->storeDraftState($this->modules, $this->appearance, auth()->user());
         $this->refreshFromDraft(app(LayoutConfigService::class));
 
+        AdminActionLogger::record('layout.save_draft', null, [
+            'module_count' => count($this->modules),
+            'selected_module' => $this->selectedModuleKey,
+        ]);
+
         Notification::make()
             ->success()
             ->title('Taslak kaydedildi')
@@ -306,9 +312,13 @@ class LayoutStudio extends Page
         $revision = $service->publishDraft(auth()->user());
         $this->refreshFromDraft($service);
 
+        AdminActionLogger::record('layout.publish_draft', $revision, [
+            'revision_name' => $revision->name,
+        ]);
+
         Notification::make()
             ->success()
-            ->title('Vitrin canliya alindi')
+            ->title('Vitrin canlıya alındı')
             ->body($revision->name)
             ->send();
     }
@@ -334,7 +344,7 @@ class LayoutStudio extends Page
         $revision = LayoutRevision::query()->find($this->restoreRevisionId);
 
         if (! $revision) {
-            Notification::make()->danger()->title('Revizyon bulunamadi')->send();
+            Notification::make()->danger()->title('Revizyon bulunamadı')->send();
 
             return;
         }
@@ -343,6 +353,10 @@ class LayoutStudio extends Page
         $service->restoreRevisionToDraft($revision, auth()->user());
         $this->refreshFromDraft($service);
         $this->restoreRevisionId = null;
+
+        AdminActionLogger::record('layout.restore_revision', $revision, [
+            'revision_name' => $revision->name,
+        ]);
 
         Notification::make()->success()->title('Taslak geri yüklendi')->send();
     }

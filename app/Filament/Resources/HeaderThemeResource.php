@@ -105,7 +105,7 @@ class HeaderThemeResource extends Resource
                             ])
                             ->all())
                         ->searchable()
-                        ->helperText('Boş kalırsa sistem tema anahtarını özel gün slug’ı olarak dener.'),
+                        ->helperText('Boş kalırsa sistem tema anahtarını özel gün slug değeri olarak dener.'),
                     TextInput::make('cta_url')
                         ->label('Özel CTA URL')
                         ->maxLength(255)
@@ -207,7 +207,7 @@ class HeaderThemeResource extends Resource
                         ->columnSpanFull(),
                     Placeholder::make('preview_hint')
                         ->label('Önizleme')
-                        ->content('Kayıt listesindeki “Önizle” aksiyonu locale ve tarih seçerek signed preview açar.')
+                        ->content('Kayıt listesindeki "Önizle" aksiyonu locale ve tarih seçerek imzalı önizleme açar.')
                         ->columnSpanFull(),
                 ])->columns(2),
         ]);

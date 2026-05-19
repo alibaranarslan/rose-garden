@@ -6,6 +6,7 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\StatusHistoryRelationManager;
 use App\Models\Order;
+use App\Support\AdminActionLogger;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -236,6 +237,9 @@ class OrderResource extends Resource
                     ->color('success')
                     ->visible(fn (Order $record) => $record->status === 'awaiting_payment' && $record->payment_method === 'bank_transfer')
                     ->requiresConfirmation()
+                    ->modalHeading('Havale ödemesini onayla')
+                    ->modalDescription('Bu işlem siparişi ödendi durumuna alır ve ödeme kaydını tamamlandı olarak işaretler. Banka hareketini kontrol etmeden onaylamayın.')
+                    ->modalSubmitActionLabel('Havaleyi onayla')
                     ->action(function (Order $record) {
                         $payment = $record->payment;
 
@@ -253,6 +257,11 @@ class OrderResource extends Resource
                             $record->payment->update(['status' => 'completed', 'confirmed_by' => auth()->id(), 'confirmed_at' => now()]);
                             $record->update(['status' => 'paid']);
                         });
+
+                        AdminActionLogger::record('order.approve_bank_transfer', $record, [
+                            'payment_id' => $record->payment?->getKey(),
+                            'order_number' => $record->order_number,
+                        ]);
 
                         Notification::make()->success()->title('Havale onaylandı')->send();
                     }),

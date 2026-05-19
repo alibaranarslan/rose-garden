@@ -375,3 +375,85 @@ html.dark .admin-empty-state {
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 640px) {
+    .fi-main,
+    .fi-main-ctn {
+        max-width: 100vw;
+    }
+
+    .fi-page {
+        gap: 1rem;
+    }
+
+    .fi-page-header {
+        gap: 0.85rem;
+    }
+
+    .fi-header-heading,
+    .fi-page-header-heading {
+        font-size: 1.35rem !important;
+        line-height: 1.15 !important;
+    }
+
+    .fi-ta {
+        border-radius: 1.1rem !important;
+        overflow: hidden;
+    }
+
+    .fi-ta-content {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .fi-ta-content::after {
+        content: "Tabloyu görmek için yana kaydırın";
+        position: sticky;
+        left: 0;
+        display: block;
+        width: max-content;
+        padding: 0.55rem 0.85rem;
+        color: var(--admin-text-muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .fi-ta-table {
+        min-width: 46rem;
+    }
+
+    .fi-ta-cell,
+    .fi-ta-header-cell {
+        padding-inline: 0.75rem !important;
+    }
+
+    .fi-ta-text,
+    .fi-ta-col-wrp {
+        max-width: 15rem;
+    }
+
+    .fi-ta-image,
+    .fi-ta-image img {
+        width: 2.75rem !important;
+        height: 2.75rem !important;
+        border-radius: 0.85rem !important;
+    }
+
+    .admin-section-panel {
+        padding: 1rem;
+        border-radius: 1.15rem;
+    }
+
+    .admin-action-bar {
+        justify-content: stretch;
+    }
+
+    .admin-action-bar .fi-btn,
+    .admin-action-bar button,
+    .admin-action-bar a {
+        width: 100%;
+        justify-content: center;
+    }
+}

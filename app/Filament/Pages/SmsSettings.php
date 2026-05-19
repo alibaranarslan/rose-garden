@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use App\Services\SmsService;
+use App\Support\AdminActionLogger;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -109,6 +110,10 @@ class SmsSettings extends Page implements HasForms
                 ->label('Test SMS Gönder')
                 ->icon('heroicon-o-paper-airplane')
                 ->color('gray')
+                ->requiresConfirmation()
+                ->modalHeading('Test SMS gönder')
+                ->modalDescription('Bu işlem girilen telefona gerçek test SMS gönderimi yapabilir. Canlı numara yerine kontrollü test numarası kullandığınızdan emin olun.')
+                ->modalSubmitActionLabel('Test SMS gönder')
                 ->form([
                     TextInput::make('phone')
                         ->label('Telefon')
@@ -121,6 +126,8 @@ class SmsSettings extends Page implements HasForms
                     $sms = app(SmsService::class);
 
                     if (! $sms->canSend()) {
+                        AdminActionLogger::record('settings.sms.test_failed', null, ['reason' => 'sms_not_ready']);
+
                         Notification::make()
                             ->danger()
                             ->title('SMS servisi hazır değil')
@@ -133,11 +140,16 @@ class SmsSettings extends Page implements HasForms
                     $sent = $sms->send($data['phone'], 'Bu bir test SMS mesajıdır.');
 
                     if ($sent) {
+                        AdminActionLogger::record('settings.sms.test_sent', null, [
+                            'phone_suffix' => substr(preg_replace('/\D+/', '', (string) $data['phone']), -4),
+                        ]);
+
                         Notification::make()->success()->title('Test SMS gönderildi')->send();
 
                         return;
                     }
 
+                    AdminActionLogger::record('settings.sms.test_failed', null, ['reason' => 'provider_rejected']);
                     Notification::make()->danger()->title('Test SMS gönderilemedi')->send();
                 }),
         ];

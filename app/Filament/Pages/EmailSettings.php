@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
+use App\Support\AdminActionLogger;
 use App\Support\DynamicMailConfig;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Section;
@@ -115,6 +116,8 @@ class EmailSettings extends Page implements HasForms
             $recipient = auth()->user()?->email;
 
             if (blank($recipient)) {
+                AdminActionLogger::record('settings.email.test_failed', null, ['reason' => 'missing_admin_email']);
+
                 Notification::make()
                     ->danger()
                     ->title('Test e-postası gönderilemedi')
@@ -127,6 +130,8 @@ class EmailSettings extends Page implements HasForms
             DynamicMailConfig::apply();
 
             if (! $this->smtpReady()) {
+                AdminActionLogger::record('settings.email.test_failed', null, ['reason' => 'smtp_not_ready']);
+
                 Notification::make()
                     ->danger()
                     ->title('Test e-postası gönderilemedi')
@@ -137,8 +142,14 @@ class EmailSettings extends Page implements HasForms
             }
 
             Mail::raw('Bu bir test e-postasıdır.', fn ($message) => $message->to($recipient)->subject('Rose Garden Test'));
+            AdminActionLogger::record('settings.email.test_sent');
             Notification::make()->success()->title('Test e-postası gönderildi')->send();
         } catch (\Exception $e) {
+            AdminActionLogger::record('settings.email.test_failed', null, [
+                'reason' => 'exception',
+                'exception' => $e::class,
+            ]);
+
             Notification::make()->danger()->title('Hata: '.$e->getMessage())->send();
         }
     }
@@ -151,6 +162,9 @@ class EmailSettings extends Page implements HasForms
                 ->icon('heroicon-o-paper-airplane')
                 ->color('gray')
                 ->requiresConfirmation()
+                ->modalHeading('Test e-postası gönder')
+                ->modalDescription('Bu işlem yönetici hesabınızın e-posta adresine gerçek bir test e-postası gönderir. Canlı SMTP ayarlarını kontrol etmek için kullanın.')
+                ->modalSubmitActionLabel('Test e-postası gönder')
                 ->action('sendTestEmail'),
         ];
     }

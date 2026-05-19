@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Support\AdminActionLogger;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Artisan;
@@ -47,6 +48,8 @@ class CacheManagement extends Page
         }
 
         if ($failed !== []) {
+            AdminActionLogger::record('cache.clear_all_failed', null, ['failed_commands' => $failed]);
+
             Notification::make()
                 ->danger()
                 ->title('Önbellek temizleme tamamlanamadı')
@@ -56,6 +59,7 @@ class CacheManagement extends Page
             return;
         }
 
+        AdminActionLogger::record('cache.clear_all');
         Notification::make()->success()->title('Tüm cache temizlendi')->send();
     }
 
@@ -67,11 +71,13 @@ class CacheManagement extends Page
     private function runCommand(string $command, string $successMessage, string $errorMessage): void
     {
         if (! $this->callCommand($command)) {
+            AdminActionLogger::record('cache.command_failed', null, ['command' => $command]);
             Notification::make()->danger()->title($errorMessage)->send();
 
             return;
         }
 
+        AdminActionLogger::record('cache.command', null, ['command' => $command]);
         Notification::make()->success()->title($successMessage)->send();
     }
 
