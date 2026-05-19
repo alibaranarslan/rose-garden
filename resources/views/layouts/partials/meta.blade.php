@@ -10,6 +10,7 @@
     $branding = \App\Support\SiteBranding::current();
 
     $brandingPublic = public_path('images/branding');
+    $hasRootFaviconSvg = is_file(public_path('favicon.svg'));
     $hasBrandingFaviconSvg = is_file($brandingPublic.DIRECTORY_SEPARATOR.'favicon.svg');
     $hasBrandingFaviconPng = is_file($brandingPublic.DIRECTORY_SEPARATOR.'favicon.png');
     $hasBrandingFaviconDarkPng = is_file($brandingPublic.DIRECTORY_SEPARATOR.'favicon-dark.png');
@@ -30,13 +31,19 @@
     :canonical="$canonical ?? null"
     :noindex="$noindex ?? false"
 />
-<link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+<link rel="icon" href="{{ $brandingAsset('favicon.ico') }}" sizes="any">
+@if ($hasRootFaviconSvg)
+    <link rel="icon" type="image/svg+xml" href="{{ $brandingAsset('favicon.svg') }}">
+@endif
 @if (data_get($branding, 'uses_custom_favicon'))
     <link rel="icon" href="{{ $branding['favicon_url'] }}" sizes="any">
     <link rel="icon" href="{{ $branding['favicon_url'] }}" sizes="32x32">
     <link rel="apple-touch-icon" href="{{ $branding['favicon_url'] }}">
-@elseif ($hasBrandingFaviconSvg && ! $hasBrandingFaviconPng)
+@elseif ($hasBrandingFaviconSvg)
     <link rel="icon" type="image/svg+xml" href="{{ $brandingAsset('images/branding/favicon.svg') }}">
+    @if ($hasBrandingFaviconPng)
+        <link rel="icon" type="image/png" href="{{ $brandingAsset('images/branding/favicon.png') }}" sizes="32x32">
+    @endif
 @elseif ($hasBrandingFaviconPng)
     <link rel="icon" type="image/png" href="{{ $brandingAsset('images/branding/favicon.png') }}" sizes="32x32">
 @endif
