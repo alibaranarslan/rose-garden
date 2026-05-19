@@ -18,7 +18,9 @@ Bir önceki favicon setindeki yaprak detayı kaldırıldı. Yeni kapsam yalnızc
 - `npm run build` geçti.
 - `php artisan test tests\Feature\Storefront\PublicSurfaceSmokeTest.php` geçti: 12 test, 62 assertion.
 - Yerel görsel kontrol: `favicon.png` ve `favicon-32.png` yapraksız `RG` monogramı olarak görüntülendi.
-
-## Canlıya Alma Notu
-
-Bu rapor kod commitinden sonra deploy edilecek canlı doğrulama ile tamamlanacaktır.
+- Deploy branch: `deploy/rose-garden-main-ae2d00c`.
+- Sunucuda `npm run build`, `php artisan optimize:clear`, `config:cache`, `route:cache`, `view:cache` geçti.
+- Canlı `curl -I https://rosegardencicekcilik.com.tr/favicon.ico` sonucu: `200 OK`, `Content-Type: image/x-icon`, `Content-Length: 3299`.
+- Canlı `curl -I https://rosegardencicekcilik.com.tr/favicon.svg` sonucu: `200 OK`, `Content-Type: image/svg+xml`, `Content-Length: 1258`.
+- Canlı `curl -I https://rosegardencicekcilik.com.tr/images/branding/favicon.svg` sonucu: `200 OK`, `Content-Type: image/svg+xml`, `Content-Length: 1258`.
+- Playwright canlı smoke: `https://rosegardencicekcilik.com.tr/tr` 200 döndü, favicon linkleri yeni cache-busted assetlere işaret etti, `favicon.svg` içinde `RG` bulundu, yaprak rengi bulunmadı, console error sayısı `0`.
