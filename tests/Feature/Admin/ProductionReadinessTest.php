@@ -43,7 +43,7 @@ class ProductionReadinessTest extends TestCase
             'mail.mailers.smtp.host' => 'smtp.example.test',
             'mail.mailers.smtp.username' => 'mailer',
             'mail.mailers.smtp.password' => 'secret',
-            'mail.from.address' => 'info@adiyamancicekcisi.com.tr',
+            'mail.from.address' => 'info@rosegardencicekcilik.com.tr',
             'services.paytr.merchant_id' => '',
             'services.paytr.merchant_key' => '',
             'services.paytr.merchant_salt' => '',
@@ -60,7 +60,7 @@ class ProductionReadinessTest extends TestCase
         Setting::set('sms', 'password', 'sms-pass');
         Setting::set('sms', 'subscriber_no', '12345');
         Setting::set('sms', 'enabled', '1');
-        Setting::set('seo', 'canonical_domain', 'https://adiyamancicekcisi.com.tr');
+        Setting::set('seo', 'canonical_domain', 'https://rosegardencicekcilik.com.tr');
         Setting::set('seo', 'meta_description_default', 'Adıyaman çiçek ve çikolata siparişleri.');
         Setting::set('seo', 'google_search_console_code', 'verification-code');
         app()->forgetInstance(SmsService::class);

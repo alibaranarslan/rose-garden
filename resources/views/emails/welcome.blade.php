@@ -1,5 +1,5 @@
 @php
-    $mailAddress = config('mail.from.address', 'info@adiyamancicekcisi.com.tr');
+    $mailAddress = config('mail.from.address', 'info@rosegardencicekcilik.com.tr');
 @endphp
 <!DOCTYPE html>
 <html lang="tr">

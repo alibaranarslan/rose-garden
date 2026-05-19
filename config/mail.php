@@ -96,7 +96,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@adiyamancicekcisi.com.tr'),
+        'address' => env('MAIL_FROM_ADDRESS', 'info@rosegardencicekcilik.com.tr'),
         'name' => env('MAIL_FROM_NAME', 'Rose Garden Çiçek Çikolata'),
     ],
 

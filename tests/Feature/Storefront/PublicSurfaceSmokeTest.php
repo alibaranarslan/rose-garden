@@ -53,6 +53,24 @@ class PublicSurfaceSmokeTest extends TestCase
             ->assertDontSeeText('Rose Garden presents this detail in a clear customer-friendly layout');
     }
 
+    public function test_public_footer_uses_current_rose_garden_domain_fallback(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('info@rosegardencicekcilik.com.tr', false)
+            ->assertDontSee('adiyamancicekcisi.com.tr', false);
+    }
+
+    public function test_cookie_consent_uses_compact_bottom_bar_shell(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('rg-cookie-consent fixed inset-x-3 bottom-3', false)
+            ->assertSee('rg-cookie-consent-card', false)
+            ->assertSee('rg-cookie-consent-actions', false)
+            ->assertDontSee('fixed bottom-3 right-3 z-40 w-[min(16.75rem', false);
+    }
+
     public function test_robots_txt_includes_extra_rules_and_current_sitemap_url(): void
     {
         $this->assertFalse(

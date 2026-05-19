@@ -11,7 +11,7 @@ class SettingsSeeder extends Seeder
     {
         $settings = [
             ['group' => 'general', 'key' => 'site_name', 'value' => 'Rose Garden Çiçek Çikolata'],
-            ['group' => 'seo', 'key' => 'robots_txt', 'value' => "User-agent: *\nAllow: /\nSitemap: https://adiyamancicekcisi.com.tr/sitemap.xml"],
+            ['group' => 'seo', 'key' => 'robots_txt', 'value' => "User-agent: *\nAllow: /\nSitemap: https://rosegardencicekcilik.com.tr/sitemap.xml"],
             ['group' => 'seo', 'key' => 'google_analytics_id', 'value' => 'G-WRTKSNRSBR'],
             ['group' => 'payment', 'key' => 'transfer_timeout_hours', 'value' => '72'],
             ['group' => 'loyalty', 'key' => 'earn_rate', 'value' => '0.05'],
@@ -22,7 +22,7 @@ class SettingsSeeder extends Seeder
             ['group' => 'social', 'key' => 'instagram', 'value' => 'https://www.instagram.com/rosegardencicek'],
             ['group' => 'social', 'key' => 'facebook', 'value' => 'https://www.facebook.com/rosegardencicek'],
             ['group' => 'contact', 'key' => 'contact_phone', 'value' => '0552 271 70 67'],
-            ['group' => 'contact', 'key' => 'contact_email', 'value' => 'info@adiyamancicekcisi.com.tr'],
+            ['group' => 'contact', 'key' => 'contact_email', 'value' => 'info@rosegardencicekcilik.com.tr'],
             ['group' => 'contact', 'key' => 'address', 'value' => 'Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez'],
             ['group' => 'contact', 'key' => 'tax_id', 'value' => '18343232668'],
             ['group' => 'contact', 'key' => 'whatsapp_phone', 'value' => '905522717067'],

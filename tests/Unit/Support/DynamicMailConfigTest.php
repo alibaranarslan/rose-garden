@@ -52,12 +52,12 @@ class DynamicMailConfigTest extends TestCase
         ]);
 
         Setting::set('email', 'from_name', 'Rose Garden Çiçek Çikolata');
-        Setting::set('email', 'from_email', 'info@adiyamancicekcisi.com.tr');
+        Setting::set('email', 'from_email', 'info@rosegardencicekcilik.com.tr');
 
         DynamicMailConfig::apply();
 
         $this->assertSame('log', config('mail.default'));
-        $this->assertSame('info@adiyamancicekcisi.com.tr', config('mail.from.address'));
+        $this->assertSame('info@rosegardencicekcilik.com.tr', config('mail.from.address'));
         $this->assertSame('Rose Garden Çiçek Çikolata', config('mail.from.name'));
     }
 }

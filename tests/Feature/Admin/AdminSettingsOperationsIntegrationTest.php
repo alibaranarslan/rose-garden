@@ -64,13 +64,13 @@ class AdminSettingsOperationsIntegrationTest extends TestCase
             'mail.from.name' => 'Env Sender',
         ]);
 
-        Setting::set('email', 'from_email', 'info@adiyamancicekcisi.com.tr');
+        Setting::set('email', 'from_email', 'info@rosegardencicekcilik.com.tr');
         Setting::set('email', 'from_name', 'Rose Garden Çiçek Çikolata');
 
         \App\Support\DynamicMailConfig::apply();
 
         $this->assertSame('log', config('mail.default'));
-        $this->assertSame('info@adiyamancicekcisi.com.tr', config('mail.from.address'));
+        $this->assertSame('info@rosegardencicekcilik.com.tr', config('mail.from.address'));
         $this->assertSame('Rose Garden Çiçek Çikolata', config('mail.from.name'));
     }
 
@@ -87,7 +87,7 @@ class AdminSettingsOperationsIntegrationTest extends TestCase
             ->set('data.smtp_username', '')
             ->set('data.smtp_password', '')
             ->set('data.from_name', 'Rose Garden')
-            ->set('data.from_email', 'info@adiyamancicekcisi.com.tr')
+            ->set('data.from_email', 'info@rosegardencicekcilik.com.tr')
             ->call('save')
             ->assertHasErrors(['data.smtp_username', 'data.smtp_password']);
 

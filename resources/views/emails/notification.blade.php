@@ -1,6 +1,6 @@
 @php
-    $mailAddress = config('mail.from.address', 'info@adiyamancicekcisi.com.tr');
-    $appHost = parse_url(config('app.url'), PHP_URL_HOST) ?: 'adiyamancicekcisi.com.tr';
+    $mailAddress = config('mail.from.address', 'info@rosegardencicekcilik.com.tr');
+    $appHost = parse_url(config('app.url'), PHP_URL_HOST) ?: 'rosegardencicekcilik.com.tr';
 @endphp
 <!DOCTYPE html>
 <html lang="tr">

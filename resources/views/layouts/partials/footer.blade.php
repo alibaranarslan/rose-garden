@@ -9,7 +9,7 @@
     $socialProfiles = collect($branding['social_profiles'] ?? []);
     $waPhone = preg_replace('/\D+/', '', (string) $contact->get('whatsapp_phone', '905522717067'));
     $contactPhone = $contact->get('contact_phone', '0552 271 70 67');
-    $contactEmail = $contact->get('contact_email') ?: 'info@adiyamancicekcisi.com.tr';
+    $contactEmail = $contact->get('contact_email') ?: 'info@rosegardencicekcilik.com.tr';
     $contactAddress = $contact->get('address', 'Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez');
     $phoneRaw = preg_replace('/\D/', '', (string) $contactPhone);
     $phoneRaw = $phoneRaw !== '' ? $phoneRaw : '905522717067';

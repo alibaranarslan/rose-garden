@@ -1,5 +1,5 @@
 @php
-    $kvkkEmail = config('mail.from.address', 'info@adiyamancicekcisi.com.tr');
+    $kvkkEmail = config('mail.from.address', 'info@rosegardencicekcilik.com.tr');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

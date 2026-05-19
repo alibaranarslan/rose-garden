@@ -92,7 +92,7 @@
     x-show="visible"
     x-transition.opacity
     @class([
-        'rg-cookie-consent fixed bottom-3 right-3 z-40 w-[min(16.75rem,calc(100vw-1.5rem))] md:bottom-3 md:right-4 md:w-[17.75rem] lg:w-[18.5rem]',
+        'rg-cookie-consent fixed inset-x-3 bottom-3 z-40 mx-auto w-[calc(100vw-1.5rem)] max-w-[64rem] md:inset-x-6 md:bottom-4 md:w-[min(64rem,calc(100vw-3rem))]',
         'rg-cookie-consent--cart-safe' => $cookieConsentCommerceSafe,
         'rg-cookie-consent--checkout-safe' => $cookieConsentCheckoutSafe,
         'rg-cookie-consent--auth-safe' => $cookieConsentAuthSafe,
@@ -100,26 +100,29 @@
     ])
     style="display: none;"
 >
-    <div class="max-h-[calc(100vh-1.5rem)] overflow-y-auto overflow-x-hidden rounded-[1.25rem] border border-black/8 bg-white/88 text-rg-deepPurple shadow-[0_14px_34px_rgba(40,24,38,0.12)] backdrop-blur-lg dark:border-white/10 dark:bg-[#1d161f]/88 dark:text-white">
-        <div class="bg-[linear-gradient(135deg,rgba(244,229,237,0.86),rgba(236,229,243,0.8))] px-3.5 py-3 dark:bg-[linear-gradient(135deg,rgba(62,40,61,0.84),rgba(45,31,52,0.82))]">
+    <div class="rg-cookie-consent-card max-h-[calc(100vh-1.5rem)] overflow-y-auto overflow-x-hidden rounded-[1.25rem] border border-black/8 bg-white/88 text-rg-deepPurple shadow-[0_14px_34px_rgba(40,24,38,0.12)] backdrop-blur-lg dark:border-white/10 dark:bg-[#1d161f]/88 dark:text-white">
+        <div class="rg-cookie-consent-intro bg-[linear-gradient(135deg,rgba(244,229,237,0.86),rgba(236,229,243,0.8))] px-3.5 py-3 dark:bg-[linear-gradient(135deg,rgba(62,40,61,0.84),rgba(45,31,52,0.82))]">
             <div class="flex items-start justify-between gap-3">
                 <div>
                     <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/75">{{ __('Çerez Tercihleri') }}</p>
                     <h3 class="mt-1.5 font-display text-[1.08rem] leading-tight text-rg-deepPurple dark:text-white md:text-[1.12rem]">{{ __('Deneyimi sizin ritminize göre ayarlıyoruz.') }}</h3>
                 </div>
 
-                <button type="button" class="rounded-full border border-black/8 px-2.5 py-1 text-[11px] font-semibold text-rg-deepPurple transition-colors hover:bg-white/70 dark:border-white/10 dark:text-white dark:hover:bg-white/10" @click="rejectOptional">
+                <button type="button" class="rounded-full border border-black/8 px-2.5 py-1 text-[11px] font-semibold text-rg-deepPurple transition-colors hover:bg-white/70 dark:border-white/10 dark:text-white dark:hover:bg-white/10 lg:hidden" @click="rejectOptional">
                     {{ __('Reddet') }}
                 </button>
             </div>
         </div>
 
-        <div class="space-y-3 px-3.5 py-3">
+        <div class="rg-cookie-consent-body space-y-3 px-3.5 py-3">
             <p class="text-[11px] leading-relaxed text-rg-grayText dark:text-white/72 md:text-[12px]">
                 {{ __('Sitenin temel işleyişi için zorunlu çerezleri kullanıyoruz. Analitik, işlevsel ve pazarlama tercihlerinizi ise tamamen siz belirleyebilirsiniz.') }}
             </p>
 
-            <div class="flex flex-wrap items-center gap-2">
+            <div class="rg-cookie-consent-actions flex flex-wrap items-center gap-2">
+                <button type="button" class="hidden items-center justify-center rounded-full border border-black/8 bg-white/70 px-3.5 py-2 text-sm font-semibold text-rg-deepPurple transition-colors duration-200 hover:bg-white lg:inline-flex dark:border-white/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/14" @click="rejectOptional">
+                    {{ __('Reddet') }}
+                </button>
                 <button type="button" class="inline-flex items-center justify-center rounded-full bg-rg-deepPurple px-3.5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-rg-purple" @click="acceptAll">
                     {{ __('Tümünü Kabul Et') }}
                 </button>
@@ -128,14 +131,14 @@
                 </button>
             </div>
 
-            <p class="hidden text-[11px] leading-relaxed text-rg-grayText/85 dark:text-white/72 sm:block">
+            <p class="rg-cookie-consent-details hidden text-[11px] leading-relaxed text-rg-grayText/85 dark:text-white/72 sm:block">
                 {{ __('Detaylı bilgi için') }}
                 <a href="{{ \App\Support\StorefrontLocale::route('page.show', ['slug' => 'cerez-politikasi']) }}" class="font-semibold underline decoration-rg-midPurple/50 underline-offset-4 transition-colors hover:text-rg-purple dark:hover:text-rg-lavender">{{ __('Çerez Politikası') }}</a>
                 {{ __('sayfasını inceleyebilirsiniz.') }}
             </p>
         </div>
 
-        <div x-show="openSettings" x-transition class="border-t border-black/6 bg-black/[0.02] px-3.5 py-3 dark:border-white/10 dark:bg-white/[0.03]" style="display: none;">
+        <div x-show="openSettings" x-transition class="rg-cookie-consent-settings border-t border-black/6 bg-black/[0.02] px-3.5 py-3 dark:border-white/10 dark:bg-white/[0.03]" style="display: none;">
             <div class="space-y-3 text-sm">
                 <label class="flex items-center justify-between gap-4 rounded-[1.05rem] border border-black/6 bg-white/72 px-3 py-2.5 dark:border-white/10 dark:bg-white/10">
                     <span class="font-medium">{{ __('Zorunlu Çerezler') }} <span class="text-xs text-rg-grayText dark:text-white/70">{{ __('Her zaman aktif') }}</span></span>

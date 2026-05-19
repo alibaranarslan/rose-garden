@@ -1084,6 +1084,52 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     left: 1.25rem;
     right: auto;
   }
+
+  .rg-cookie-consent-card {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.4fr);
+    align-items: center;
+    max-height: calc(100vh - 2rem) !important;
+  }
+
+  .rg-cookie-consent-intro {
+    background: transparent !important;
+    padding: 0.85rem 1rem 0.85rem 1.1rem !important;
+  }
+
+  .rg-cookie-consent-intro > .flex {
+    align-items: center;
+  }
+
+  .rg-cookie-consent-body {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem !important;
+    padding: 0.85rem 1rem 0.85rem 0.9rem !important;
+    border-left: 1px solid rgba(44, 23, 47, 0.08);
+  }
+
+  html.dark .rg-cookie-consent-body {
+    border-left-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .rg-cookie-consent-body > p:first-child {
+    max-width: 25rem;
+    margin: 0;
+  }
+
+  .rg-cookie-consent-actions {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  .rg-cookie-consent-details {
+    display: none !important;
+  }
+
+  .rg-cookie-consent-settings {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 1023px) {

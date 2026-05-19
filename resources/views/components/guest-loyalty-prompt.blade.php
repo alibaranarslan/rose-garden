@@ -114,7 +114,7 @@
                 var storageKey = 'rg-guest-loyalty-prompt-dismissed-at';
                 var cookieStorageKey = 'rg_site_cookie_consent';
                 var cooldownMs = 1000 * 60 * 60 * 24 * 7;
-                var promptDelayMs = 2200;
+                var promptDelayMs = 12000;
 
                 window.rgGuestLoyaltyPrompt = function () {
                     return {

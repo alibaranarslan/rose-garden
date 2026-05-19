@@ -55,7 +55,7 @@ class SeoSettings extends Page implements HasForms
                             ->helperText('Sayfa görseli yoksa kullanılacak paylaşım görseli. Boş, kök göreli (/images/...) veya tam URL olabilir.'),
                         Forms\Components\TextInput::make('canonical_domain')
                             ->label('Canonical Domain')
-                            ->placeholder('https://adiyamancicekcisi.com.tr')
+                            ->placeholder('https://rosegardencicekcilik.com.tr')
                             ->maxLength(255)
                             ->helperText('Canonical URL üretiminde kullanılacak ana domain. Alan adını protokolle ya da protokolsüz girebilirsiniz; kayıtta origin olarak saklanır.'),
                     ]),

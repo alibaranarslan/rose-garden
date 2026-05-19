@@ -183,7 +183,7 @@ HTML,
 <li><strong>Adres:</strong> Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez</li>
 <li><strong>V.D. / T.C. No:</strong> 18343232668</li>
 <li><strong>Telefon:</strong> 0552 271 70 67</li>
-<li><strong>E-posta:</strong> info@adiyamancicekcisi.com.tr</li>
+<li><strong>E-posta:</strong> info@rosegardencicekcilik.com.tr</li>
 </ul>
 <h3>2. İşlenen Veriler ve Amaçlar</h3>
 <p>Kimlik, iletişim, sipariş, teslimat, kullanım ve başvuru süreçlerinde paylaştığınız veriler; sözleşmenin ifası, iletişim, güvenlik, hizmet geliştirme ve yasal yükümlülüklerin yerine getirilmesi amaçlarıyla işlenebilir.</p>
@@ -213,21 +213,21 @@ HTML,
 <h2>Bize Ulaşın</h2>
 <p><strong>Adres:</strong> Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez</p>
 <p><strong>Telefon:</strong> 0552 271 70 67</p>
-<p><strong>E-posta:</strong> info@adiyamancicekcisi.com.tr</p>
+<p><strong>E-posta:</strong> info@rosegardencicekcilik.com.tr</p>
 <p><strong>Çalışma Saatleri:</strong> Her gün 08:00 - 21:00</p>
 HTML,
                     'en' => <<<'HTML'
 <h2>Get in Touch</h2>
 <p><strong>Address:</strong> Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez</p>
 <p><strong>Phone:</strong> 0552 271 70 67</p>
-<p><strong>Email:</strong> info@adiyamancicekcisi.com.tr</p>
+<p><strong>Email:</strong> info@rosegardencicekcilik.com.tr</p>
 <p><strong>Working Hours:</strong> Every day 08:00 - 21:00</p>
 HTML,
                     'ku' => <<<'HTML'
 <h2>Bi Me re Têkilî Daynin</h2>
 <p><strong>Navnîşan:</strong> Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez</p>
 <p><strong>Telefon:</strong> 0552 271 70 67</p>
-<p><strong>E-posta:</strong> info@adiyamancicekcisi.com.tr</p>
+<p><strong>E-posta:</strong> info@rosegardencicekcilik.com.tr</p>
 <p><strong>Saetên Xebatê:</strong> Her roj 08:00 - 21:00</p>
 HTML,
                 ],
@@ -246,7 +246,7 @@ HTML,
 <li><strong>Unvan:</strong> Rose Garden Çiçek Çikolata</li>
 <li><strong>Adres:</strong> Yeni Sanayi Mah. 2819 Sk. No: 70/2B K.A.06 Adıyaman Merkez</li>
 <li><strong>Telefon:</strong> 0552 271 70 67</li>
-<li><strong>E-posta:</strong> info@adiyamancicekcisi.com.tr</li>
+<li><strong>E-posta:</strong> info@rosegardencicekcilik.com.tr</li>
 <li><strong>V.D. / T.C. No:</strong> 18343232668</li>
 </ul>
 <h3>2. Sözleşmenin Konusu</h3>
