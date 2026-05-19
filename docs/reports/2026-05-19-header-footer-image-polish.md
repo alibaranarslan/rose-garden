@@ -30,6 +30,8 @@ Date: 2026-05-19
 
 Tool: Playwright fallback, used for deterministic 390px and 1440px viewport validation.
 
+### Local
+
 - Mobile `/tr`: 200 OK.
 - Mobile category tab:
   - `mobilePanelVisible`: true.
@@ -47,6 +49,25 @@ Tool: Playwright fallback, used for deterministic 390px and 1440px viewport vali
   - First category status: 200.
   - Screenshot: `C:\Users\Ali\AppData\Local\Temp\rg-header-footer-image-smoke\desktop-category-flyout.png`.
 - Console/page errors: none.
+
+### Live After Deploy
+
+- Mobile `https://rosegardencicekcilik.com.tr/tr`: 200 OK.
+- Mobile `https://rosegardencicekcilik.com.tr/tr/urunler`: 200 OK.
+- Mobile category tab:
+  - Panel visible: true.
+  - URL after tap remained `https://rosegardencicekcilik.com.tr/tr`.
+- Mobile product image metrics:
+  - Product cards: 16.
+  - Product image priority: high=4, low=12.
+  - First card `sizes`: `(max-width: 767px) 46vw, (min-width: 1280px) 18rem, 33vw`.
+  - Horizontal overflow: false.
+- Desktop `https://rosegardencicekcilik.com.tr/tr`: 200 OK.
+- Desktop category flyout:
+  - Flyout visible on hover: true.
+  - First category href: `https://rosegardencicekcilik.com.tr/tr/kategori/cicek-buketleri`.
+  - First category status: 200.
+- Live console/page errors: none.
 
 ## Status
 
