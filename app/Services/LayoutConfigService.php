@@ -39,7 +39,7 @@ class LayoutConfigService
             ],
             'category_showcase' => [
                 'name' => 'Kategori Keşfi',
-                'description' => 'Kategori kartlarıyla kataloga giriş.',
+                'description' => 'Kısa kategori geçişleriyle ürünlere hızlı giriş.',
                 'settings' => $this->defaultModuleSettings([
                     'variant' => 'category-grid',
                     'content_limit' => 6,
@@ -67,18 +67,24 @@ class LayoutConfigService
             ],
             'new_arrivals' => [
                 'name' => 'Yeni Gelenler',
-                'description' => 'Yeni ürün raili.',
+                'description' => 'Yeni ürünleri kompakt katalog gridinde gösterir.',
                 'settings' => $this->defaultModuleSettings([
-                    'variant' => 'product-rail',
+                    'variant' => 'grid',
                     'content_limit' => 8,
+                    'columns_mobile' => 2,
+                    'columns_tablet' => 3,
+                    'columns_desktop' => 4,
                 ]),
             ],
             'best_sellers' => [
                 'name' => 'Çok Satanlar',
-                'description' => 'Karar hızlandıran ticari rail.',
+                'description' => 'Ana sayfada erken görünen satış odaklı ürün gridi.',
                 'settings' => $this->defaultModuleSettings([
-                    'variant' => 'product-rail',
+                    'variant' => 'grid',
                     'content_limit' => 8,
+                    'columns_mobile' => 2,
+                    'columns_tablet' => 3,
+                    'columns_desktop' => 4,
                 ]),
             ],
             'trust_badges' => [
@@ -445,7 +451,22 @@ class LayoutConfigService
 
     private function defaultSortOrder(string $key): int
     {
-        return array_search($key, array_keys($this->getModuleDefinitions()), true) + 1;
+        $salesFirstOrder = [
+            'announcement_bar',
+            'hero',
+            'best_sellers',
+            'new_arrivals',
+            'category_showcase',
+            'occasion_spotlight',
+            'trust_badges',
+            'featured_showcase',
+            'instagram_preview',
+            'blog_preview',
+        ];
+
+        $position = array_search($key, $salesFirstOrder, true);
+
+        return $position === false ? array_search($key, array_keys($this->getModuleDefinitions()), true) + 1 : $position + 1;
     }
 
     private function normalizeAppearance(array $appearance): array

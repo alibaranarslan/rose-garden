@@ -266,10 +266,21 @@
         </x-filament::section>
 
         <div class="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.35fr)]">
-            <x-filament::section data-tour-anchor="layout.modules" heading="Vitrin Modülleri" description="Modülleri seçin, yerel sıra kontrolleriyle taslakta yukarı-aşağı taşıyın ve kaydettikten sonra önizleme alın.">
+            <x-filament::section data-tour-anchor="layout.modules" heading="Vitrin Modülleri" description="Modülleri seçin, sıralayın ve kaydettikten sonra önizleme alın.">
                 <div class="studio-section-note mb-4 px-4 py-3 text-sm leading-6">
-                    Her blok vitrin deneyiminin bir parçası. Sırayı, yoğunluğu ve buton davranışını taslakta sakince kurun; ardından önizleme ile
-                    bütün anasayfa dengesini kontrol edin.
+                    Müşteri daha sade bir görünüm istediğinde “Sade Satış Vitrini” hazır sıralama ve yoğunluk ayarlarını uygular. Sonrasında her bloğu ayrı ayrı düzenleyebilirsiniz.
+                </div>
+
+                <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 px-4 py-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">Sade satış akışı</p>
+                            <p class="mt-1 text-xs leading-5 text-emerald-800/80 dark:text-emerald-100/75">Kısa hero, erken ürün gridleri, kompakt kategori geçişi ve güven bloklarıyla katalog öncelikli anasayfa kurar.</p>
+                        </div>
+                        <x-filament::button type="button" color="success" wire:click="applySalesStorefrontPreset">
+                            Sade Satış Vitrini Uygula
+                        </x-filament::button>
+                    </div>
                 </div>
 
                 <div class="space-y-3" data-layout-sortable>

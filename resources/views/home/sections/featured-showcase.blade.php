@@ -26,7 +26,7 @@
             <div class="flex flex-col px-5 py-6 md:px-6 md:py-7">
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <span class="rg-kicker">{{ __('Seçili Vitrin') }}</span>
+                        <span class="rg-kicker">{{ __('Öne çıkan ürün') }}</span>
                         <h2 class="mt-3 text-balance font-display text-3xl leading-[1.08] text-rg-deepPurple dark:text-white md:text-[2.35rem]">{{ $title }}</h2>
                     </div>
                     @if ($categoryName)
@@ -45,7 +45,7 @@
                             <span class="text-sm text-rg-grayText line-through dark:text-zinc-500">&#8378; {{ number_format($priceDisplay['compare'], 0, ',', '.') }}</span>
                         @endif
                     @endif
-                    <span class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/72">{{ __('Siparişe özel hazırlanır') }}</span>
+                    <span class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-grayText dark:text-white/72">{{ __('Siparişe hazır seçenek') }}</span>
                     @if ($showcaseCompanions->isNotEmpty())
                         <span class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-midPurple dark:text-rg-lavender/78">{{ __('Benzer seçenekler') }}</span>
                     @endif
@@ -64,8 +64,8 @@
                     <div class="mt-6 rounded-[1.5rem] border border-black/6 bg-white/80 p-4 dark:border-white/10 dark:bg-[#17111d]">
                         <div class="mb-3 flex items-center justify-between gap-3">
                             <div>
-                                <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Birlikte iyi gider') }}</p>
-                                <h3 class="mt-1 text-sm font-semibold text-rg-deepPurple dark:text-white">{{ __('Benzer hediye önerileri') }}</h3>
+                                <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Benzer ürünler') }}</p>
+                                <h3 class="mt-1 text-sm font-semibold text-rg-deepPurple dark:text-white">{{ __('Alternatifleri inceleyin') }}</h3>
                             </div>
                             <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}" class="text-xs font-semibold uppercase tracking-[0.18em] text-rg-grayText transition-colors hover:text-rg-purple dark:text-white/72 dark:hover:text-rg-lavender">
                                 {{ __('Tümünü gör') }}
@@ -97,11 +97,11 @@
 
                 <div class="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-3 rounded-[1.4rem] border border-white/25 bg-[#1f1622]/74 px-4 py-4 text-white shadow-[0_20px_44px_rgba(18,10,20,0.25)] backdrop-blur-md">
                     <div>
-                        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">{{ __('Hediye seçimi') }}</p>
-                        <p class="mt-1 text-sm font-semibold text-white">{{ __('Detayları gör, siparişe geç') }}</p>
+                        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">{{ __('Ürün detayı') }}</p>
+                        <p class="mt-1 text-sm font-semibold text-white">{{ __('İncele ve siparişe geç') }}</p>
                     </div>
                     <span class="inline-flex items-center rounded-full border border-white/18 bg-white/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/88">
-                        {{ __('Atölye ürünü') }}
+                        {{ __('Popüler seçim') }}
                     </span>
                 </div>
             </div>

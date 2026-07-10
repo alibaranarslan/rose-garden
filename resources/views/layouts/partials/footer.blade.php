@@ -65,7 +65,7 @@
                     <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-rg-midPurple/80 dark:text-white/86">{{ $siteName }}</p>
                     <div class="max-w-2xl space-y-3">
                         <h2 class="text-balance font-display text-3xl leading-[1.12] text-rg-deepPurple dark:text-white md:text-[2.4rem]">
-                            {{ $siteTagline ?: __('Yerel çiçek seçkisini, güven veren ve sakin bir teslim deneyimine dönüştürüyoruz.') }}
+                            {{ $siteTagline ?: __('Adıyaman için taze çiçek ve hediyelik bitkiler.') }}
                         </h2>
                         <p class="max-w-2xl text-pretty text-sm leading-[1.7] text-rg-grayText md:text-base dark:text-white/84">
                             {{ $footerDescription ?: __('Rose Garden; Adıyaman içinde özenle hazırlanan çiçek, saksı bitkisi ve butik hediye seçenekleri sunar. Sipariş ve destek için her zaman bize ulaşabilirsiniz.') }}
@@ -113,7 +113,7 @@
                 <p class="text-xs font-semibold uppercase tracking-[0.24em] text-rg-midPurple/75 dark:text-white/78">{{ $siteTagline }}</p>
             @endif
             <p class="max-w-md text-base leading-relaxed text-rg-grayText dark:text-white/86">
-                {{ $footerDescription ?: __("Adıyaman'ın butik floral atölyelerinden biri olarak her siparişi kişisel bir jest gibi hazırlıyor, teslimat anını da deneyimin parçası haline getiriyoruz.") }}
+                {{ $footerDescription ?: __('Buket, saksı bitkisi ve özel gün hediyelerini gerçek ürün fotoğraflarıyla inceleyin; sipariş için bize kolayca ulaşın.') }}
             </p>
             <div class="flex flex-wrap gap-2">
                 <span class="rounded-full border border-black/6 bg-white/70 px-3 py-1.5 text-xs font-semibold text-rg-deepPurple shadow-sm dark:border-white/10 dark:bg-white/12 dark:text-white/88">{{ __('Aynı Gün Teslimat') }}</span>

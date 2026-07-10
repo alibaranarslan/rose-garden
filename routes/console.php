@@ -28,6 +28,13 @@ $onScheduleFailure = function (\Illuminate\Console\Scheduling\ScheduledTaskFaile
 Schedule::command('cart:detect-abandoned')->hourly()
     ->onFailure($onScheduleFailure);
 
+if (filter_var(env('SCHEDULE_QUEUE_WORKER', false), FILTER_VALIDATE_BOOL)) {
+    Schedule::command('queue:work database --queue=default,analytics --sleep=1 --tries=3 --max-time=50 --stop-when-empty')
+        ->everyMinute()
+        ->withoutOverlapping(5)
+        ->onFailure($onScheduleFailure);
+}
+
 Schedule::command('cart:send-reminders')->cron('0 */6 * * *')
     ->onFailure($onScheduleFailure);
 

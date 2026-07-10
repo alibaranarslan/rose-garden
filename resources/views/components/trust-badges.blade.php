@@ -39,11 +39,11 @@
             <div class="max-w-2xl">
                 <span class="rg-kicker">{{ __('Rose Garden Güvencesi') }}</span>
                 <h2 class="mt-3 text-balance font-display text-3xl text-rg-deepPurple dark:text-white md:text-4xl">
-                    {{ __('Sipariş deneyimini güven veren küçük detaylar taşıyor.') }}
+                    {{ __('Siparişinizi güvenle tamamlamanız için net bilgiler.') }}
                 </h2>
             </div>
             <p class="max-w-xl text-pretty text-sm leading-relaxed text-rg-grayText md:text-base dark:text-zinc-200">
-                {{ __('Hazırlık kalitesi, teslimat hızı ve destek hattı; estetiği işlevle birlikte düşünmemizin sonucu.') }}
+                {{ __('Taze hazırlık, aynı gün teslimat desteği ve WhatsApp hattı sipariş öncesinde de sonrasında da yanınızda.') }}
             </p>
         </div>
 

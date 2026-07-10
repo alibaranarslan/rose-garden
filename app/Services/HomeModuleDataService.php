@@ -172,9 +172,7 @@ class HomeModuleDataService
                 || filled(data_get($data, 'homeContent.hero_heading'))
                 || filled(data_get($data, 'homeContent.hero_subheading'))
                 || collect(data_get($data, 'homeContent.hero_highlights', []))->isNotEmpty(),
-            'category_showcase' => ($data['categories'] ?? collect())->isNotEmpty()
-                || filled(data_get($data, 'homeContent.home_intro_heading'))
-                || filled(data_get($data, 'homeContent.home_intro_body')),
+            'category_showcase' => ($data['categories'] ?? collect())->isNotEmpty(),
             'featured_showcase' => filled($data['featuredShowcase'] ?? null),
             'occasion_spotlight' => filled($data['activeOccasion'] ?? null),
             'new_arrivals' => ($data['newProducts'] ?? collect())->isNotEmpty(),
@@ -213,8 +211,8 @@ class HomeModuleDataService
             if ($manualProduct) {
                 return [
                     'product' => $manualProduct,
-                    'eyebrow' => __('Seçili Vitrin'),
-                    'summary' => __('Atölye bu dönem öne çıkarmak istediği ürünü burada gösterir.'),
+                    'eyebrow' => __('Öne çıkan ürün'),
+                    'summary' => __('Müşterilerin hızlıca inceleyip siparişe geçebileceği seçili ürün.'),
                 ];
             }
         }
@@ -222,18 +220,18 @@ class HomeModuleDataService
         $sources = [
             'featured' => [
                 'products' => $featuredProducts,
-                'eyebrow' => __('Editör Seçimi'),
-                'summary' => __('Floral dili ve sunum gücüyle vitrinin merkezine taşınan ürün.'),
+                'eyebrow' => __('Öne çıkan ürün'),
+                'summary' => __('Popüler seçeneklerden biri; detayını inceleyip siparişe geçebilirsiniz.'),
             ],
             'newest' => [
                 'products' => $newProducts,
                 'eyebrow' => __('Yeni Gelen'),
-                'summary' => __('Koleksiyona yeni eklenen ve vitrinde ilk öne çıkan ürün.'),
+                'summary' => __('Yeni eklenen ürünlerden hızlıca siparişe uygun bir seçenek.'),
             ],
             'best_seller' => [
                 'products' => $bestSellers,
                 'eyebrow' => __('Çok Satanlardan'),
-                'summary' => __('Müşterilerin en çok ilgi gösterdiği ürünler arasından seçilir.'),
+                'summary' => __('En çok incelenen seçeneklerden biri; fiyatı ve görseliyle karar vermeyi kolaylaştırır.'),
             ],
         ];
 

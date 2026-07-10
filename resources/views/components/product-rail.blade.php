@@ -16,28 +16,9 @@
 @endphp
 
 @if ($items->isNotEmpty())
-    <div x-data="scrollRail()" class="space-y-4">
-        <div x-ref="track" class="rg-scroll-rail">
-            @foreach ($items as $product)
-                <div class="rg-rail-card {{ $cardWidth }}">
-                    <x-product-card :product="$product" :interactive="$interactive" :eager-image="$loop->index < 2" :image-alternate-products="$items" />
-                </div>
-            @endforeach
-        </div>
-
-        @if ($items->count() > 1)
-            <div class="rg-rail-actions">
-                <button type="button" class="rg-rail-button" @click="scrollPrev()" :disabled="!canPrev" aria-label="{{ __('Previous products') }}">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <button type="button" class="rg-rail-button" @click="scrollNext()" :disabled="!canNext" aria-label="{{ __('Next products') }}">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
-        @endif
-    </div>
+    <x-product-grid variant="catalog" class="rg-home-product-grid">
+        @foreach ($items as $product)
+            <x-product-card :product="$product" :interactive="$interactive" :eager-image="$loop->index < 4" :image-alternate-products="$items" />
+        @endforeach
+    </x-product-grid>
 @endif

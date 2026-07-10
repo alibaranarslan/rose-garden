@@ -158,7 +158,7 @@
                                                 {{ $featuredNavOccasionTitle }}
                                             </h3>
                                             <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/86">
-                                                {{ $isTurkish ? 'Bu tarihe atanmış seçkiler, çiçek ve hediye birlikteliğiyle ayrı bir vitrinde sunulur.' : __('Bu tarihe atanmış seçkiler, çiçek ve hediye birlikteliğiyle ayrı bir vitrinde sunulur.') }}
+                                                {{ $isTurkish ? 'Bu güne uygun çiçek ve hediye seçeneklerini birlikte inceleyin.' : __('Bu güne uygun çiçek ve hediye seçeneklerini birlikte inceleyin.') }}
                                             </p>
                                         </div>
 
@@ -229,7 +229,7 @@
             </a>
 
             <span class="ml-auto hidden text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/70 2xl:inline">
-                {{ $isTurkish ? 'Alışverişe hazır vitrin' : __('Alışverişe hazır vitrin') }}
+                {{ $isTurkish ? 'Siparişe hazır ürünler' : __('Siparişe hazır ürünler') }}
             </span>
         </div>
 

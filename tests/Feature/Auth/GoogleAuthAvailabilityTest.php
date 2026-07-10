@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GoogleAuthAvailabilityTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_google_auth_redirect_is_blocked_when_google_is_not_configured(): void
     {
         config()->set('services.google.client_id', '');

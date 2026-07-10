@@ -157,7 +157,7 @@ class ProductController extends Controller
         $metaDescription = $this->localizedProductText($product, 'meta_description', 30)
             ?: $this->localizedProductText($product, 'short_description', 30)
             ?: \Illuminate\Support\Str::limit(strip_tags((string) $this->localizedProductText($product, 'description', 30)), 160)
-            ?: 'Rose Garden ürün detay sayfası; taze çiçek, butik hazırlık ve güvenli sipariş akışını bir arada sunar.';
+            ?: 'Rose Garden ürün detay sayfası; taze çiçek, butik hazırlık ve güvenli online sipariş bilgileri sunar.';
 
         return view('products.show', compact('product', 'related'))->with([
             'metaTitle' => $metaTitle,

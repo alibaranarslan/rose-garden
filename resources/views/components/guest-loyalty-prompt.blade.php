@@ -37,10 +37,10 @@
         x-transition.opacity.duration.200ms
         class="fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto px-4 py-6 sm:items-center"
     >
-        <div class="absolute inset-0 bg-rg-deepPurple/18 backdrop-blur-[2px] dark:bg-black/45" @click="dismiss()"></div>
+        <div class="absolute inset-0 bg-rg-deepPurple/30 backdrop-blur-[4px] dark:bg-black/55" @click="dismiss()"></div>
 
-        <div class="relative max-h-[calc(100vh-3rem)] w-full max-w-[38rem] overflow-y-auto overflow-x-hidden rounded-[1.75rem] border border-rg-lightLavender/80 bg-white/98 shadow-[0_30px_80px_rgba(32,20,36,0.28)] dark:border-white/12 dark:bg-[#1b1225]/96 dark:shadow-[0_34px_90px_rgba(4,2,8,0.62)]">
-            <div class="grid gap-0 sm:grid-cols-[13rem_minmax(0,1fr)]">
+        <div class="relative max-h-[calc(100vh-3rem)] w-full max-w-[42rem] overflow-y-auto overflow-x-hidden rounded-[1.85rem] border border-white/80 bg-white shadow-[0_34px_90px_rgba(32,20,36,0.36)] ring-1 ring-rg-lightLavender/60 dark:border-white/12 dark:bg-[#1b1225] dark:shadow-[0_34px_90px_rgba(4,2,8,0.68)] dark:ring-white/10">
+            <div class="grid gap-0 sm:grid-cols-[14rem_minmax(0,1fr)]">
                 <div class="relative h-52 bg-rg-cream/60 dark:bg-white/6 sm:h-auto sm:min-h-[13rem]">
                     <img
                         src="{{ $featuredImage }}"
@@ -55,18 +55,20 @@
                     </div>
                 </div>
 
-                <div class="p-5 sm:p-6">
+                <div class="relative bg-white p-5 text-rg-darkText dark:bg-[#1b1225] dark:text-white sm:p-6">
+                    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(226,207,236,0.36),transparent_15rem)] dark:bg-[radial-gradient(circle_at_top_right,rgba(126,91,150,0.22),transparent_14rem)]"></div>
+                    <div class="relative">
                     <div class="flex items-start gap-3">
-                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rg-lavender/20 text-rg-purple dark:bg-white/10 dark:text-rg-lavender">
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rg-lavender/24 text-rg-purple shadow-sm dark:bg-white/10 dark:text-rg-lavender">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8m4-4H8m12 0a8 8 0 11-16 0 8 8 0 0116 0z"/>
                             </svg>
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/84">{{ __('Üyelik ve puan') }}</p>
-                            <h2 class="mt-1 font-display text-lg font-semibold text-rg-deepPurple dark:text-white">{{ __('Üye ol, puan biriktir') }}</h2>
-                            <p class="mt-2 text-sm leading-relaxed text-rg-darkText dark:text-white/84">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-rg-midPurple dark:text-rg-lavender/90">{{ __('Üyelik ve puan') }}</p>
+                            <h2 class="mt-1 font-display text-xl font-semibold leading-tight text-rg-deepPurple dark:text-white">{{ __('Üye ol, puan biriktir') }}</h2>
+                            <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">
                                 {{ __('Siparişlerinden Paraçiçek Puan kazan. Hesabında biriktir, sonra kullan.') }}
                             </p>
                         </div>
@@ -74,7 +76,7 @@
                         <button
                             type="button"
                             @click="dismiss()"
-                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-rg-grayText transition hover:bg-rg-cream hover:text-rg-darkPlum dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white"
+                            class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/5 bg-rg-cream/70 text-rg-grayText transition hover:bg-rg-lightLavender hover:text-rg-darkPlum dark:border-white/10 dark:bg-white/8 dark:text-white/72 dark:hover:bg-white/12 dark:hover:text-white"
                             aria-label="{{ __('Kapat') }}"
                         >
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -84,7 +86,7 @@
                     </div>
 
                     @if ($featuredProduct)
-                        <p class="mt-4 text-xs font-medium text-rg-grayText dark:text-white/68">
+                        <p class="mt-4 rounded-2xl bg-rg-cream/70 px-3.5 py-3 text-xs font-medium leading-relaxed text-rg-grayText dark:bg-white/10 dark:text-white/70">
                             {{ __('Öne çıkan ürünlerden ilham alan küçük bir üyelik hatırlatıcısı.') }}
                         </p>
                     @endif
@@ -104,6 +106,7 @@
                         >
                             {{ __('Daha sonra') }}
                         </button>
+                    </div>
                     </div>
                 </div>
             </div>

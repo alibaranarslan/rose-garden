@@ -13,8 +13,8 @@
 @php
     $formAction = url()->current();
     $pageDescription = $category
-        ? trim((string) $category->description) ?: __('Bu koleksiyondaki seçili ürünleri filtreleyerek daha rafine bir seçim yapın.')
-        : __('Adıyaman için hazırladığımız buket ve saksı bitki seçkisini filtreleyerek keşfedin.');
+        ? trim((string) $category->description) ?: __('Bu koleksiyondaki ürünleri fiyat, kategori ve stok durumuna göre hızlıca inceleyin.')
+        : __('Adıyaman için hazırlanan buket, saksı bitkisi ve hediye seçeneklerini hızlıca inceleyin.');
 
     $heroVisual = $category
         ? \App\Support\StorefrontImage::publicImgSrc(
@@ -49,7 +49,7 @@
 <div class="w-full" x-data="{ plpDrawer: false }" @keydown.escape.window="plpDrawer = false">
     <x-breadcrumb :items="$breadcrumbItems" class="rg-plp-breadcrumb mb-2 text-xs text-rg-grayText dark:text-white/72 md:mb-4" />
 
-    <x-page-hero class="rg-plp-hero rg-plp-hero--mobile-slim mb-3 md:mb-4" :eyebrow="$category ? __('Kategori Koleksiyonu') : __('Rose Garden Katalog')" :title="$pageTitle" :description="$pageDescription" compact>
+    <x-page-hero class="rg-plp-hero rg-plp-hero--mobile-slim mb-3 md:mb-4" :eyebrow="$category ? __('Kategori') : __('Ürün Kataloğu')" :title="$pageTitle" :description="$pageDescription" compact>
         <x-slot:actions>
             @if ($heroLinks->isNotEmpty())
                 <div class="flex flex-wrap gap-2">
@@ -81,7 +81,7 @@
 
         <x-slot:stats>
             <div class="rg-page-stat max-w-sm">
-                <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Katalog yoğunluğu') }}</p>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ __('Ürün Sayısı') }}</p>
                 <p class="mt-2 text-2xl font-semibold tabular-nums text-rg-deepPurple dark:text-white">{{ number_format($totalCount, 0, ',', '.') }}</p>
                 <p class="mt-1 text-sm text-rg-copy-muted dark:text-white/82">{{ __('ürün görünür durumda') }}</p>
             </div>
@@ -94,7 +94,7 @@
                 <img src="{{ $heroVisual }}" alt="{{ $pageTitle }}" class="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]">
                 <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(16,10,20,0.04),rgba(16,10,20,0.52))]"></div>
                 <div class="absolute inset-x-0 bottom-0 p-3.5">
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/75">{{ __('Seçili Koleksiyon') }}</p>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/75">{{ __('Seçili Kategori') }}</p>
                     <h2 class="mt-2 max-w-xs text-balance font-display text-[1.45rem] leading-tight text-white">{{ $pageTitle }}</h2>
                 </div>
             </a>

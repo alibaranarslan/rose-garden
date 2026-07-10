@@ -5,46 +5,9 @@
 @php
     $moduleMap = collect($layoutSections ?? [])->keyBy('key');
     $heroSection = $moduleMap->get('hero');
-    $primarySectionOrder = [
-        'category_showcase',
-        'featured_showcase',
-        'best_sellers',
-        'new_arrivals',
-        'occasion_spotlight',
-    ];
-    $secondarySectionKeys = [
-        'trust_badges',
-        'instagram_preview',
-        'blog_preview',
-    ];
-    $secondarySectionOrder = array_flip($secondarySectionKeys);
     $bodySections = collect($layoutSections ?? [])
         ->values()
         ->reject(fn ($section) => in_array($section['key'], ['hero', 'announcement_bar'], true))
-        ->map(fn ($section, $index) => $section + ['_render_index' => $index])
-        ->sortBy(function ($section) use ($primarySectionOrder, $secondarySectionKeys, $secondarySectionOrder) {
-            $key = $section['key'];
-            $primaryPriority = array_search($key, $primarySectionOrder, true);
-
-            if (in_array($key, $secondarySectionKeys, true)) {
-                $secondaryPriority = $secondarySectionOrder[$key] ?? 999;
-
-                return 10000 + ($secondaryPriority * 100) + ($section['_render_index'] ?? 0);
-            }
-
-            return (($primaryPriority === false ? 999 : $primaryPriority) * 100) + ($section['_render_index'] ?? 0);
-        })
-        ->map(function ($section) {
-            unset($section['_render_index']);
-
-            return $section;
-        })
-        ->values();
-    $visibleSecondarySection = $bodySections
-        ->first(fn ($section) => in_array($section['key'], $secondarySectionKeys, true));
-    $bodySections = $bodySections
-        ->reject(fn ($section) => in_array($section['key'], $secondarySectionKeys, true))
-        ->concat($visibleSecondarySection ? [$visibleSecondarySection] : [])
         ->values();
     $homepageDiscoveryProducts = collect($bestSellers ?? collect())
         ->concat([$featuredShowcase ?? null])

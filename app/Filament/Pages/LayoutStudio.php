@@ -188,6 +188,123 @@ class LayoutStudio extends Page
             ->send();
     }
 
+    public function applySalesStorefrontPreset(): void
+    {
+        $order = [
+            'hero',
+            'best_sellers',
+            'new_arrivals',
+            'category_showcase',
+            'occasion_spotlight',
+            'trust_badges',
+            'featured_showcase',
+            'instagram_preview',
+            'blog_preview',
+            'announcement_bar',
+        ];
+
+        $activeModules = [
+            'hero',
+            'best_sellers',
+            'category_showcase',
+            'occasion_spotlight',
+            'new_arrivals',
+            'trust_badges',
+        ];
+
+        $moduleOverrides = [
+            'hero' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'surface',
+                'container_width' => 'content',
+            ],
+            'best_sellers' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'surface',
+                'card_density' => 'compact',
+                'content_limit' => 8,
+                'columns_mobile' => 2,
+                'columns_tablet' => 3,
+                'columns_desktop' => 4,
+            ],
+            'category_showcase' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'muted',
+                'card_density' => 'compact',
+                'content_limit' => 6,
+                'columns_mobile' => 2,
+                'columns_tablet' => 3,
+                'columns_desktop' => 3,
+            ],
+            'occasion_spotlight' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'surface',
+                'content_limit' => 3,
+            ],
+            'new_arrivals' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'surface',
+                'card_density' => 'compact',
+                'content_limit' => 8,
+                'columns_mobile' => 2,
+                'columns_tablet' => 3,
+                'columns_desktop' => 4,
+            ],
+            'trust_badges' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'muted',
+                'content_limit' => 4,
+            ],
+            'featured_showcase' => [
+                'padding_scale' => 'compact',
+                'background_tone' => 'surface',
+                'content_limit' => 1,
+            ],
+        ];
+
+        $definitions = app(LayoutConfigService::class)->getModuleDefinitions();
+
+        $this->modules = collect($this->modules)
+            ->sortBy(fn (array $module): int => array_search($module['key'] ?? '', $order, true) === false ? 999 : array_search($module['key'], $order, true))
+            ->values()
+            ->map(function (array $module, int $index) use ($activeModules, $moduleOverrides, $definitions): array {
+                $key = (string) ($module['key'] ?? '');
+                $baseSettings = $definitions[$key]['settings'] ?? [];
+                $currentSettings = $module['settings'] ?? [];
+
+                $module['is_active'] = in_array($key, $activeModules, true);
+                $module['sort_order'] = $index + 1;
+                $module['settings'] = array_replace_recursive(
+                    $baseSettings,
+                    $currentSettings,
+                    $moduleOverrides[$key] ?? []
+                );
+
+                return $module;
+            })
+            ->all();
+
+        $this->appearance = array_replace(app(LayoutConfigService::class)->defaultAppearance(), $this->appearance, [
+            'primary_color' => '#3d2645',
+            'accent_color' => '#b87b95',
+            'background_color' => '#fffaf7',
+            'font_family' => 'playfair',
+            'radius_preset' => 'soft',
+            'shadow_preset' => 'soft',
+            'container_width' => '1240px',
+            'default_theme_mode' => 'light',
+        ]);
+
+        $this->selectedModuleKey = 'hero';
+        $this->hasUnsavedChanges = true;
+
+        Notification::make()
+            ->success()
+            ->title('Sade Satış Vitrini hazırlandı')
+            ->body('Taslak; kısa hero, erken ürün gridleri ve kompakt kategori akışıyla güncellendi.')
+            ->send();
+    }
+
     public function applyAppearancePreset(string $preset): void
     {
         $defaults = app(LayoutConfigService::class)->defaultAppearance();
