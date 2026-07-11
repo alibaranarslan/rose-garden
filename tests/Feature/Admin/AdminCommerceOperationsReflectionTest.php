@@ -268,6 +268,39 @@ class AdminCommerceOperationsReflectionTest extends TestCase
             ->assertSee('48 saat');
     }
 
+    public function test_configure_bank_transfer_command_reflects_bank_details_in_checkout(): void
+    {
+        $this->artisan('rg:configure-bank-transfer', [
+            '--bank' => 'Halkbank',
+            '--iban' => 'TR790001200149600009103765',
+            '--account-holder' => 'Nesim ALTUNGÜL',
+            '--timeout' => '72',
+        ])->assertSuccessful();
+
+        $this->assertSame('Halkbank', Setting::get('payment', 'bank_name'));
+        $this->assertSame('TR790001200149600009103765', Setting::get('payment', 'bank_iban'));
+        $this->assertSame('Nesim ALTUNGÜL', Setting::get('payment', 'bank_account_holder'));
+
+        Livewire::test(CheckoutWizard::class)
+            ->set('step', 3)
+            ->assertSee('Halkbank')
+            ->assertSee('TR790001200149600009103765')
+            ->assertSee('Nesim ALTUNGÜL');
+    }
+
+    public function test_configure_bank_transfer_command_rejects_invalid_iban(): void
+    {
+        $this->artisan('rg:configure-bank-transfer', [
+            '--bank' => 'Halkbank',
+            '--iban' => 'TR79000120014960000910376',
+            '--account-holder' => 'Nesim ALTUNGÜL',
+        ])->assertFailed();
+
+        $this->assertNull(Setting::get('payment', 'bank_name'));
+        $this->assertNull(Setting::get('payment', 'bank_iban'));
+        $this->assertNull(Setting::get('payment', 'bank_account_holder'));
+    }
+
     public function test_payment_settings_reject_partial_or_invalid_bank_details(): void
     {
         $admin = $this->adminUser();
