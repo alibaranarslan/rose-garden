@@ -1,6 +1,7 @@
 @php
     $isCard = $layout === 'card';
     $gapClass = $isCard ? 'gap-2' : 'space-y-4';
+    $ordersEnabled = $ordersEnabled ?? config('storefront.orders_enabled', true);
 @endphp
 
 <div @class([
@@ -87,7 +88,24 @@
     </div>
 
     <div class="mt-auto shrink-0 pt-2">
-        @if(($product?->stock_status ?? 'out_of_stock') === 'in_stock')
+        @if(! $ordersEnabled)
+            @if($isCard)
+                <a
+                    href="{{ $product ? \App\Support\StorefrontLocale::route('products.show', ['slug' => $product->slug]) : \App\Support\StorefrontLocale::route('products.index') }}"
+                    class="rg-card-cart-button rg-card-cart-button--paused"
+                >
+                    {{ __('Detayları incele') }}
+                </a>
+            @else
+                <x-order-paused-notice class="mb-3" />
+                <a
+                    href="{{ \App\Support\StorefrontLocale::route('products.index') }}"
+                    class="inline-flex w-full items-center justify-center rounded-btn border border-rg-purple/30 bg-white px-3 py-2.5 text-sm font-semibold text-rg-purple shadow-sm transition hover:bg-rg-lightLavender/50 dark:border-white/15 dark:bg-white/10 dark:text-rg-lavender dark:hover:bg-white/15"
+                >
+                    {{ __('Kataloğa dön') }}
+                </a>
+            @endif
+        @elseif(($product?->stock_status ?? 'out_of_stock') === 'in_stock')
             <button
                 type="button"
                 @if($isCard)

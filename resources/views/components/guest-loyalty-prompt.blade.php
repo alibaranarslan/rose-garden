@@ -6,7 +6,8 @@
     $guestLoyaltyCommercePath = in_array($guestLoyaltyPath, ['sepet', 'cart'], true)
         || str_starts_with($guestLoyaltyPath, 'urun/')
         || str_starts_with($guestLoyaltyPath, 'product/');
-    $eligibleForPrompt = ! auth()->check()
+    $eligibleForPrompt = config('storefront.orders_enabled', true)
+        && ! auth()->check()
         && ! request()->routeIs(['login', 'register', 'password.*', 'checkout', 'checkout.*', 'cart', 'products.show'])
         && ! $guestLoyaltyBlockedPath
         && ! $guestLoyaltyCommercePath;

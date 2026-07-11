@@ -58,6 +58,12 @@ class AddToCart extends Component
 
     public function openCartMessageModal(): void
     {
+        if (! config('storefront.orders_enabled', true)) {
+            $this->dispatch('notify', type: 'info', message: __('Online sipariş çok yakında açılacak.'));
+
+            return;
+        }
+
         $this->validate([
             'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
@@ -86,6 +92,13 @@ class AddToCart extends Component
 
     public function addToCart(): void
     {
+        if (! config('storefront.orders_enabled', true)) {
+            $this->dispatch('notify', type: 'info', message: __('Online sipariş çok yakında açılacak.'));
+            $this->showCartMessageModal = false;
+
+            return;
+        }
+
         $this->validate([
             'quantity' => ['required', 'integer', 'min:1', 'max:99'],
             'cardMessage' => ['nullable', 'string', 'max:500'],
@@ -153,6 +166,7 @@ class AddToCart extends Component
             'product' => $product,
             'priceAmount' => $priceAmount,
             'compareAmount' => $compareAmount,
+            'ordersEnabled' => config('storefront.orders_enabled', true),
         ]);
     }
 }

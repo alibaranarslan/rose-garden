@@ -30,6 +30,13 @@ class ProductCartCheckoutSurfaceTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['storefront.orders_enabled' => true]);
+    }
+
     public function test_product_detail_page_renders_gallery_actions_and_favorite_toggle(): void
     {
         $product = $this->makeStorefrontProduct('zarif-gul-buketi', 890);
@@ -53,6 +60,19 @@ class ProductCartCheckoutSurfaceTest extends TestCase
             ->assertSee('rg-pdp-gallery', false)
             ->assertSee('rg-pdp-related', false)
             ->assertSee('Standart');
+    }
+
+    public function test_product_detail_switches_to_catalog_notice_when_orders_are_disabled(): void
+    {
+        config(['storefront.orders_enabled' => false]);
+
+        $product = $this->makeStorefrontProduct('duyuru-modu-buket', 890);
+
+        $this->get(route('products.show', ['slug' => $product->slug]))
+            ->assertOk()
+            ->assertSee('Katalog yayında, online sipariş çok yakında açılıyor.')
+            ->assertSee('Kataloğa dön')
+            ->assertDontSee('Sepete Ekle');
     }
 
     public function test_add_to_cart_uses_selected_variant_quantity_and_card_message(): void
@@ -88,6 +108,21 @@ class ProductCartCheckoutSurfaceTest extends TestCase
             'variant_id' => $secondVariant->id,
             'quantity' => 3,
             'card_message' => 'Kutlu olsun',
+        ]);
+    }
+
+    public function test_add_to_cart_does_not_mutate_cart_when_orders_are_disabled(): void
+    {
+        config(['storefront.orders_enabled' => false]);
+
+        $product = $this->makeStorefrontProduct('kapali-siparis-buket', 890);
+
+        Livewire::test(AddToCart::class, ['productId' => $product->id, 'layout' => 'detail'])
+            ->set('quantity', 2)
+            ->call('addToCart');
+
+        $this->assertDatabaseMissing('cart_items', [
+            'product_id' => $product->id,
         ]);
     }
 
@@ -302,6 +337,28 @@ class ProductCartCheckoutSurfaceTest extends TestCase
             ->assertSeeHtml('rg-checkout-actions')
             ->assertSeeHtml('rg-checkout-mobile-actionbar')
             ->assertSeeText('Devam et');
+    }
+
+    public function test_checkout_entry_renders_catalog_notice_when_orders_are_disabled(): void
+    {
+        config(['storefront.orders_enabled' => false]);
+
+        $this->get(route('checkout'))
+            ->assertOk()
+            ->assertSee('Katalog yayında, online sipariş çok yakında açılıyor.')
+            ->assertSee('Kataloğu incele')
+            ->assertDontSee('rg-checkout-wizard', false);
+    }
+
+    public function test_checkout_wizard_does_not_create_order_when_orders_are_disabled(): void
+    {
+        config(['storefront.orders_enabled' => false]);
+
+        Livewire::test(CheckoutWizard::class)
+            ->call('createOrder')
+            ->assertHasErrors(['cart']);
+
+        $this->assertDatabaseCount('orders', 0);
     }
 
     public function test_guest_loyalty_popup_does_not_render_on_commerce_paths(): void

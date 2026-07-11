@@ -128,6 +128,12 @@
             @include('layouts.partials.nav')
         </div>
 
+        @unless(config('storefront.orders_enabled', true))
+            <div class="mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6">
+                <x-order-paused-notice compact />
+            </div>
+        @endunless
+
         @stack('before_main')
 
         <main id="main-content" class="relative mx-auto w-full flex-1 px-4 pb-16 pt-7 sm:px-6 md:pt-10 lg:pb-24 lg:pt-11" style="max-width: var(--rg-content-width);">

@@ -14,5 +14,17 @@
     @if (session('error'))
         <p class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/30 dark:bg-red-950/40 dark:text-red-200">{{ session('error') }}</p>
     @endif
-    <livewire:checkout-wizard />
+    @if(! config('storefront.orders_enabled', true))
+        <x-order-paused-notice />
+        <div class="mt-5 flex flex-wrap gap-3">
+            <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}" class="inline-flex items-center justify-center rounded-xl bg-rg-purple px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-rg-darkPlum">
+                {{ __('Kataloğu incele') }}
+            </a>
+            <a href="{{ \App\Support\StorefrontLocale::route('home') }}" class="inline-flex items-center justify-center rounded-xl border border-rg-lightLavender bg-white px-5 py-3 text-sm font-semibold text-rg-deepPurple shadow-sm transition hover:bg-rg-cream dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/15">
+                {{ __('Anasayfaya dön') }}
+            </a>
+        </div>
+    @else
+        <livewire:checkout-wizard />
+    @endif
 @endsection

@@ -44,7 +44,7 @@ mkdir -p "${WORK_DIR}" "${APP_DIR}/storage/logs"
         echo "public/build missing from archive; downloading committed build assets"
         mkdir -p public/build/assets
         curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/manifest.json" -o public/build/manifest.json
-        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/app-DPX1cSz4.css" -o public/build/assets/app-DPX1cSz4.css
+        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/app-BpUNI9YF.css" -o public/build/assets/app-BpUNI9YF.css
         curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/app-BXiSn1_f.js" -o public/build/assets/app-BXiSn1_f.js
         curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/livewire.esm-Dg29fzI0.js" -o public/build/assets/livewire.esm-Dg29fzI0.js
         curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/module.esm-D42G7h4j.js" -o public/build/assets/module.esm-D42G7h4j.js

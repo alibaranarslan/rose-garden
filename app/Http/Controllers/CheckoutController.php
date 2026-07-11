@@ -27,6 +27,12 @@ class CheckoutController extends Controller
 
     public function processPayment(Order $order, PaytrService $paytr): View|RedirectResponse
     {
+        if (! config('storefront.orders_enabled', true)) {
+            return redirect()
+                ->to(StorefrontLocale::route('products.index'))
+                ->with('error', __('Online sipariş çok yakında açılacak.'));
+        }
+
         // Payment continuation begins only after CheckoutWizard has created the order.
         $this->authorizeCheckoutAccess($order);
 

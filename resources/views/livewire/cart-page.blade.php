@@ -3,10 +3,15 @@ $summarySupport = [
         __('Kart mesajı her ürün için ayrı kaydedilir.'),
         __('Teslimat ücreti ve saat bilgisi ödemede netleşir.'),
     ];
+    $ordersEnabled = config('storefront.orders_enabled', true);
 @endphp
 
 <div class="rg-cart-commerce-shell grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
     <div class="lg:col-span-7 xl:col-span-8">
+        @unless($ordersEnabled)
+            <x-order-paused-notice class="mb-5" />
+        @endunless
+
         <div class="rg-surface overflow-hidden">
             <div class="border-b border-rg-lightLavender/80 px-5 py-4 dark:border-white/10 md:px-8 md:py-5">
                 <h2 class="font-display text-lg font-semibold text-rg-deepPurple dark:text-white md:text-xl">{{ __('Sepetinizdeki ürünler') }}</h2>
@@ -187,12 +192,18 @@ $summarySupport = [
                 <p class="rg-copy-soft mt-3 text-xs">{{ $couponMessage }}</p>
             @endif
 
-            <a
-                href="{{ \App\Support\StorefrontLocale::route('checkout', prefixDefault: true) }}"
-                class="{{ $items->isEmpty() ? 'pointer-events-none opacity-50' : '' }} mt-6 flex w-full items-center justify-center rounded-xl bg-rg-deepPurple py-3.5 text-sm font-semibold text-white shadow-lg transition hover:bg-rg-purple hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rg-purple focus-visible:ring-offset-2 dark:focus-visible:ring-offset-rg-deepPurple"
-            >
-                {{ __('Ödemeye geç') }}
-            </a>
+            @if($ordersEnabled)
+                <a
+                    href="{{ \App\Support\StorefrontLocale::route('checkout', prefixDefault: true) }}"
+                    class="{{ $items->isEmpty() ? 'pointer-events-none opacity-50' : '' }} mt-6 flex w-full items-center justify-center rounded-xl bg-rg-deepPurple py-3.5 text-sm font-semibold text-white shadow-lg transition hover:bg-rg-purple hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rg-purple focus-visible:ring-offset-2 dark:focus-visible:ring-offset-rg-deepPurple"
+                >
+                    {{ __('Ödemeye geç') }}
+                </a>
+            @else
+                <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-semibold text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-100">
+                    {{ __('Online sipariş yakında aktif olacak.') }}
+                </div>
+            @endif
             <a href="{{ \App\Support\StorefrontLocale::route('products.index') }}" class="mt-3 block text-center text-sm font-medium text-rg-purple underline-offset-2 hover:underline dark:text-rg-lavender">
                 {{ __('Alışverişe devam et') }}
             </a>
@@ -206,7 +217,7 @@ $summarySupport = [
             </div>
         </div>
 
-        @if ($items->isNotEmpty())
+        @if ($items->isNotEmpty() && $ordersEnabled)
             <div class="rg-cart-mobile-checkoutbar md:hidden" aria-label="{{ __('Mobil sepet ödeme kısayolu') }}">
                 <div class="min-w-0">
                     <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-midPurple dark:text-rg-lavender">{{ __('Sepet toplamı') }}</p>

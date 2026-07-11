@@ -150,6 +150,12 @@ class CheckoutWizard extends Component
 
     public function nextStep(): void
     {
+        if (! config('storefront.orders_enabled', true)) {
+            $this->addError('cart', __('Online sipariş çok yakında açılacak.'));
+
+            return;
+        }
+
         if ($this->step === 2 && $this->deliveryConfigurationIsMissing()) {
             $this->addError(
                 'deliveryConfiguration',
@@ -170,6 +176,12 @@ class CheckoutWizard extends Component
 
     public function createOrder(): void
     {
+        if (! config('storefront.orders_enabled', true)) {
+            $this->addError('cart', __('Online sipariş çok yakında açılacak.'));
+
+            return;
+        }
+
         if ($this->deliveryConfigurationIsMissing()) {
             $this->addError(
                 'deliveryConfiguration',
