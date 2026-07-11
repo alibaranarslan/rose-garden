@@ -33,7 +33,13 @@
 
                 <a href="{{ \App\Support\StorefrontLocale::route('products.category', ['slug' => $category->slug]) }}" class="rg-home-category-pill">
                     <span class="rg-home-category-pill-image">
-                        <img src="{{ $coverSrc }}" alt="{{ $category->name }}" loading="lazy" decoding="async">
+                        <img
+                            src="{{ $coverSrc }}"
+                            alt="{{ $category->name }}"
+                            loading="{{ $loop->index < 4 ? 'eager' : 'lazy' }}"
+                            fetchpriority="{{ $loop->index < 4 ? 'high' : 'auto' }}"
+                            decoding="async"
+                        >
                     </span>
                     <span class="rg-home-category-pill-label">{{ $category->name }}</span>
                     <span class="rg-home-category-pill-arrow" aria-hidden="true">→</span>

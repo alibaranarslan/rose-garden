@@ -99,8 +99,7 @@
         'rg-product-card--catalog' => ! $isShowcase,
         'rg-product-card--showcase' => $isShowcase,
     ])>
-        <div class="absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-2 p-2.5">
-            <div class="flex flex-wrap gap-2">
+        <div class="pointer-events-none absolute left-2.5 top-2.5 z-10 flex max-w-[calc(100%-4.75rem)] flex-wrap gap-2">
                 @if (data_get($product, 'stock_status') !== 'in_stock')
                     <span class="{{ $rgBadge }} bg-[#4b5563] text-white shadow-sm">{{ __('Tükendi') }}</span>
                 @endif
@@ -114,14 +113,13 @@
                 @if ($isNew)
                     <span class="{{ $rgBadge }} bg-rg-leafGreen text-white shadow-sm">{{ __('Yeni') }}</span>
                 @endif
-            </div>
-
-            @if ($interactive)
-                <div class="rounded-full bg-white/82 p-1 backdrop-blur dark:bg-[#1b1320]/78">
-                    <livewire:favorite-toggle :product-id="$id" :key="'fav-'.$id" />
-                </div>
-            @endif
         </div>
+
+        @if ($interactive)
+            <div class="absolute right-2.5 top-2.5 z-20">
+                <livewire:favorite-toggle :product-id="$id" :key="'fav-'.$id" />
+            </div>
+        @endif
 
         <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $slug]) }}" @class([
             'relative block shrink-0 overflow-hidden',
@@ -136,7 +134,7 @@
                 fetchpriority="{{ $imgFetchPriority }}"
                 decoding="async"
                 onerror='this.onerror=null;this.src={{ json_encode($imageFallbackSrc) }}'
-                class="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.03] {{ $useCoverImage ? 'object-cover object-center' : 'object-contain object-center p-5 sm:p-6' }}"
+                class="absolute inset-0 h-full w-full transition-transform duration-700 group-hover:scale-[1.03] {{ $useCoverImage ? 'object-contain object-center p-2 sm:p-2.5' : 'object-contain object-center p-5 sm:p-6' }}"
             >
             <div @class([
                 'pointer-events-none absolute inset-0',

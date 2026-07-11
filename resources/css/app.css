@@ -974,8 +974,8 @@ html.dark .rg-occasion-compact p {
   }
 
   .rg-catalog-grid .rg-product-card--catalog > a img {
-    padding: 0 !important;
-    object-fit: cover !important;
+    padding: 0.42rem !important;
+    object-fit: contain !important;
   }
 
   .rg-catalog-grid .rg-product-card--catalog > div:last-child {
@@ -4194,18 +4194,18 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     box-shadow: 0 10px 28px rgba(34, 24, 40, 0.07) !important;
   }
 
-  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > div:first-child {
+  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > a {
     height: 100%;
     min-height: 100%;
     aspect-ratio: auto !important;
   }
 
-  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > div:first-child img {
+  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > a img {
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
-  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > div:nth-child(2) {
+  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > div:last-child {
     padding: 1rem !important;
   }
 }
@@ -4249,8 +4249,8 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
 }
 
 .rg-catalog-grid .rg-product-card--catalog > a img {
-  padding: 0 !important;
-  object-fit: cover !important;
+  padding: 0.42rem !important;
+  object-fit: contain !important;
 }
 
 .rg-catalog-grid .rg-product-card--catalog > div:last-child {
@@ -4457,5 +4457,58 @@ html.dark .rg-home-sales-skin #rg-site-header .rg-header-right-utility-trio > .r
       var(--rg-sales-hero-image) !important;
     background-position: center, right -3rem center !important;
     background-size: auto, auto 154% !important;
+  }
+}
+
+/* Catalog usability polish: show products fully, keep favorite controls readable, and fix current card DOM targeting. */
+.rg-favorite-toggle {
+  position: relative;
+  z-index: 30;
+}
+
+.rg-product-card--catalog > a img {
+  object-fit: contain !important;
+  padding: 0.45rem !important;
+}
+
+.rg-product-card--catalog > a {
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.98), rgba(244, 234, 241, 0.82) 58%, rgba(232, 219, 229, 0.94)) !important;
+}
+
+html.dark .rg-product-card--catalog > a {
+  background:
+    radial-gradient(circle at 50% 16%, rgba(70, 50, 82, 0.92), rgba(33, 24, 40, 0.98) 62%, rgba(20, 14, 27, 1)) !important;
+}
+
+.rg-home-category-pill-image {
+  background: linear-gradient(145deg, rgba(255, 250, 247, 0.96), rgba(239, 228, 235, 0.9));
+}
+
+.rg-home-category-pill-image img {
+  object-fit: contain !important;
+  padding: 0.18rem;
+}
+
+html.dark .rg-home-category-pill-image {
+  background: linear-gradient(145deg, rgba(56, 40, 66, 0.92), rgba(28, 20, 35, 0.98));
+}
+
+@media (min-width: 1024px) {
+  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > a {
+    height: 100%;
+    min-height: 100%;
+    aspect-ratio: auto !important;
+  }
+
+  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > a img {
+    height: 100%;
+    object-fit: contain !important;
+    padding: 0.65rem !important;
+  }
+
+  .rg-home-sales-skin .rg-home-product-grid .rg-product-card > div:last-child {
+    min-width: 0;
+    padding: 1rem !important;
   }
 }

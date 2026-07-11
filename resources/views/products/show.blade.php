@@ -13,24 +13,24 @@
     $galleryImages = $product->images->isNotEmpty()
         ? $product->images
             ->sortBy('sort_order')
-            ->map(fn ($image) => \App\Support\StorefrontImage::publicImgSrc(
+            ->map(fn ($image) => \App\Support\StorefrontImage::optimizedImgSrc(\App\Support\StorefrontImage::publicImgSrc(
                 \App\Support\StorefrontImage::resolveProduct(
                     $image->image_path,
                     $product->slug,
                     $product->name,
                     'images/product-placeholder.svg',
                 )
-            ))
+            ), 1280))
             ->values()
         : collect([
-            \App\Support\StorefrontImage::publicImgSrc(
+            \App\Support\StorefrontImage::optimizedImgSrc(\App\Support\StorefrontImage::publicImgSrc(
                 \App\Support\StorefrontImage::resolveProduct(
                     null,
                     $product->slug,
                     $product->name,
                     'images/product-placeholder.svg',
                 )
-            ),
+            ), 1280),
         ]);
 
     $shortDescription = trim((string) ($product->short_description ?: ''));
@@ -92,7 +92,9 @@
                             :src="activeImage"
                             alt="{{ $product->name }}"
                             class="h-full w-full object-contain object-center p-4 transition-transform duration-700 hover:scale-[1.02] sm:p-6"
-                            loading="lazy"
+                            loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
                         >
                         <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_62%,rgba(22,14,28,0.18)_100%)]"></div>
                     </div>
