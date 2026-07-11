@@ -1,0 +1,29 @@
+{
+  "node_modules/alpinejs/dist/module.esm.js": {
+    "file": "assets/module.esm-D42G7h4j.js",
+    "name": "module.esm",
+    "src": "node_modules/alpinejs/dist/module.esm.js",
+    "isDynamicEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-0N0SHux3.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BXiSn1_f.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "vendor/livewire/livewire/dist/livewire.esm.js",
+      "node_modules/alpinejs/dist/module.esm.js"
+    ]
+  },
+  "vendor/livewire/livewire/dist/livewire.esm.js": {
+    "file": "assets/livewire.esm-Dg29fzI0.js",
+    "name": "livewire.esm",
+    "src": "vendor/livewire/livewire/dist/livewire.esm.js",
+    "isDynamicEntry": true
+  }
+}
