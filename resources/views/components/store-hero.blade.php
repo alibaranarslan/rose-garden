@@ -53,7 +53,7 @@
                     fetchpriority="high"
                     decoding="async"
                 >
-                <div class="absolute inset-0 bg-gradient-to-r from-[#130c1a] via-[#130c1a]/62 to-[#130c1a]/8 dark:from-[#130c1a] dark:via-[#130c1a]/58 dark:to-[#130c1a]/6"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#fffaf7] via-[#fffaf7]/84 to-[#fffaf7]/16 dark:from-[#130c1a] dark:via-[#130c1a]/58 dark:to-[#130c1a]/6"></div>
             </div>
             <div class="rg-sales-hero-copy">
                 <p class="rg-sales-hero-kicker">{{ __('Taze çiçek · butik hediyeler') }}</p>
