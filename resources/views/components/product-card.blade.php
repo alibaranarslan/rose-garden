@@ -42,7 +42,7 @@
         : ['current' => (float) data_get($product, 'price', 0), 'compare' => ! empty($salePrice) ? (float) data_get($product, 'price', 0) : null, 'show_from' => false];
 
     $rgBadge = 'rounded-full px-2.5 py-0.5 text-[10px] sm:text-[11px] font-semibold tracking-wide';
-    $useCoverImage = ! $interactive || $isShowcase;
+    $useCoverImage = ! $interactive || $isShowcase || ! $isExplore;
 @endphp
 
 @if ($isExplore)
@@ -95,10 +95,9 @@
     </article>
 @else
     <article @class([
-        'rg-product-card group relative flex h-full flex-col overflow-hidden rounded-[1.55rem] border border-black/5 bg-white/94 shadow-[0_14px_38px_rgba(34,24,40,0.07)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(34,24,40,0.1)] dark:border-white/10 dark:bg-[#1e1a26]',
+        'rg-product-card group relative flex h-full flex-col overflow-hidden rounded-[1.2rem] border border-black/5 bg-white/96 shadow-[0_10px_28px_rgba(34,24,40,0.06)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(34,24,40,0.09)] dark:border-white/10 dark:bg-[#1e1a26] sm:rounded-[1.45rem]',
         'rg-product-card--catalog' => ! $isShowcase,
         'rg-product-card--showcase' => $isShowcase,
-        'min-h-[26rem] sm:min-h-[28rem]' => ! $isShowcase,
     ])>
         <div class="absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-2 p-2.5">
             <div class="flex flex-wrap gap-2">
@@ -126,7 +125,7 @@
 
         <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $slug]) }}" @class([
             'relative block shrink-0 overflow-hidden',
-            'aspect-[1/1] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.96),rgba(239,228,235,0.78)_62%,rgba(227,215,224,0.9))] dark:bg-[radial-gradient(circle_at_top,rgba(62,43,72,0.9),rgba(31,23,37,0.96)_60%,rgba(22,15,28,0.98))]' => ! $isShowcase,
+            'aspect-[1.03/1] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.96),rgba(239,228,235,0.78)_62%,rgba(227,215,224,0.9))] dark:bg-[radial-gradient(circle_at_top,rgba(62,43,72,0.9),rgba(31,23,37,0.96)_60%,rgba(22,15,28,0.98))] sm:aspect-[4/3]' => ! $isShowcase,
             'aspect-[5/4] min-h-[13rem] bg-rg-lightLavender/45 dark:bg-[#2a2633]' => $isShowcase,
         ])>
             <img
@@ -148,23 +147,23 @@
 
         <div @class([
             'flex min-h-0 flex-1 flex-col',
-            'p-4 md:p-5' => ! $isShowcase,
+            'p-3 sm:p-4 md:p-4' => ! $isShowcase,
             'p-5 md:p-6' => $isShowcase,
         ])>
             <div class="min-h-0 space-y-2">
                 @if ($categoryName)
-                    <p class="rg-product-card-category text-[11px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/80">{{ $categoryName }}</p>
+                    <p class="rg-product-card-category hidden text-[10px] font-semibold uppercase tracking-[0.18em] text-rg-midPurple dark:text-rg-lavender/80 sm:block">{{ $categoryName }}</p>
                 @endif
 
                 <h3 @class([
-                    'rg-product-card-title font-display leading-snug text-rg-deepPurple dark:text-white',
-                    'line-clamp-2 min-h-[2.75rem] text-[1.35rem] sm:text-[1.45rem]' => ! $isShowcase,
+                    'rg-product-card-title leading-snug text-rg-deepPurple dark:text-white',
+                    'line-clamp-2 min-h-[2.25rem] text-[0.95rem] font-semibold tracking-[-0.01em] sm:min-h-[2.55rem] sm:text-[1.08rem]' => ! $isShowcase,
                     'line-clamp-3 text-[1.45rem] sm:text-[1.55rem]' => $isShowcase,
                 ])>
                     <a href="{{ \App\Support\StorefrontLocale::route('products.show', ['slug' => $slug]) }}" class="transition-colors duration-200 hover:text-rg-purple dark:hover:text-rg-lavender">{{ $name }}</a>
                 </h3>
 
-                @if ($description !== '')
+                @if ($description !== '' && $isShowcase)
                     <p @class([
                         'rg-product-card-description leading-relaxed text-rg-grayText dark:text-zinc-300',
                         'line-clamp-3 text-sm' => ! $isShowcase,
@@ -173,7 +172,7 @@
                 @endif
             </div>
 
-            <div class="mt-4">
+            <div class="mt-3 sm:mt-4">
                 @if ($interactive)
                     <livewire:add-to-cart :product-id="$id" layout="card" :key="'cart-'.$id" />
                 @else

@@ -15,7 +15,7 @@
 @endphp
 <header id="rg-site-header" class="relative z-10 overflow-visible {{ data_get($headerTheme, 'header_class') }}" x-data="{ mobileMenu: false }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
-        <div class="relative overflow-visible rounded-b-[1.85rem] px-2 pb-4 pt-4 md:px-4 md:pb-[1.125rem] md:pt-[1.125rem]">
+        <div class="rg-main-header-shell relative overflow-visible rounded-b-[1.85rem] px-2 pb-4 pt-4 md:px-4 md:pb-[1.125rem] md:pt-[1.125rem]">
             <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-b-[1.85rem]">
                 <div class="absolute inset-x-10 top-0 h-full bg-[radial-gradient(circle_at_top,rgba(238,220,231,0.92),rgba(255,255,255,0))] dark:bg-[radial-gradient(circle_at_top,rgba(75,48,84,0.4),rgba(17,11,22,0))]"></div>
                 <div class="absolute left-[16%] top-6 h-14 w-14 rounded-full bg-rg-rosePink/18 blur-3xl"></div>
@@ -38,7 +38,7 @@
                         type="wordmark"
                         placement="header"
                         loading="eager"
-                        class="mx-auto h-14 max-w-[min(100%,16rem)] object-center sm:h-[3.8rem] sm:max-w-[18rem] md:h-[4.8rem] md:max-w-[21.5rem] lg:h-[5.4rem] lg:max-w-[24rem] 2xl:max-w-[25rem]"
+                        class="rg-header-logo mx-auto h-14 max-w-[min(100%,16rem)] object-center sm:h-[3.8rem] sm:max-w-[18rem] md:h-[4.8rem] md:max-w-[21.5rem] lg:h-[5.4rem] lg:max-w-[24rem] 2xl:max-w-[25rem]"
                     />
                 </a>
                 <button type="button"

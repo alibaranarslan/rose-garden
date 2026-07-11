@@ -9,6 +9,8 @@ class AdminActionLogger
 {
     public static function record(string $action, ?Model $subject = null, array $context = []): void
     {
+        AdminOperationAuditor::record($action, $subject, $context, self::statusForAction($action));
+
         Log::info('Admin aksiyonu', [
             'action' => $action,
             'admin_id' => auth()->id(),
@@ -19,5 +21,22 @@ class AdminActionLogger
             'ip' => request()?->ip(),
             'context' => $context,
         ]);
+    }
+
+    private static function statusForAction(string $action): string
+    {
+        if (str_contains($action, 'failed')) {
+            return 'failed';
+        }
+
+        if (str_contains($action, 'blocked')) {
+            return 'blocked';
+        }
+
+        if (str_contains($action, 'test')) {
+            return 'simulated';
+        }
+
+        return 'success';
     }
 }

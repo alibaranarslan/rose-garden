@@ -90,11 +90,15 @@ class HomeModuleDataService
 
         $this->attachCategoryCoverPaths($categories, $usedProductIds);
 
-        $newProducts = $this->takeDistinctProducts($newProducts, $usedProductIds, (int) data_get($moduleMap, 'new_arrivals.settings.content_limit', 8));
         $bestSellers = $this->takeDistinctProducts(
             $bestSellers,
-            array_merge($usedProductIds, $newProducts->pluck('id')->all()),
+            $usedProductIds,
             (int) data_get($moduleMap, 'best_sellers.settings.content_limit', 8)
+        );
+        $newProducts = $this->takeDistinctProducts(
+            $newProducts,
+            array_merge($usedProductIds, $bestSellers->pluck('id')->all()),
+            (int) data_get($moduleMap, 'new_arrivals.settings.content_limit', 8)
         );
         $occasionProducts = $this->takeDistinctProducts(
             $occasionProducts,

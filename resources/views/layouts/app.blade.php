@@ -24,7 +24,7 @@
             var dark = false;
             if (s === 'dark') dark = true;
             else if (s === 'light') dark = false;
-            else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            else dark = false;
             document.documentElement.classList.toggle('dark', dark);
         })();
     </script>
@@ -109,7 +109,10 @@
         @livewireStyles
     @endif
 </head>
-<body data-livewire="{{ $usesLivewire ? 'true' : 'false' }}" class="min-h-full text-rg-darkText antialiased leading-relaxed dark:text-zinc-100" style="background-color: var(--rg-surface-bg); font-family: var(--rg-font-family);">
+<body data-livewire="{{ $usesLivewire ? 'true' : 'false' }}" @class([
+    'min-h-full text-rg-darkText antialiased leading-relaxed dark:text-zinc-100',
+    'rg-home-sales-skin' => request()->routeIs('home'),
+]) style="background-color: var(--rg-surface-bg); font-family: var(--rg-font-family);">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-rg-deepPurple focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">
         {{ __('Ana içeriğe geç') }}
     </a>

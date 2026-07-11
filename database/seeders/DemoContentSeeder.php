@@ -26,6 +26,7 @@ class DemoContentSeeder extends Seeder
 
         $this->seedCategories();
         $this->seedTags();
+        $this->seedProducts();
         $this->seedBlog($admin);
         $this->seedCoupons();
         $this->seedPages();

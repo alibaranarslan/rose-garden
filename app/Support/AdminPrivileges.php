@@ -8,9 +8,24 @@ use Illuminate\Support\Facades\Schema;
 
 class AdminPrivileges
 {
+    private const OPERATION_ROLES = ['super_admin', 'client_manager'];
+
     public static function canAccessAdminPanel(?User $user): bool
     {
         return (bool) ($user?->is_admin && $user?->is_active);
+    }
+
+    public static function canManageStorefrontOperations(?User $user): bool
+    {
+        if (! self::canAccessAdminPanel($user)) {
+            return false;
+        }
+
+        if (! self::rolesAreConfigured()) {
+            return true;
+        }
+
+        return self::userHasAnyRole($user, self::OPERATION_ROLES);
     }
 
     public static function canPublishConfiguration(?User $user): bool
@@ -24,6 +39,11 @@ class AdminPrivileges
         }
 
         return self::userHasRole($user, 'super_admin');
+    }
+
+    public static function canManageSystemSettings(?User $user): bool
+    {
+        return self::canPublishConfiguration($user);
     }
 
     private static function rolesAreConfigured(): bool
@@ -41,6 +61,11 @@ class AdminPrivileges
 
     private static function userHasRole(?User $user, string $role): bool
     {
+        return self::userHasAnyRole($user, [$role]);
+    }
+
+    private static function userHasAnyRole(?User $user, array $roles): bool
+    {
         if (! $user?->exists) {
             return false;
         }
@@ -53,7 +78,7 @@ class AdminPrivileges
             ->join($rolesTable, "{$rolesTable}.id", '=', "{$modelHasRolesTable}.role_id")
             ->where("{$modelHasRolesTable}.model_type", User::class)
             ->where("{$modelHasRolesTable}.{$modelMorphKey}", $user->getKey())
-            ->where("{$rolesTable}.name", $role)
+            ->whereIn("{$rolesTable}.name", $roles)
             ->exists();
     }
 }

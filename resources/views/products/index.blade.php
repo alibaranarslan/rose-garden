@@ -18,7 +18,7 @@
             : \App\Support\StorefrontLocale::route('products.index');
         $catalogSupportLinks = [
             [
-                'label' => __('Özel gün seçkileri'),
+                'label' => __('Özel gün hediyeleri'),
                 'href' => \App\Support\StorefrontLocale::route('special-occasions.index'),
             ],
             [
@@ -26,13 +26,13 @@
                 'href' => \App\Support\StorefrontLocale::route('delivery.info'),
             ],
             [
-                'label' => __('Hediye desteği al'),
+                'label' => __('WhatsApp desteği'),
                 'href' => \App\Support\StorefrontLocale::route('contact'),
             ],
         ];
         $catalogSupportNotes = [
-            __('Kart mesajı ve teslim notunu ödeme öncesinde ayrıca ekleyebilirsiniz.'),
-            __('Katalog dar geliyorsa destek hattı benzer tonda alternatif önerebilir.'),
+            __('Kart mesajı ve teslim notunu ödeme öncesinde ekleyebilirsiniz.'),
+            __('Kararsız kalırsanız benzer tonda alternatifler için mağazadan destek alabilirsiniz.'),
         ];
     @endphp
 
@@ -64,9 +64,9 @@
             <section class="mt-6 border-t border-black/6 pt-5 dark:border-white/10">
                 <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
                     <div class="max-w-2xl">
-                        <span class="rg-kicker">{{ __('Kısa Destek') }}</span>
-                        <p class="mt-3 text-sm leading-relaxed text-rg-grayText dark:text-white/82">
-                            {{ __('Grid satış alanı olarak önde kalır; aşağıda yalnızca hızlı yardım kapıları görünür durumda tutulur.') }}
+                        <h2 class="font-display text-2xl text-rg-deepPurple dark:text-white">{{ __('Siparişe karar vermek kolay olsun') }}</h2>
+                        <p class="mt-2 text-sm leading-relaxed text-rg-grayText dark:text-white/82">
+                            {{ __('Teslimat, özel gün ve hediye seçimiyle ilgili kısa destek kapıları burada elinizin altında.') }}
                         </p>
                     </div>
 

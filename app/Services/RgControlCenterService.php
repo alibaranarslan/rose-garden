@@ -8,10 +8,12 @@ use App\Filament\Pages\LoyaltyManagement;
 use App\Filament\Pages\PaymentSettings;
 use App\Filament\Pages\ReportsAnalytics;
 use App\Filament\Resources\AbandonedCartResource;
+use App\Filament\Resources\AdminOperationAuditResource;
 use App\Filament\Resources\NotificationLogResource;
 use App\Filament\Resources\OrderResource;
 use App\Filament\Resources\ProductResource;
 use App\Models\AbandonedCart;
+use App\Models\AdminOperationAudit;
 use App\Models\Coupon;
 use App\Models\CustomerEvent;
 use App\Models\LayoutRevision;
@@ -39,7 +41,7 @@ class RgControlCenterService
     {
         $normalizedFilters = $this->normalizeFilters($filters);
         $window = $this->resolveWindow($normalizedFilters['window']);
-        $isOps = AdminPrivileges::canPublishConfiguration($user);
+        $isOps = AdminPrivileges::canManageStorefrontOperations($user);
         $thresholds = config('control_center.attention', []);
 
         $urgentOrders = $this->urgentOrders($normalizedFilters['lens']);
@@ -52,6 +54,7 @@ class RgControlCenterService
         $eligibleCarts = AbandonedCart::query()->eligibleForReminder()->count();
         $featuredOutOfStock = Product::query()->active()->featured()->where('stock_status', 'out_of_stock')->count();
         $failedJobsCount = $this->failedJobsCount();
+        $latestAudit = $this->latestOperationAudit();
 
         $attention = collect();
 
@@ -207,6 +210,13 @@ class RgControlCenterService
                     'value' => class_exists(\Spatie\Backup\BackupServiceProvider::class) ? 'Uygulama içi' : 'Hosting katmanı',
                     'meta' => 'Canlı backup zinciri ayrıca doğrulanmalı',
                     'tone' => 'neutral',
+                ],
+                [
+                    'label' => 'Son kritik işlem',
+                    'value' => $latestAudit['value'],
+                    'meta' => $latestAudit['meta'],
+                    'tone' => $latestAudit['tone'],
+                    'url' => AdminOperationAuditResource::getUrl(panel: 'admin'),
                 ],
             ] : [],
         ];
@@ -516,6 +526,33 @@ class RgControlCenterService
         }
 
         return (int) DB::table('failed_jobs')->count();
+    }
+
+    private function latestOperationAudit(): array
+    {
+        if (! Schema::hasTable('admin_operation_audits')) {
+            return [
+                'value' => 'Kurulum bekliyor',
+                'meta' => 'Audit migration henüz çalışmamış',
+                'tone' => 'warning',
+            ];
+        }
+
+        $audit = AdminOperationAudit::query()->latest('created_at')->first();
+
+        if (! $audit) {
+            return [
+                'value' => 'Kayıt yok',
+                'meta' => 'Riskli aksiyon çalışınca burada görünür',
+                'tone' => 'neutral',
+            ];
+        }
+
+        return [
+            'value' => $audit->action,
+            'meta' => trim(($audit->user?->email ?? 'Sistem').' / '.$audit->created_at?->diffForHumans()),
+            'tone' => $audit->status === 'failed' ? 'danger' : ($audit->status === 'blocked' ? 'warning' : 'success'),
+        ];
     }
 
     private function orderTone(string $status): string

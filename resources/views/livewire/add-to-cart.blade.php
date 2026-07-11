@@ -4,80 +4,86 @@
 @endphp
 
 <div @class([
-    'rg-add-to-cart flex flex-col flex-1 min-h-0 w-full',
+    'rg-add-to-cart flex min-h-0 w-full flex-1 flex-col',
     'rg-add-to-cart--card' => $isCard,
     'rg-add-to-cart--detail' => ! $isCard,
 ])>
     <div class="flex min-h-0 flex-1 flex-col {{ $gapClass }}">
-    {{-- Fiyat (varyantlı / varyantsız tek yerden) --}}
-    @if($product)
-        <div class="flex flex-wrap items-baseline gap-2 {{ $isCard ? 'mt-1' : '' }}">
-            <span class="font-bold tabular-nums text-rg-deepPurple dark:text-white {{ $isCard ? 'text-xl' : 'text-lg' }}">
-                ₺ {{ number_format($priceAmount, 0, ',', '.') }}
-            </span>
-            @if($compareAmount !== null && $compareAmount > $priceAmount)
-                <span class="text-sm tabular-nums text-rg-grayText line-through decoration-2 decoration-rg-mauve/70 opacity-90 dark:text-zinc-400">₺ {{ number_format($compareAmount, 0, ',', '.') }}</span>
-            @endif
-        </div>
-    @endif
+        @if($product)
+            <div class="{{ $isCard ? 'rg-card-purchase-line' : 'flex flex-wrap items-baseline gap-2' }}">
+                <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                    <span class="font-bold tabular-nums text-rg-deepPurple dark:text-white {{ $isCard ? 'text-[1.05rem] sm:text-xl' : 'text-lg' }}">
+                        ₺ {{ number_format($priceAmount, 0, ',', '.') }}
+                    </span>
+                    @if($compareAmount !== null && $compareAmount > $priceAmount)
+                        <span class="text-xs tabular-nums text-rg-grayText line-through decoration-2 decoration-rg-mauve/70 opacity-90 dark:text-zinc-400 sm:text-sm">₺ {{ number_format($compareAmount, 0, ',', '.') }}</span>
+                    @endif
+                </div>
 
-    @if($variants->isNotEmpty())
-        <div class="{{ $isCard ? '' : 'mt-1' }}" @if($isCard) data-rg-card-variant @endif>
-            <label for="variant-{{ $productId }}" class="{{ $isCard ? 'sr-only' : 'block text-sm font-semibold text-rg-darkText dark:text-white/90 mb-2' }}">
-                {{ __('Boyut / Seçenek') }}
-            </label>
-            <select
-                id="variant-{{ $productId }}"
-                wire:model.live="variantId"
-                class="w-full text-sm border border-rg-lightLavender dark:border-white/20 dark:bg-white/10 dark:text-white rounded-btn px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-rg-purple focus:border-rg-purple bg-white"
-            >
-                @foreach($variants as $variant)
-                    @php
-                        $vPrice = (float) ($variant->sale_price ?? $variant->price);
-                        $vLabel = $variant->name . ' — ₺ ' . number_format($vPrice, 0, ',', '.');
-                    @endphp
-                    <option value="{{ $variant->id }}">{{ $vLabel }}</option>
-                @endforeach
-            </select>
-        </div>
-    @endif
+                @if($isCard)
+                    <span class="rg-card-delivery-chip">{{ __('Aynı gün teslimat') }}</span>
+                @endif
+            </div>
+        @endif
 
-    {{-- Adet: kompakt yatay --}}
-    <div class="flex flex-row items-center gap-2 {{ $isCard ? 'mt-0.5' : '' }}" @if($isCard) data-rg-card-quantity @endif>
-        <span class="text-xs font-medium text-rg-grayText dark:text-white/78 shrink-0">{{ __('Adet') }}</span>
-        <div class="inline-flex items-stretch border border-rg-lightLavender dark:border-white/20 rounded-btn overflow-hidden h-8 flex-1 max-w-[6.5rem]">
-            <button
-                type="button"
-                wire:click="decrementQty"
-                class="px-2.5 text-base leading-none hover:bg-rg-lightLavender/80 dark:hover:bg-white/10 transition-colors flex items-center justify-center"
-                aria-label="{{ __('Azalt') }}"
-            >−</button>
-            <span class="min-w-[2rem] px-1 flex items-center justify-center text-sm font-semibold tabular-nums dark:text-white">{{ $quantity }}</span>
-            <button
-                type="button"
-                wire:click="incrementQty"
-                class="px-2.5 text-base leading-none hover:bg-rg-lightLavender/80 dark:hover:bg-white/10 transition-colors flex items-center justify-center"
-                aria-label="{{ __('Artır') }}"
-            >+</button>
-        </div>
-    </div>
+        @if($variants->isNotEmpty() && ! $isCard)
+            <div class="mt-1">
+                <label for="variant-{{ $productId }}" class="mb-2 block text-sm font-semibold text-rg-darkText dark:text-white/90">
+                    {{ __('Boyut / Seçenek') }}
+                </label>
+                <select
+                    id="variant-{{ $productId }}"
+                    wire:model.live="variantId"
+                    class="w-full rounded-btn border border-rg-lightLavender bg-white px-2.5 py-1.5 text-sm outline-none focus:border-rg-purple focus:ring-2 focus:ring-rg-purple dark:border-white/20 dark:bg-white/10 dark:text-white"
+                >
+                    @foreach($variants as $variant)
+                        @php
+                            $vPrice = (float) ($variant->sale_price ?? $variant->price);
+                            $vLabel = $variant->name . ' — ₺ ' . number_format($vPrice, 0, ',', '.');
+                        @endphp
+                        <option value="{{ $variant->id }}">{{ $vLabel }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
 
-    @if($layout === 'detail')
-        <div>
-            <label for="cardMessage-{{ $productId }}" class="block text-sm font-semibold text-rg-darkText dark:text-white/90 mb-2">
-                {{ __('Kart Mesajı') }} <span class="text-xs text-rg-grayText font-normal">({{ __('İsteğe bağlı') }})</span>
-            </label>
-            <textarea
-                id="cardMessage-{{ $productId }}"
-                wire:model="cardMessage"
-                maxlength="500"
-                rows="3"
-                placeholder="{{ __('Kart mesajınızı yazın...') }}"
-                class="w-full border border-rg-lightLavender dark:border-white/20 dark:bg-white/10 dark:text-white rounded-btn px-3 py-2 text-sm focus:ring-2 focus:ring-rg-purple focus:border-rg-purple outline-none resize-none"
-            ></textarea>
-            <p class="text-xs text-rg-grayText mt-1">{{ mb_strlen($cardMessage) }}/500</p>
-        </div>
-    @endif
+        @unless($isCard)
+            <div class="flex flex-row items-center gap-2">
+                <span class="shrink-0 text-xs font-medium text-rg-grayText dark:text-white/78">{{ __('Adet') }}</span>
+                <div class="inline-flex h-8 max-w-[6.5rem] flex-1 items-stretch overflow-hidden rounded-btn border border-rg-lightLavender dark:border-white/20">
+                    <button
+                        type="button"
+                        wire:click="decrementQty"
+                        class="flex items-center justify-center px-2.5 text-base leading-none transition-colors hover:bg-rg-lightLavender/80 dark:hover:bg-white/10"
+                        aria-label="{{ __('Azalt') }}"
+                    >−</button>
+                    <span class="flex min-w-[2rem] items-center justify-center px-1 text-sm font-semibold tabular-nums dark:text-white">{{ $quantity }}</span>
+                    <button
+                        type="button"
+                        wire:click="incrementQty"
+                        class="flex items-center justify-center px-2.5 text-base leading-none transition-colors hover:bg-rg-lightLavender/80 dark:hover:bg-white/10"
+                        aria-label="{{ __('Artır') }}"
+                    >+</button>
+                </div>
+            </div>
+        @endunless
+
+        @if($layout === 'detail')
+            <div>
+                <label for="cardMessage-{{ $productId }}" class="mb-2 block text-sm font-semibold text-rg-darkText dark:text-white/90">
+                    {{ __('Kart Mesajı') }} <span class="text-xs font-normal text-rg-grayText">({{ __('İsteğe bağlı') }})</span>
+                </label>
+                <textarea
+                    id="cardMessage-{{ $productId }}"
+                    wire:model="cardMessage"
+                    maxlength="500"
+                    rows="3"
+                    placeholder="{{ __('Kart mesajınızı yazın...') }}"
+                    class="w-full resize-none rounded-btn border border-rg-lightLavender px-3 py-2 text-sm outline-none focus:border-rg-purple focus:ring-2 focus:ring-rg-purple dark:border-white/20 dark:bg-white/10 dark:text-white"
+                ></textarea>
+                <p class="mt-1 text-xs text-rg-grayText">{{ mb_strlen($cardMessage) }}/500</p>
+            </div>
+        @endif
     </div>
 
     <div class="mt-auto shrink-0 pt-2">
@@ -91,11 +97,12 @@
                 @endif
                 wire:loading.attr="disabled"
                 aria-label="{{ __('Sepete ekle') }}"
-                class="w-full bg-rg-purple hover:bg-rg-darkPlum text-white text-sm font-semibold px-3 py-2.5 rounded-btn transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-rg-purple disabled:opacity-60"
+                class="{{ $isCard ? 'rg-card-cart-button' : 'w-full rounded-btn bg-rg-purple px-3 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-rg-darkPlum focus:ring-2 focus:ring-rg-purple focus:ring-offset-2 disabled:opacity-60' }}"
             >
                 <span wire:loading.remove wire:target="{{ $isCard ? 'openCartMessageModal' : 'addToCart' }}">{{ __('Sepete Ekle') }}</span>
                 <span wire:loading wire:target="{{ $isCard ? 'openCartMessageModal' : 'addToCart' }}">{{ __('Bekleyin…') }}</span>
             </button>
+
             @unless($isCard)
                 <div class="rg-pdp-mobile-purchasebar md:hidden" aria-label="{{ __('Mobil satın alma kısayolu') }}">
                     <div class="min-w-0">
@@ -119,21 +126,18 @@
                 type="button"
                 disabled
                 aria-label="{{ __('Stokta yok') }}"
-                class="w-full bg-gray-300 text-gray-500 text-sm font-semibold px-3 py-2.5 rounded-btn cursor-not-allowed"
+                class="{{ $isCard ? 'rg-card-cart-button rg-card-cart-button--disabled' : 'w-full cursor-not-allowed rounded-btn bg-gray-300 px-3 py-2.5 text-sm font-semibold text-gray-500' }}"
             >
                 {{ __('Stokta Yok') }}
             </button>
+
             @unless($isCard)
                 <div class="rg-pdp-mobile-purchasebar rg-pdp-mobile-purchasebar--disabled md:hidden" aria-label="{{ __('Mobil satın alma kısayolu') }}">
                     <div class="min-w-0">
                         <p class="truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-rg-grayText dark:text-white/60">{{ __('Stok bilgisi') }}</p>
                         <p class="text-sm font-bold text-rg-deepPurple dark:text-white">{{ __('Stokta Yok') }}</p>
                     </div>
-                    <button
-                        type="button"
-                        disabled
-                        class="inline-flex shrink-0 cursor-not-allowed items-center justify-center rounded-full bg-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600"
-                    >
+                    <button type="button" disabled class="inline-flex shrink-0 cursor-not-allowed items-center justify-center rounded-full bg-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600">
                         {{ __('Stokta Yok') }}
                     </button>
                 </div>
@@ -156,62 +160,62 @@
         @endif
     </div>
 
-@if($isCard && $showCartMessageModal)
-    <div
-        class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-        wire:click.self="closeCartMessageModal"
-        wire:keydown.escape.window="closeCartMessageModal"
-    >
+    @if($isCard && $showCartMessageModal)
         <div
-            class="w-full max-w-md bg-white dark:bg-rg-deepPurple rounded-card border border-rg-lightLavender dark:border-white/15 shadow-xl p-5 sm:p-6"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="cart-modal-title-{{ $productId }}"
-            @click.stop
+            class="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 p-4 backdrop-blur-sm sm:items-center"
+            wire:click.self="closeCartMessageModal"
+            wire:keydown.escape.window="closeCartMessageModal"
         >
-            <div class="flex items-start justify-between gap-3 mb-4">
-                <h2 id="cart-modal-title-{{ $productId }}" class="font-display text-lg font-semibold text-rg-darkText dark:text-white">
-                    {{ __('Kart mesajı') }}
-                </h2>
-                <button
-                    type="button"
-                    wire:click="closeCartMessageModal"
-                    class="text-rg-grayText hover:text-rg-darkPlum dark:text-white/78 dark:hover:text-white p-1 rounded-btn"
-                    aria-label="{{ __('Kapat') }}"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <p class="text-sm text-rg-grayText dark:text-white/86 mb-3">
-                {{ __('İsterseniz sepete eklenen ürün için kart mesajı yazabilirsiniz. Boş bırakabilirsiniz.') }}
-            </p>
-            <textarea
-                wire:model="cardMessage"
-                maxlength="500"
-                rows="4"
-                placeholder="{{ __('Kart mesajınızı yazın...') }}"
-                class="w-full border border-rg-lightLavender dark:border-white/20 dark:bg-white/10 dark:text-white rounded-btn px-3 py-2 text-sm focus:ring-2 focus:ring-rg-purple outline-none resize-none mb-2"
-            ></textarea>
-            <p class="text-xs text-rg-grayText mb-4">{{ mb_strlen($cardMessage) }}/500</p>
-            <div class="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
-                <button
-                    type="button"
-                    wire:click="closeCartMessageModal"
-                    class="w-full sm:w-auto px-4 py-2.5 rounded-btn border border-rg-lightLavender dark:border-white/20 text-sm font-medium text-rg-darkPlum dark:text-white hover:bg-rg-cream dark:hover:bg-white/10"
-                >
-                    {{ __('İptal') }}
-                </button>
-                <button
-                    type="button"
-                    wire:click="addToCart"
-                    wire:loading.attr="disabled"
-                    class="w-full sm:w-auto px-4 py-2.5 rounded-btn bg-rg-purple hover:bg-rg-darkPlum text-white text-sm font-semibold focus:ring-2 focus:ring-offset-2 focus:ring-rg-purple disabled:opacity-60"
-                >
-                    <span wire:loading.remove wire:target="addToCart">{{ __('Sepete ekle') }}</span>
-                    <span wire:loading wire:target="addToCart">{{ __('Ekleniyor…') }}</span>
-                </button>
+            <div
+                class="w-full max-w-md rounded-card border border-rg-lightLavender bg-white p-5 shadow-xl dark:border-white/15 dark:bg-rg-deepPurple sm:p-6"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="cart-modal-title-{{ $productId }}"
+                @click.stop
+            >
+                <div class="mb-4 flex items-start justify-between gap-3">
+                    <h2 id="cart-modal-title-{{ $productId }}" class="font-display text-lg font-semibold text-rg-darkText dark:text-white">
+                        {{ __('Kart mesajı') }}
+                    </h2>
+                    <button
+                        type="button"
+                        wire:click="closeCartMessageModal"
+                        class="rounded-btn p-1 text-rg-grayText hover:text-rg-darkPlum dark:text-white/78 dark:hover:text-white"
+                        aria-label="{{ __('Kapat') }}"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <p class="mb-3 text-sm text-rg-grayText dark:text-white/86">
+                    {{ __('İsterseniz sepete eklenen ürün için kart mesajı yazabilirsiniz. Boş bırakabilirsiniz.') }}
+                </p>
+                <textarea
+                    wire:model="cardMessage"
+                    maxlength="500"
+                    rows="4"
+                    placeholder="{{ __('Kart mesajınızı yazın...') }}"
+                    class="mb-2 w-full resize-none rounded-btn border border-rg-lightLavender px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-rg-purple dark:border-white/20 dark:bg-white/10 dark:text-white"
+                ></textarea>
+                <p class="mb-4 text-xs text-rg-grayText">{{ mb_strlen($cardMessage) }}/500</p>
+                <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                    <button
+                        type="button"
+                        wire:click="closeCartMessageModal"
+                        class="w-full rounded-btn border border-rg-lightLavender px-4 py-2.5 text-sm font-medium text-rg-darkPlum hover:bg-rg-cream dark:border-white/20 dark:text-white dark:hover:bg-white/10 sm:w-auto"
+                    >
+                        {{ __('İptal') }}
+                    </button>
+                    <button
+                        type="button"
+                        wire:click="addToCart"
+                        wire:loading.attr="disabled"
+                        class="w-full rounded-btn bg-rg-purple px-4 py-2.5 text-sm font-semibold text-white hover:bg-rg-darkPlum focus:ring-2 focus:ring-rg-purple focus:ring-offset-2 disabled:opacity-60 sm:w-auto"
+                    >
+                        <span wire:loading.remove wire:target="addToCart">{{ __('Sepete ekle') }}</span>
+                        <span wire:loading wire:target="addToCart">{{ __('Ekleniyor…') }}</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-@endif
+    @endif
 </div>

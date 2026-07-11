@@ -480,7 +480,7 @@ class LayoutStudio extends Page
 
     public function canPublishLayout(): bool
     {
-        return AdminPrivileges::canPublishConfiguration(auth()->user());
+        return AdminPrivileges::canManageStorefrontOperations(auth()->user());
     }
 
     public function isPublishRestricted(): bool
@@ -574,4 +574,3 @@ class LayoutStudio extends Page
         Notification::make()->success()->title('Modül sırası taslakta güncellendi')->send();
     }
 }
-

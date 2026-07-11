@@ -105,7 +105,7 @@
             <div class="flex items-start justify-between gap-3">
                 <div>
                     <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-rg-midPurple dark:text-rg-lavender/75">{{ __('Çerez Tercihleri') }}</p>
-                    <h3 class="mt-1.5 font-display text-[1.08rem] leading-tight text-rg-deepPurple dark:text-white md:text-[1.12rem]">{{ __('Deneyimi sizin ritminize göre ayarlıyoruz.') }}</h3>
+                    <h3 class="mt-1.5 font-display text-[1.08rem] leading-tight text-rg-deepPurple dark:text-white md:text-[1.12rem]">{{ __('Deneyimi size göre ayarlıyoruz.') }}</h3>
                 </div>
 
                 <button type="button" class="rounded-full border border-black/8 px-2.5 py-1 text-[11px] font-semibold text-rg-deepPurple transition-colors hover:bg-white/70 dark:border-white/10 dark:text-white dark:hover:bg-white/10 lg:hidden" @click="rejectOptional">
@@ -116,7 +116,7 @@
 
         <div class="rg-cookie-consent-body space-y-3 px-3.5 py-3">
             <p class="text-[11px] leading-relaxed text-rg-grayText dark:text-white/72 md:text-[12px]">
-                {{ __('Sitenin temel işleyişi için zorunlu çerezleri kullanıyoruz. Analitik, işlevsel ve pazarlama tercihlerinizi ise tamamen siz belirleyebilirsiniz.') }}
+                {{ __('Sitenin çalışması için zorunlu çerezleri kullanıyoruz. Analitik, işlevsel ve pazarlama tercihlerinizi siz belirleyebilirsiniz.') }}
             </p>
 
             <div class="rg-cookie-consent-actions flex flex-wrap items-center gap-2">

@@ -231,6 +231,7 @@ class RgControlCenterPresenter
                     'value' => $card['value'] ?? '-',
                     'meta' => $card['meta'] ?? 'İzleme bilgisi',
                     'tone' => $card['tone'] ?? 'neutral',
+                    'url' => $card['url'] ?? null,
                 ])->all(),
             ],
             'is_ops' => (bool) ($data['is_ops'] ?? false),

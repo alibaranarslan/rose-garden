@@ -8,7 +8,7 @@
             var dark = false;
             if (s === 'dark') dark = true;
             else if (s === 'light') dark = false;
-            else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            else dark = false;
             document.documentElement.classList.toggle('dark', dark);
         })();
     </script>

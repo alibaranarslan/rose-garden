@@ -9,7 +9,7 @@
 @endphp
 
 @if ($announcementActive)
-    <div class="border-b border-white/10 bg-[linear-gradient(90deg,#1a1420_0%,#241a2e_50%,#1a1420_100%)] text-[10px] text-white sm:text-[11px]">
+    <div class="rg-announcement-bar border-b border-white/10 bg-[linear-gradient(90deg,#1a1420_0%,#241a2e_50%,#1a1420_100%)] text-[10px] text-white sm:text-[11px]">
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-1.5 sm:px-6">
             <div class="flex min-w-0 items-center gap-2.5 text-white/88">
                 <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-2.5 py-1 font-semibold text-white/95">
@@ -31,5 +31,4 @@
         </div>
     </div>
 @endif
-
 

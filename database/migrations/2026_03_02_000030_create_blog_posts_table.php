@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
             $table->json('title');
-            $table->string('slug', 500)->unique();
+            $table->string('slug', 191)->unique();
             $table->json('excerpt')->nullable();
             $table->json('content');
             $table->string('featured_image', 500)->nullable();

@@ -285,21 +285,21 @@ class HeaderThemeResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return AdminPrivileges::canPublishConfiguration(auth()->user());
+        return AdminPrivileges::canManageStorefrontOperations(auth()->user());
     }
 
     public static function canCreate(): bool
     {
-        return AdminPrivileges::canPublishConfiguration(auth()->user());
+        return AdminPrivileges::canManageStorefrontOperations(auth()->user());
     }
 
     public static function canEdit($record): bool
     {
-        return AdminPrivileges::canPublishConfiguration(auth()->user());
+        return AdminPrivileges::canManageStorefrontOperations(auth()->user());
     }
 
     public static function canDelete($record): bool
     {
-        return AdminPrivileges::canPublishConfiguration(auth()->user());
+        return AdminPrivileges::canManageStorefrontOperations(auth()->user());
     }
 }
