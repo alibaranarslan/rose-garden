@@ -32,10 +32,23 @@ mkdir -p "${WORK_DIR}" "${APP_DIR}/storage/logs"
         "${APP_DIR}/scripts" \
         "${APP_DIR}/tests"
 
-    cp -R app bootstrap config database lang public/build resources routes scripts tests "${APP_DIR}/"
+    cp -R app bootstrap config database lang resources routes scripts tests "${APP_DIR}/"
+    if [ -d public/build ]; then
+        mkdir -p "${APP_DIR}/public"
+        cp -R public/build "${APP_DIR}/public/"
+    fi
     cp artisan composer.json composer.lock package.json vite.config.js "${APP_DIR}/"
 
     cd "${APP_DIR}"
+    if [ ! -f public/build/manifest.json ]; then
+        echo "public/build missing from archive; downloading committed build assets"
+        mkdir -p public/build/assets
+        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/manifest.json" -o public/build/manifest.json
+        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/app-0N0SHux3.css" -o public/build/assets/app-0N0SHux3.css
+        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/app-BXiSn1_f.js" -o public/build/assets/app-BXiSn1_f.js
+        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/livewire.esm-Dg29fzI0.js" -o public/build/assets/livewire.esm-Dg29fzI0.js
+        curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/module.esm-D42G7h4j.js" -o public/build/assets/module.esm-D42G7h4j.js
+    fi
     "${PHP_BIN}" artisan migrate --force
     "${PHP_BIN}" artisan optimize:clear
     "${PHP_BIN}" artisan config:cache
