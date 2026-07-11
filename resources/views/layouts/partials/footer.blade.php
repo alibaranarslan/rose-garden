@@ -223,4 +223,15 @@
             <p>{{ __('Adıyaman’da tasarlandı ve geliştirildi.') }}</p>
         </div>
     </div>
+    <div style="border-top: 1px solid rgba(40, 24, 45, 0.08); background: rgba(255, 255, 255, 0.35);">
+        <div style="max-width: 80rem; margin: 0 auto; padding: 1rem; text-align: center;">
+            <p style="margin: 0; line-height: 1;">
+                <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.24em; color: rgba(93, 82, 101, 0.72);">made by</span>
+                <span style="margin-left: 0.5rem; font-family: 'Segoe Script', 'Lucida Handwriting', 'Brush Script MT', cursive; font-size: 1.35rem; font-style: italic; line-height: 1; color: #2b1738;">Ali Baran Arslan</span>
+            </p>
+            <a href="mailto:alibaranarslann@outlook.com" style="display: inline-block; margin-top: 0.35rem; font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: rgba(93, 82, 101, 0.64); text-decoration: none;">
+                alibaranarslann@outlook.com
+            </a>
+        </div>
+    </div>
 </footer>
