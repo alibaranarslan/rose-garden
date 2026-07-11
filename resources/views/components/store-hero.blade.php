@@ -44,6 +44,17 @@
 
     <div class="relative mx-auto max-w-7xl px-4 py-4 sm:px-6 md:py-5">
         <div class="rg-sales-hero-card rg-store-hero-intro-card" style="--rg-sales-hero-image: url('{{ e($heroImageMobileOptimized) }}'); --rg-store-hero-mobile-image: url('{{ e($heroImageMobileOptimized) }}');">
+            <div class="pointer-events-none absolute inset-0 z-0 block overflow-hidden md:hidden" aria-hidden="true">
+                <img
+                    src="{{ $heroImageMobileOptimized }}"
+                    alt=""
+                    class="h-full w-full object-cover object-center opacity-35 saturate-[1.08] dark:opacity-45"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                >
+                <div class="absolute inset-0 bg-gradient-to-r from-[#130c1a] via-[#130c1a]/62 to-[#130c1a]/8 dark:from-[#130c1a] dark:via-[#130c1a]/58 dark:to-[#130c1a]/6"></div>
+            </div>
             <div class="rg-sales-hero-copy">
                 <p class="rg-sales-hero-kicker">{{ __('Taze çiçek · butik hediyeler') }}</p>
                 <h1 class="rg-sales-hero-title">{{ $headingText }}</h1>

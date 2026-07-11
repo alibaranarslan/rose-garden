@@ -63,6 +63,371 @@
   }
 }
 
+/* Final dark-mode palette contract: deep plum surfaces, readable copy, rose accents. */
+@layer base {
+  html.dark {
+    --rg-dark-ink: #0d0812;
+    --rg-dark-base: #140d1b;
+    --rg-dark-surface: #1b1224;
+    --rg-dark-surface-2: #23162d;
+    --rg-dark-card: rgba(31, 20, 40, 0.96);
+    --rg-dark-card-soft: rgba(255, 255, 255, 0.075);
+    --rg-dark-border: rgba(244, 230, 255, 0.14);
+    --rg-dark-border-strong: rgba(244, 230, 255, 0.24);
+    --rg-dark-text: #fbf7ff;
+    --rg-dark-muted: rgba(245, 236, 252, 0.82);
+    --rg-dark-soft: rgba(245, 236, 252, 0.68);
+    --rg-dark-accent: #d9b7cf;
+    --rg-dark-accent-strong: #f0c5d7;
+    --rg-dark-green: #8dd7a2;
+    --rg-surface-bg: rgba(27, 18, 36, 0.96);
+    --rg-surface-border: var(--rg-dark-border);
+    --rg-copy-strong: var(--rg-dark-text);
+    --rg-copy-muted: var(--rg-dark-muted);
+    --rg-copy-soft: var(--rg-dark-soft);
+  }
+
+  html.dark body {
+    background-color: var(--rg-dark-base) !important;
+    color: var(--rg-dark-text);
+    background-image:
+      radial-gradient(circle at 12% -8%, rgba(122, 73, 105, 0.24), transparent 25rem),
+      radial-gradient(circle at 88% 5%, rgba(101, 72, 120, 0.22), transparent 28rem),
+      linear-gradient(180deg, #130c19 0%, #17101f 46%, #100a15 100%) !important;
+  }
+
+  html.dark input,
+  html.dark textarea,
+  html.dark select {
+    color: var(--rg-dark-text);
+    caret-color: var(--rg-dark-accent-strong);
+  }
+
+  html.dark input::placeholder,
+  html.dark textarea::placeholder {
+    color: rgba(245, 236, 252, 0.54) !important;
+  }
+}
+
+@layer components {
+  html.dark .sticky.top-0 {
+    border-bottom-color: rgba(244, 230, 255, 0.12) !important;
+    background: rgba(16, 10, 21, 0.9) !important;
+    box-shadow: 0 18px 54px -24px rgba(0, 0, 0, 0.82) !important;
+  }
+
+  html.dark #rg-site-header .rg-main-header-shell {
+    background:
+      radial-gradient(circle at 50% 0%, rgba(118, 72, 114, 0.26), transparent 24rem),
+      linear-gradient(180deg, rgba(31, 20, 40, 0.66), rgba(18, 12, 24, 0.18)) !important;
+  }
+
+  html.dark #rg-site-header .rg-header-search-shell {
+    border-color: var(--rg-dark-border) !important;
+    background: rgba(21, 13, 28, 0.94) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 14px 34px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  html.dark #rg-site-header .rg-header-search-shell:focus-within {
+    border-color: rgba(240, 197, 215, 0.52) !important;
+    background: rgba(30, 19, 39, 0.98) !important;
+    box-shadow:
+      0 0 0 3px rgba(240, 197, 215, 0.08),
+      0 16px 38px rgba(0, 0, 0, 0.34) !important;
+  }
+
+  html.dark #rg-site-header .rg-header-search-submit,
+  html.dark .rg-card-cart-button,
+  html.dark .rg-btn-primary,
+  html.dark .rg-sales-hero-primary {
+    background: linear-gradient(135deg, #8f5576, #6f4a86) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34) !important;
+  }
+
+  html.dark #rg-site-header .rg-header-search-submit:hover,
+  html.dark .rg-card-cart-button:hover,
+  html.dark .rg-btn-primary:hover,
+  html.dark .rg-sales-hero-primary:hover {
+    background: linear-gradient(135deg, #a96586, #7d5597) !important;
+  }
+
+  html.dark #rg-site-header .rg-header-control-cluster a,
+  html.dark #rg-site-header .rg-header-control-cluster button,
+  html.dark #rg-site-header .rg-header-right-utility-trio > *,
+  html.dark #rg-site-header .rg-header-square-control [data-theme-toggle],
+  html.dark #rg-site-header .rg-header-cart-control a,
+  html.dark #rg-site-header .rg-header-language-control > div > button {
+    border-color: var(--rg-dark-border) !important;
+    background: rgba(255, 255, 255, 0.09) !important;
+    color: var(--rg-dark-text) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26) !important;
+  }
+
+  html.dark #rg-site-header .rg-header-control-cluster a:hover,
+  html.dark #rg-site-header .rg-header-control-cluster button:hover,
+  html.dark #rg-site-header .rg-header-square-control [data-theme-toggle]:hover,
+  html.dark #rg-site-header .rg-header-cart-control a:hover,
+  html.dark #rg-site-header .rg-header-language-control > div > button:hover {
+    border-color: rgba(240, 197, 215, 0.34) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #fff !important;
+  }
+
+  html.dark .rg-header-language-root > div[x-show],
+  html.dark .rg-nav-flyout {
+    border-color: var(--rg-dark-border-strong) !important;
+    background: rgba(20, 13, 28, 0.98) !important;
+    color: var(--rg-dark-text) !important;
+    box-shadow: 0 26px 64px rgba(0, 0, 0, 0.58) !important;
+  }
+
+  html.dark .rg-header-nav-pill,
+  html.dark .rg-mobile-nav-pill {
+    border-color: rgba(244, 230, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    color: rgba(252, 247, 255, 0.88) !important;
+  }
+
+  html.dark .rg-header-nav-pill:hover,
+  html.dark .rg-mobile-nav-pill:hover,
+  html.dark .rg-mobile-nav-pill-active {
+    border-color: rgba(240, 197, 215, 0.34) !important;
+    background: rgba(240, 197, 215, 0.12) !important;
+    color: #fff !important;
+  }
+
+  html.dark .rg-section,
+  html.dark .rg-surface,
+  html.dark .rg-product-card,
+  html.dark .rg-store-hero-intro-card,
+  html.dark .rg-footer-feature,
+  html.dark .rg-footer-contact-card {
+    border-color: var(--rg-dark-border) !important;
+    background: var(--rg-dark-card) !important;
+    color: var(--rg-dark-text) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.055) inset,
+      0 20px 54px rgba(0, 0, 0, 0.36) !important;
+  }
+
+  html.dark .rg-product-card-title,
+  html.dark .rg-product-card-title a,
+  html.dark .rg-section h2,
+  html.dark .rg-footer-feature h2,
+  html.dark .rg-sales-hero-title {
+    color: var(--rg-dark-text) !important;
+  }
+
+  html.dark .rg-product-card-category,
+  html.dark .rg-kicker,
+  html.dark .rg-footer-links p,
+  html.dark .rg-footer .min-w-0 > p.mb-4 {
+    color: var(--rg-dark-accent) !important;
+  }
+
+  html.dark .rg-product-card-description,
+  html.dark .rg-section p,
+  html.dark .rg-footer-feature p,
+  html.dark .rg-footer-brand p.max-w-md,
+  html.dark .rg-footer-links ul,
+  html.dark .rg-footer-contact-card ul {
+    color: var(--rg-dark-muted) !important;
+  }
+
+  html.dark .rg-card-delivery-chip,
+  html.dark .rg-sales-hero-chips span,
+  html.dark .rg-footer-brand .flex.flex-wrap span {
+    border-color: rgba(141, 215, 162, 0.24) !important;
+    background: rgba(141, 215, 162, 0.11) !important;
+    color: #dff8e6 !important;
+  }
+
+  html.dark .rg-sales-hero-card {
+    border-color: rgba(244, 230, 255, 0.13) !important;
+    background:
+      radial-gradient(circle at 84% 38%, rgba(143, 85, 118, 0.22), transparent 18rem),
+      linear-gradient(120deg, rgba(32, 20, 41, 0.98), rgba(18, 11, 25, 0.98)) !important;
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.42) !important;
+  }
+
+  html.dark .rg-sales-hero-subtitle {
+    color: var(--rg-dark-muted) !important;
+  }
+
+  html.dark .rg-sales-hero-secondary,
+  html.dark .rg-button-secondary {
+    border-color: rgba(240, 197, 215, 0.28) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f9f1fb !important;
+  }
+
+  html.dark .rg-sales-hero-secondary:hover,
+  html.dark .rg-button-secondary:hover {
+    border-color: rgba(240, 197, 215, 0.42) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+  }
+
+  html.dark .rg-cookie-consent,
+  html.dark .rg-cookie-consent-card,
+  html.dark [class*="loyalty"],
+  html.dark [class*="Loyalty"] {
+    border-color: var(--rg-dark-border) !important;
+    background-color: rgba(20, 13, 28, 0.95) !important;
+    color: var(--rg-dark-text) !important;
+  }
+
+  html.dark .rg-footer {
+    border-top-color: rgba(244, 230, 255, 0.12) !important;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(143, 85, 118, 0.18), transparent 22rem),
+      linear-gradient(180deg, #17101f, #0f0a14) !important;
+    color: var(--rg-dark-text) !important;
+  }
+
+  .rg-footer-signature {
+    border-top: 1px solid rgba(40, 24, 45, 0.08);
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .rg-footer-signature-made {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: rgba(93, 82, 101, 0.72);
+  }
+
+  .rg-footer-signature-name {
+    margin-left: 0.5rem;
+    font-family: "Segoe Script", "Lucida Handwriting", "Brush Script MT", cursive;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1;
+    color: #2b1738;
+  }
+
+  .rg-footer-signature-mail {
+    display: inline-block;
+    margin-top: 0.35rem;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(93, 82, 101, 0.64);
+    text-decoration: none;
+  }
+
+  html.dark .rg-footer-signature {
+    border-top-color: rgba(244, 230, 255, 0.1);
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  html.dark .rg-footer-signature-made {
+    color: rgba(245, 236, 252, 0.66);
+  }
+
+  html.dark .rg-footer-signature-name {
+    color: #f4d8e7;
+  }
+
+  html.dark .rg-footer-signature-mail {
+    color: rgba(245, 236, 252, 0.62);
+  }
+}
+
+/* Home sales skin previously forced light colors; keep the same layout with a native dark palette. */
+html.dark .rg-home-sales-skin {
+  --rg-surface-bg: var(--rg-dark-base);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(143, 85, 118, 0.2), transparent 28rem),
+    radial-gradient(circle at 88% 10%, rgba(101, 72, 120, 0.2), transparent 26rem),
+    #120c18 !important;
+}
+
+html.dark .rg-home-sales-skin .rg-announcement-bar {
+  border-bottom-color: rgba(244, 230, 255, 0.1) !important;
+  background: rgba(18, 12, 24, 0.9) !important;
+  color: var(--rg-dark-muted) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-announcement-bar .text-white\/88,
+html.dark .rg-home-sales-skin .rg-announcement-bar .text-white\/82,
+html.dark .rg-home-sales-skin .rg-announcement-bar .text-white\/58,
+html.dark .rg-home-sales-skin .rg-announcement-bar a {
+  color: var(--rg-dark-muted) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-announcement-bar span.rounded-full {
+  border-color: rgba(240, 197, 215, 0.2) !important;
+  background: rgba(240, 197, 215, 0.1) !important;
+  color: #f4d8e7 !important;
+}
+
+html.dark .rg-home-sales-skin .sticky.top-0 {
+  border-bottom-color: rgba(244, 230, 255, 0.12) !important;
+  background: rgba(16, 10, 21, 0.91) !important;
+  box-shadow: 0 18px 54px -24px rgba(0, 0, 0, 0.82) !important;
+}
+
+html.dark .rg-home-sales-skin #rg-site-header .rg-main-header-shell > .pointer-events-none {
+  opacity: 0.5;
+}
+
+html.dark .rg-home-sales-skin #rg-site-header .rg-header-search-shell {
+  border-color: var(--rg-dark-border) !important;
+  background: rgba(21, 13, 28, 0.94) !important;
+}
+
+html.dark .rg-home-sales-skin #rg-site-header .rg-header-control-cluster a,
+html.dark .rg-home-sales-skin #rg-site-header .rg-header-control-cluster button,
+html.dark .rg-home-sales-skin #rg-site-header .rg-header-right-utility-trio > * {
+  border-color: var(--rg-dark-border) !important;
+  background-color: rgba(255, 255, 255, 0.09) !important;
+  color: var(--rg-dark-text) !important;
+}
+
+html.dark .rg-home-sales-skin nav.relative.z-20 {
+  border-top-color: rgba(244, 230, 255, 0.1) !important;
+  background: rgba(16, 10, 21, 0.82) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-header-nav-pill,
+html.dark .rg-home-sales-skin .rg-mobile-nav-pill {
+  color: rgba(252, 247, 255, 0.88) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-sales-hero-title,
+html.dark .rg-home-sales-skin .rg-product-card-title,
+html.dark .rg-home-sales-skin .rg-product-card-title a,
+html.dark .rg-home-sales-skin .rg-card-purchase-line span:first-child {
+  color: var(--rg-dark-text) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-sales-hero-subtitle {
+  color: var(--rg-dark-muted) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-sales-hero-kicker {
+  color: var(--rg-dark-green) !important;
+}
+
+html.dark .rg-home-sales-skin .rg-product-card {
+  border-color: var(--rg-dark-border) !important;
+  background: var(--rg-dark-card) !important;
+  color: var(--rg-dark-text) !important;
+}
+
+@media (max-width: 767px) {
+  html.dark .rg-home-sales-skin .rg-sales-hero-card {
+    background:
+      linear-gradient(90deg, rgba(19, 12, 26, 0.99) 0%, rgba(19, 12, 26, 0.94) 44%, rgba(19, 12, 26, 0.62) 70%, rgba(19, 12, 26, 0.2) 100%),
+      var(--rg-sales-hero-image) !important;
+    background-position: center, right -3rem center !important;
+    background-size: auto, auto 154% !important;
+  }
+}
+
 /* Rose Garden sales-first storefront revision */
 .rg-sales-hero-card {
   position: relative;
@@ -4074,5 +4439,23 @@ html.dark #rg-site-header.rg-header-campaign .rg-seasonal-preview-badge {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+/* Dark-mode true EOF polish: overrides every earlier duplicate block. */
+html.dark #rg-site-header .rg-header-right-utility-trio > .rg-header-utility-control,
+html.dark .rg-home-sales-skin #rg-site-header .rg-header-right-utility-trio > .rg-header-utility-control {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  html.dark .rg-home-sales-skin .rg-store-hero-intro-card,
+  html.dark .rg-home-sales-skin .rg-sales-hero-card {
+    background:
+      linear-gradient(90deg, rgba(19, 12, 26, 0.99) 0%, rgba(19, 12, 26, 0.92) 43%, rgba(19, 12, 26, 0.48) 69%, rgba(19, 12, 26, 0.08) 100%),
+      var(--rg-sales-hero-image) !important;
+    background-position: center, right -3rem center !important;
+    background-size: auto, auto 154% !important;
   }
 }
