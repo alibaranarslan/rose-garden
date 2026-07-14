@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -41,7 +42,51 @@ class ProductResourceFormTest extends TestCase
             ProductResource::normalizeUploadedImagePath([], 'products/existing.jpg')
         );
 
+        $this->assertSame(
+            'products/storage-prefix.jpg',
+            ProductResource::normalizeUploadedImagePath('storage/products/storage-prefix.jpg')
+        );
+
+        $this->assertSame(
+            ['first' => 'products/from-form.jpg'],
+            ProductResource::normalizeImagePathForFileUpload(['first' => 'storage/products/from-form.jpg'])
+        );
+
         $this->assertNull(ProductResource::normalizeUploadedImagePath([]));
+    }
+
+    public function test_admin_product_image_url_resolves_existing_storage_backed_image(): void
+    {
+        $relative = 'products/admin-visible-product.jpg';
+
+        File::ensureDirectoryExists(storage_path('app/public/products'));
+        File::ensureDirectoryExists(public_path('storage/products'));
+        File::put(storage_path('app/public/'.$relative), 'test-image');
+        File::put(public_path('storage/'.$relative), 'test-image');
+
+        try {
+            $product = Product::create([
+                'name' => ['tr' => 'Admin Gorsel Testi'],
+                'slug' => 'admin-gorsel-testi',
+                'short_description' => ['tr' => 'Admin gorsel testi'],
+                'description' => ['tr' => '<p>Aciklama</p>'],
+                'price' => 890,
+                'stock_status' => 'in_stock',
+                'status' => 'active',
+            ]);
+
+            $product->images()->create([
+                'image_path' => 'storage/'.$relative,
+                'alt_text' => 'Admin test',
+                'is_primary' => true,
+                'sort_order' => 1,
+            ]);
+
+            $this->assertSame(url('/storage/'.$relative), ProductResource::adminProductImageUrl($product));
+        } finally {
+            File::delete(storage_path('app/public/'.$relative));
+            File::delete(public_path('storage/'.$relative));
+        }
     }
 
     public function test_primary_image_rule_keeps_single_cover_after_gallery_changes(): void

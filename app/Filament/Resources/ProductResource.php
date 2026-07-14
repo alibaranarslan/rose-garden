@@ -168,6 +168,7 @@ class ProductResource extends Resource
                                         ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                         ->maxSize(5120)
                                         ->required(fn (?ProductImage $record): bool => blank($record?->image_path))
+                                        ->formatStateUsing(fn ($state) => static::normalizeImagePathForFileUpload($state))
                                         ->dehydrateStateUsing(
                                             fn ($state, ?ProductImage $record) => static::normalizeUploadedImagePath($state, $record?->image_path)
                                         )
@@ -380,9 +381,7 @@ class ProductResource extends Resource
             ->columns([
                 ImageColumn::make('primary_image')
                     ->label('Görsel')
-                    ->getStateUsing(fn (Product $record): string => StorefrontImage::publicImgSrc(
-                        StorefrontImage::resolveProduct($record->primaryImage, $record->slug, $record->name)
-                    ))
+                    ->getStateUsing(fn (Product $record): string => static::adminProductImageUrl($record))
                     ->defaultImageUrl(asset('images/product-placeholder.svg'))
                     ->width(56)
                     ->height(56),
@@ -589,11 +588,11 @@ class ProductResource extends Resource
     public static function normalizeUploadedImagePath(mixed $state, ?string $existingPath = null): ?string
     {
         if (blank($state)) {
-            return filled($existingPath) ? $existingPath : null;
+            return filled($existingPath) ? static::stripStoragePrefix((string) $existingPath) : null;
         }
 
         if (is_string($state)) {
-            return $state;
+            return static::stripStoragePrefix($state);
         }
 
         if (is_array($state)) {
@@ -602,9 +601,50 @@ class ProductResource extends Resource
                 ->filter(fn ($value): bool => is_string($value) && filled($value))
                 ->first();
 
-            return $path ?: (filled($existingPath) ? $existingPath : null);
+            return $path
+                ? static::stripStoragePrefix($path)
+                : (filled($existingPath) ? static::stripStoragePrefix((string) $existingPath) : null);
         }
 
-        return (string) $state;
+        return static::stripStoragePrefix((string) $state);
+    }
+
+    public static function normalizeImagePathForFileUpload(mixed $state): mixed
+    {
+        if (is_string($state)) {
+            return static::stripStoragePrefix($state);
+        }
+
+        if (is_array($state)) {
+            return collect($state)
+                ->map(fn ($value) => is_string($value) ? static::stripStoragePrefix($value) : $value)
+                ->all();
+        }
+
+        return $state;
+    }
+
+    public static function adminProductImageUrl(Product $record): string
+    {
+        $record->loadMissing(['images' => fn ($query) => $query->orderBy('sort_order')]);
+
+        $resolved = StorefrontImage::publicImgSrc(
+            StorefrontImage::resolveProduct($record->primaryImage, $record->slug, $record->name)
+        );
+
+        if (Str::startsWith($resolved, ['http://', 'https://', 'data:'])) {
+            return $resolved;
+        }
+
+        return url('/'.ltrim($resolved, '/'));
+    }
+
+    private static function stripStoragePrefix(string $path): string
+    {
+        $normalized = ltrim(str_replace('\\', '/', $path), '/');
+
+        return Str::startsWith($normalized, 'storage/')
+            ? substr($normalized, strlen('storage/'))
+            : $normalized;
     }
 }

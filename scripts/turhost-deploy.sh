@@ -50,6 +50,7 @@ mkdir -p "${WORK_DIR}" "${APP_DIR}/storage/logs"
         curl -fsSL "https://raw.githubusercontent.com/alibaranarslan/rose-garden/main/public/build/assets/module.esm-D42G7h4j.js" -o public/build/assets/module.esm-D42G7h4j.js
     fi
     "${PHP_BIN}" artisan migrate --force
+    "${PHP_BIN}" artisan storage:link || true
     "${PHP_BIN}" artisan optimize:clear
     "${PHP_BIN}" artisan config:cache
     "${PHP_BIN}" artisan route:cache
