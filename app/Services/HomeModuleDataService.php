@@ -19,6 +19,7 @@ class HomeModuleDataService
     public function collect(array $layoutState): array
     {
         $moduleMap = collect($layoutState['modules'] ?? [])->keyBy('key');
+        $moduleIsActive = fn (string $key): bool => (bool) data_get($moduleMap, $key.'.is_active', true);
 
         $productCardWith = [
             'images' => fn ($query) => $query->orderBy('sort_order'),
@@ -77,11 +78,17 @@ class HomeModuleDataService
             ->get();
 
         $heroSpotlight = $this->resolveHeroSpotlight($featuredProducts, $newProducts, $bestSellers);
-        $heroProduct = $heroSpotlight['product'];
-        $featuredShowcase = $this->takeDistinctProduct(
-            $featuredProducts->concat($newProducts)->concat($bestSellers),
-            array_filter([$heroProduct?->id]),
-        );
+        $heroProduct = $moduleIsActive('hero') ? $heroSpotlight['product'] : null;
+        if (! $moduleIsActive('hero')) {
+            $heroSpotlight['product'] = null;
+        }
+
+        $featuredShowcase = $moduleIsActive('featured_showcase')
+            ? $this->takeDistinctProduct(
+                $featuredProducts->concat($newProducts)->concat($bestSellers),
+                array_filter([$heroProduct?->id]),
+            )
+            : null;
 
         $usedProductIds = collect([$heroProduct?->id, $featuredShowcase?->id])
             ->filter()
@@ -90,21 +97,29 @@ class HomeModuleDataService
 
         $this->attachCategoryCoverPaths($categories, $usedProductIds);
 
-        $bestSellers = $this->takeDistinctProducts(
-            $bestSellers,
-            $usedProductIds,
-            (int) data_get($moduleMap, 'best_sellers.settings.content_limit', 8)
-        );
-        $newProducts = $this->takeDistinctProducts(
-            $newProducts,
-            array_merge($usedProductIds, $bestSellers->pluck('id')->all()),
-            (int) data_get($moduleMap, 'new_arrivals.settings.content_limit', 8)
-        );
-        $occasionProducts = $this->takeDistinctProducts(
-            $occasionProducts,
-            array_merge($usedProductIds, $newProducts->pluck('id')->all(), $bestSellers->pluck('id')->all()),
-            (int) data_get($moduleMap, 'occasion_spotlight.settings.content_limit', 4)
-        );
+        $bestSellers = $moduleIsActive('best_sellers')
+            ? $this->takeDistinctProducts(
+                $bestSellers,
+                $usedProductIds,
+                (int) data_get($moduleMap, 'best_sellers.settings.content_limit', 8)
+            )
+            : collect();
+
+        $newProducts = $moduleIsActive('new_arrivals')
+            ? $this->takeDistinctProducts(
+                $newProducts,
+                array_merge($usedProductIds, $bestSellers->pluck('id')->all()),
+                (int) data_get($moduleMap, 'new_arrivals.settings.content_limit', 8)
+            )
+            : collect();
+
+        $occasionProducts = $moduleIsActive('occasion_spotlight')
+            ? $this->takeDistinctProducts(
+                $occasionProducts,
+                array_merge($usedProductIds, $newProducts->pluck('id')->all(), $bestSellers->pluck('id')->all()),
+                (int) data_get($moduleMap, 'occasion_spotlight.settings.content_limit', 4)
+            )
+            : collect();
 
         $homeContent = $this->loadHomeContent();
         $blogCards = $this->buildBlogCards($blogPosts);
