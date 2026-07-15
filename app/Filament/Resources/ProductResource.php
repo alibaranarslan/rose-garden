@@ -37,6 +37,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
@@ -158,7 +159,14 @@ class ProductResource extends Resource
                             Repeater::make('images')
                                 ->label('Ürün Galerisi')
                                 ->relationship()
+                                ->mutateRelationshipDataBeforeFillUsing(fn (array $data): array => static::normalizeImageRelationshipDataForFileUpload($data))
                                 ->schema([
+                                    Placeholder::make('current_image_preview')
+                                        ->label('Mevcut gorsel')
+                                        ->content(fn (?ProductImage $record): HtmlString => static::adminProductImagePreviewHtml($record))
+                                        ->visible(fn (?ProductImage $record): bool => filled($record?->image_path))
+                                        ->columnSpanFull(),
+
                                     FileUpload::make('image_path')
                                         ->label('Görsel')
                                         ->disk('public')
@@ -168,7 +176,6 @@ class ProductResource extends Resource
                                         ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                         ->maxSize(5120)
                                         ->required(fn (?ProductImage $record): bool => blank($record?->image_path))
-                                        ->formatStateUsing(fn ($state) => static::normalizeImagePathForFileUpload($state))
                                         ->dehydrateStateUsing(
                                             fn ($state, ?ProductImage $record) => static::normalizeUploadedImagePath($state, $record?->image_path)
                                         )
@@ -624,6 +631,19 @@ class ProductResource extends Resource
         return $state;
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public static function normalizeImageRelationshipDataForFileUpload(array $data): array
+    {
+        if (array_key_exists('image_path', $data)) {
+            $data['image_path'] = static::normalizeImagePathForFileUpload($data['image_path']);
+        }
+
+        return $data;
+    }
+
     public static function adminProductImageUrl(Product $record): string
     {
         $record->loadMissing(['images' => fn ($query) => $query->orderBy('sort_order')]);
@@ -637,6 +657,42 @@ class ProductResource extends Resource
         }
 
         return url('/'.ltrim($resolved, '/'));
+    }
+
+    public static function adminProductImagePreviewHtml(?ProductImage $record): HtmlString
+    {
+        if (! $record || blank($record->image_path)) {
+            return new HtmlString('<span class="text-sm text-gray-500">Bu galeri satirinda henuz gorsel yok.</span>');
+        }
+
+        $product = $record->product;
+        $product?->loadMissing(['images' => fn ($query) => $query->orderBy('sort_order')]);
+
+        $resolved = StorefrontImage::publicImgSrc(
+            StorefrontImage::resolveProduct(
+                $record->image_path,
+                $product?->slug,
+                $product?->name,
+            )
+        );
+
+        if (! Str::startsWith($resolved, ['http://', 'https://', 'data:'])) {
+            $resolved = url('/'.ltrim($resolved, '/'));
+        }
+
+        $alt = e($record->alt_text ?: ($product?->name ?? 'Urun gorseli'));
+        $src = e($resolved);
+
+        return new HtmlString(<<<HTML
+<div class="flex items-center gap-4 rounded-xl border border-gray-200 bg-white/70 p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900/60">
+    <img src="{$src}" alt="{$alt}" class="h-24 w-24 rounded-lg object-cover ring-1 ring-gray-200 dark:ring-gray-700" loading="lazy">
+    <div class="min-w-0 text-sm text-gray-600 dark:text-gray-300">
+        <div class="font-medium text-gray-900 dark:text-gray-100">Secili urun gorseli</div>
+        <div class="mt-1 truncate">{$alt}</div>
+        <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">Yeni dosya yuklerseniz bu gorsel degisir; mevcut gorsel kaydetme sirasinda korunur.</div>
+    </div>
+</div>
+HTML);
     }
 
     private static function stripStoragePrefix(string $path): string

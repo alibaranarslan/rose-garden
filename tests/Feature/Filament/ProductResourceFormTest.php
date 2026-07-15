@@ -89,6 +89,44 @@ class ProductResourceFormTest extends TestCase
         }
     }
 
+    public function test_admin_product_edit_preview_renders_existing_gallery_image(): void
+    {
+        $relative = 'products/admin-edit-visible-product.jpg';
+
+        File::ensureDirectoryExists(storage_path('app/public/products'));
+        File::ensureDirectoryExists(public_path('storage/products'));
+        File::put(storage_path('app/public/'.$relative), 'test-image');
+        File::put(public_path('storage/'.$relative), 'test-image');
+
+        try {
+            $product = Product::create([
+                'name' => ['tr' => 'Duzenleme Gorsel Testi'],
+                'slug' => 'duzenleme-gorsel-testi',
+                'short_description' => ['tr' => 'Duzenleme gorsel testi'],
+                'description' => ['tr' => '<p>Aciklama</p>'],
+                'price' => 890,
+                'stock_status' => 'in_stock',
+                'status' => 'active',
+            ]);
+
+            $image = $product->images()->create([
+                'image_path' => 'storage/'.$relative,
+                'alt_text' => 'Duzenleme test',
+                'is_primary' => true,
+                'sort_order' => 1,
+            ]);
+
+            $html = ProductResource::adminProductImagePreviewHtml($image)->toHtml();
+
+            $this->assertStringContainsString(url('/storage/'.$relative), $html);
+            $this->assertStringContainsString('Secili urun gorseli', $html);
+            $this->assertStringContainsString('Duzenleme test', $html);
+        } finally {
+            File::delete(storage_path('app/public/'.$relative));
+            File::delete(public_path('storage/'.$relative));
+        }
+    }
+
     public function test_primary_image_rule_keeps_single_cover_after_gallery_changes(): void
     {
         $product = Product::create([
